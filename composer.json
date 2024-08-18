@@ -1,22 +1,28 @@
 {
-    "name": "vphantom/pyriteview",
-    "type": "project",
-    "license": "AGPL-3.0",
-    "authors": [
-        {
-            "name": "Stéphane Lavergne",
-            "email": "lis@imars.com"
-        }
-    ],
-    "require": {
-        "php": ">=5.6",
-        "ext-fileinfo": "*",
-        "ext-json": "*",
-        "ext-mbstring": "*",
-        "ext-mcrypt": "*",
-        "ext-pcre": "*",
-        "ext-pdo_sqlite": "*",
-        "ext-readline": "*",
-        "vphantom/pyritephp": "^1.2"
+  "name": "vphantom/pyriteview",
+  "type": "project",
+  "license": "AGPL-3.0",
+  "authors": [
+    {
+      "name": "Stéphane Lavergne",
+      "email": "lis@imars.com"
     }
+  ],
+  "require": {
+    "php": ">=5.6",
+    "ext-fileinfo": "*",
+    "ext-json": "*",
+    "ext-mbstring": "*",
+    "ext-mcrypt": "*",
+    "ext-pcre": "*",
+    "ext-pdo_sqlite": "*",
+    "ext-readline": "*",
+    "gflauder/pyritephp": "dev-master"
+  },
+  "repositories": [
+    {
+      "type": "vcs",
+      "url": "https://github.com/gflauder/pyritephp.git"
+    }
+  ]
 }

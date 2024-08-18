@@ -1,0 +1,44 @@
+services:
+  mailpit:
+    image: axllent/mailpit:latest
+    container_name: mailpit
+    ports:
+      - "8025:8025"  # Web UI
+      - "1025:1025"  # SMTP
+    volumes:
+      - mailpit-data:/data
+
+  # Nginx service
+  nginx:
+    image: nginx:latest
+    container_name: nginx-server
+    ports:
+      - "8080:80"
+    volumes:
+      - /home/gary/pyriteview:/var/www/html
+      - ./default.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - php
+    networks:
+      - app-network
+
+  # PHP service
+  php:
+    image: php:7.4-fpm
+    container_name: php-app
+    volumes:
+      - /home/gary/pyriteview:/var/www/html
+      - /home/gary/pyriteview/vendor:/var/www/html/vendor
+      - /home/gary/pyriteview/var:/var/www/html/var
+      - ./custom-php.ini:/usr/local/etc/php/conf.d/custom-php.ini
+
+    networks:
+      - app-network
+    build:
+      context: .
+      dockerfile: Dockerfile
+volumes:
+  mailpit-data:
+
+networks:
+  app-network:

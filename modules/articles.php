@@ -1065,7 +1065,7 @@ class Articles
      *
      * @return array
      */
-    public function getPeerLastChoices($userId)
+    public static function getPeerLastChoices($userId)
     {
         global $PPHP;
         $db = $PPHP['db'];
