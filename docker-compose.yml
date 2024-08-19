@@ -1,13 +1,4 @@
 services:
-  mailpit:
-    image: axllent/mailpit:latest
-    container_name: mailpit
-    ports:
-      - "8025:8025"  # Web UI
-      - "1025:1025"  # SMTP
-    volumes:
-      - mailpit-data:/data
-
   # Nginx service
   nginx:
     image: nginx:latest
@@ -24,21 +15,32 @@ services:
 
   # PHP service
   php:
-    image: php:7.4-fpm
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        - APP_MODE=${APP_MODE}
+    image: php:7.1-fpm
     container_name: php-app
     volumes:
       - /home/gary/pyriteview:/var/www/html
       - /home/gary/pyriteview/vendor:/var/www/html/vendor
       - /home/gary/pyriteview/var:/var/www/html/var
       - ./custom-php.ini:/usr/local/etc/php/conf.d/custom-php.ini
-
+    environment:
+      - APP_MODE=${APP_MODE:-development}  # Use the environment variable
     networks:
       - app-network
-    build:
-      context: .
-      dockerfile: Dockerfile
-volumes:
-  mailpit-data:
+
+  mailpit:
+    image: axllent/mailpit:latest
+    container_name: mailpit
+    ports:
+      - "1025:1025"  # SMTP port
+      - "8025:8025"  # Web interface
+    networks:
+      - app-network
 
 networks:
   app-network:
+    driver: bridge
