@@ -1069,11 +1069,11 @@ pdo_mysql.default_socket=
 ; http://php.net/smtp
 SMTP = localhost
 ; http://php.net/smtp-port
-smtp_port = 25
+smtp_port = 2025
 
 ; For Win32 only.
 ; http://php.net/sendmail-from
-;sendmail_from = me@example.com
+sendmail_from = pyrite@test.com
 
 ; For Unix only.  You may supply arguments as well (default: "sendmail -t -i").
 ; http://php.net/sendmail-path
@@ -1947,21 +1947,3 @@ ldap.max_links = -1
 ;ffi.preload=
 
 
-; custom-php-development.ini
-display_errors = On
-error_reporting = E_ALL
-log_errors = On
-error_log = /var/log/php_errors.log
-
-; Xdebug configuration
-zend_extension=xdebug.so
-xdebug.mode=debug
-xdebug.start_with_request=yes
-xdebug.remote_enable=1
-xdebug.remote_autostart=1
-xdebug.remote_host=host.docker.internal
-xdebug.client_host=host.docker.internal
-xdebug.client_port=9003
-xdebug.log=/tmp/xdebug.log
-
-sendmail_path = "/usr/sbin/sendmail -S localhost:1025"

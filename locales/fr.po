@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PyriteView v1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-11-07 11:14-0500\n"
+"POT-Creation-Date: 2024-08-26 19:29-0400\n"
 "PO-Revision-Date: 2018-11-07 11:15-0500\n"
 "Last-Translator: Stéphane Lavergne <lis@imars.com>\n"
 "Language-Team: PyriteView <lis@imars.com>\n"
@@ -365,9 +365,6 @@ msgstr "déplacé"
 msgid "label_name"
 msgstr "Nom"
 
-msgid "label_navigation"
-msgstr "Navigation"
-
 msgid "label_never"
 msgstr "jamais"
 
@@ -716,6 +713,9 @@ msgstr "Politique éditoriale"
 msgid "title_prefs"
 msgstr "Préférences"
 
+msgid "title_program"
+msgstr "Revue Criminologie"
+
 msgid "title_recent"
 msgstr "Activités récentes"
 
@@ -723,7 +723,7 @@ msgid "title_recent_history"
 msgstr "Historique Récente"
 
 msgid "title_register"
-msgstr "Inscription"
+msgstr "Créer un nouveau compte"
 
 msgid "title_reports"
 msgstr "Rapports"
@@ -736,6 +736,9 @@ msgstr "Évaluations"
 
 msgid "title_roles"
 msgstr "Rôles"
+
+msgid "title_submit_article"
+msgstr "Soumettre\vun article"
 
 msgid "title_users"
 msgstr "Usagers"
@@ -757,6 +760,9 @@ msgstr "Un fichier a été ignoré parce qu'il n'était pas d'un format accepté
 
 msgid "warning_redirect_created"
 msgstr "Vous pouvez voir l'item créé à:"
+
+#~ msgid "label_navigation"
+#~ msgstr "Navigation"
 
 #~ msgid "label_accept_decline"
 #~ msgstr "Accepter ou refuser"

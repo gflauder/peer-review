@@ -256,7 +256,7 @@ class Articles
 
             // Consistency check!
             // Any author found in ACL but not in our column get added.
-            $article['authors'] = dejoin(';', $article['authors']);
+           $article['authors'] = isset($article['authors']) && $article['authors'] !== null ? dejoin(';', $article['authors']) : [];
             $dirtyAuthors = false;
             foreach (
                 array_diff(

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PyriteView v1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-11-07 11:14-0500\n"
+"POT-Creation-Date: 2024-08-26 19:29-0400\n"
 "PO-Revision-Date: 2017-01-31 12:04-0500\n"
 "Last-Translator: Stéphane Lavergne <lis@imars.com>\n"
 "Language-Team: PyriteView <lis@imars.com>\n"
@@ -353,9 +353,6 @@ msgstr ""
 msgid "label_name"
 msgstr ""
 
-msgid "label_navigation"
-msgstr ""
-
 msgid "label_never"
 msgstr ""
 
@@ -698,6 +695,9 @@ msgstr ""
 msgid "title_prefs"
 msgstr ""
 
+msgid "title_program"
+msgstr ""
+
 msgid "title_recent"
 msgstr ""
 
@@ -717,6 +717,9 @@ msgid "title_reviews"
 msgstr ""
 
 msgid "title_roles"
+msgstr ""
+
+msgid "title_submit_article"
 msgstr ""
 
 msgid "title_users"

@@ -1,14 +1,13 @@
 <?php
-$to = 'recipient@example.com';
+$to = 'test@example.com';
 $subject = 'Test Email';
-$message = 'This is a test email.';
+$message = 'This is a test email sent from PHP using Mailpit.';
 $headers = 'From: sender@example.com' . "\r\n" .
-           'Reply-To: sender@example.com' . "\r\n" .
-           'X-Mailer: PHP/' . phpversion();
+    'Reply-To: sender@example.com' . "\r\n" .
+    'X-Mailer: PHP/' . phpversion();
 
 if (mail($to, $subject, $message, $headers)) {
-    echo 'Mail sent successfully.';
+    echo 'Email sent successfully.';
 } else {
-    echo 'Mail sending failed.';
+    echo 'Failed to send email.';
 }
-?>

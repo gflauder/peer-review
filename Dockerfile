@@ -18,15 +18,24 @@ RUN apt-get update && apt-get install -y \
     && docker-php-ext-install -j$(nproc) gd \
     && docker-php-ext-install -j$(nproc) iconv mbstring pdo_mysql zip bcmath opcache pdo_sqlite mcrypt
 
+# Clean up any existing Xdebug installation and install Xdebug
+RUN pecl uninstall -y xdebug || true
+RUN if ! pecl list | grep -q xdebug; then pecl install xdebug-2.7.2; fi && docker-php-ext-enable xdebug
 
 # Set the environment variable
 ARG APP_MODE=development
 
-# Install Xdebug compatible with PHP 7.1 if not already installed
-RUN if ! pecl list | grep -q xdebug; then pecl install xdebug-2.7.2; fi
+# Copy custom PHP configuration files into the image
+COPY php.ini-development /usr/local/etc/php/php.ini-development
+COPY php.ini-production /usr/local/etc/php/php.ini-production
+COPY custom-php.ini /usr/local/etc/php/conf.d/custom-php.ini
 
-# Copy custom PHP configuration based on APP_MODE
-COPY php.ini-${APP_MODE} /usr/local/etc/php/conf.d/php.ini
+# Copy the correct PHP configuration based on APP_MODE
+RUN if [ "$APP_MODE" = "development" ]; then \
+      cp /usr/local/etc/php/php.ini-development /usr/local/etc/php/php.ini; \
+ else \
+     cp /usr/local/etc/php/php.ini-production /usr/local/etc/php/php.ini; \
+ fi
 
 # Set the command to run php-fpm
 CMD ["php-fpm"]

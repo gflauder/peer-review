@@ -1,7 +1,70 @@
 /* Main styles */
 
 body {
-	padding-top: 70px;
+	/*padding-top: 70px;*/
+}
+
+/*Nav Bar*/
+.navbar-brand {
+	font-size: 1.5em; /* Adjust the font size as needed */
+}
+
+.custom-bg{
+	background-color: #002f8d;
+}
+.navbar-nav-right {
+  margin-left: auto;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.navbar-nav-right .nav-item.dropdown {
+  width: auto;
+}
+
+.navbar-nav-right .dropdown-menu {
+	min-width: 200px; /* Adjust as needed */
+}
+
+
+
+
+
+/*Login Form*/
+.login-container {
+	text-align: center;
+	margin: 0 auto;
+	max-width: 500px;
+	padding: 20px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+
+}
+
+.login-form {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+}
+
+.login-form .form-group {
+	margin-bottom: 10px;
+}
+
+.login-form button {
+	margin-top: 10px;
+}
+
+
+
+.content-wrapper {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.new-content {
+  margin-bottom: 20px;
 }
 
 .optional {
@@ -167,7 +230,7 @@ textarea {
 		position: fixed;
 		bottom: 0;
 		z-index: 1000;
-		top: 51px;
+		top: 62px;
 		padding: 20px;
 		overflow-x: hidden;
 		overflow-y: auto;

@@ -29,6 +29,7 @@ services:
       - ./custom-php.ini:/usr/local/etc/php/conf.d/custom-php.ini
     environment:
       - APP_MODE=${APP_MODE:-development}  # Use the environment variable
+      - PHP_SENDMAIL_PATH="/usr/sbin/sendmail -S mailpit:1025 -fsender@example.com"
     networks:
       - app-network
 

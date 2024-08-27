@@ -1,7 +1,7 @@
 COMPOSER   := bin/composer
 NPM        := npm
 SQLITE     := sqlite3
-CSS        := node_modules/.bin/cleancss --skip-rebase
+CSS        := node_modules/.bin/cleancss
 BROWSERIFY := node_modules/.bin/browserify
 EXORCIST   := node_modules/.bin/exorcist
 JS         := node_modules/.bin/uglifyjs >/dev/null --compress --mangle
@@ -12,11 +12,11 @@ BUILDNUM   := $(shell date +%s%N)
 
 FONT_SRC := $(wildcard node_modules/bootstrap/dist/fonts/*.*)
 
-CSS_SRC := node_modules/bootstrap/dist/css/bootstrap.css node_modules/bootstrap/dist/css/bootstrap-theme.css \
-	node_modules/selectize/dist/css/selectize.css node_modules/selectize/dist/css/selectize.bootstrap3.css \
-	node_modules/jquery-ui-pyritephp/jquery-ui.css \
-	$(wildcard vendor/vphantom/pyritephp/assets/*.css) \
-	$(wildcard modules/*.css)
+CSS_SRC := node_modules/bootstrap/dist/css/bootstrap.css \
+ node_modules/selectize/dist/css/selectize.css \
+ node_modules/jquery-ui-pyritephp/jquery-ui.css \
+ $(wildcard vendor/vphantom/pyritephp/assets/*.css) \
+ $(wildcard modules/*.css)
 
 JS_SRC := pyritephp.js locales/loader.js $(wildcard modules/*.js)
 
@@ -37,12 +37,18 @@ help:
 	@echo "  [ Devel ]  make apache  - Runs Apache/PHP7.2 in Docker for testing"
 	@echo
 
+
 deps:
-	@if ! which zip >/dev/null;  then echo "  **  Please install zip."; exit 1; fi
-	@if ! which gzip >/dev/null; then echo "  **  Please install gzip."; exit 1; fi
-	@if ! which wget >/dev/null; then echo "  **  Please install wget."; exit 1; fi
-	@if ! which php  >/dev/null; then echo "  **  Please install PHP 5+."; exit 1; fi
-	@if ! which sqlite3 >/dev/null; then echo "  **  Please install SQLite 3."; exit 1; fi
+	 @if ! which zip >/dev/null;  then echo "  **  Please install zip."; exit 1; fi
+	 @if ! which gzip >/dev/null; then echo "  **  Please install gzip."; exit 1; fi
+	 @if ! which wget >/dev/null; then echo "  **  Please install wget."; exit 1; fi
+	 @if ! which php  >/dev/null; then echo "  **  Please install PHP 5+."; exit 1; fi
+	 @if ! which sqlite3 >/dev/null; then echo "  **  Please install SQLite 3."; exit 1; fi
+	 @if ! which xgettext >/dev/null; then echo "  **  Please install gettext."; exit 1; fi
+
+
+
+
 
 bin/composer:
 	@mkdir -p bin
@@ -83,27 +89,27 @@ backup:	deps var/backup.zip
 
 archive:	deps var/archive.zip
 
-fonts:	$(FONT_SRC)
+fonts: $(FONT_SRC)
 	mkdir -p fonts
-	cp $^ $@/
+	cp $^ fonts/
 
 # Bootstrap hard-codes "../fonts/" which we need to clean up
 # Similarly, Summertime hard-codes "font/" whereas we need "fonts/"
-client.css:	$(CSS_SRC)
+client.css: $(CSS_SRC)
 	$(CSS) --source-map -o $@ $^
 	mv $@ $@.tmp
-	cat $@.tmp |sed 's/url(font/url(fonts/g; s/\.\.\/\(fonts\)/\1/g' >$@
+	cat $@.tmp | sed 's/url(font/url(fonts/g; s/\.\.\/\(fonts\)/\1/g' > $@
 	rm -f $@.tmp
 	sed -i -r 's/CSSBUILDNUM=[0-9]+/CSSBUILDNUM=$(BUILDNUM)/g' templates/layout.html
 
-client.js:	$(JS_SRC)
-	$(BROWSERIFY) $^  -d |$(EXORCIST) build.js.map >build.js
-	$(JS) --in-source-map build.js.map --source-map client.js.map -o client.js -- build.js
+client.js: $(JS_SRC)
+	$(BROWSERIFY) $^ -d | $(EXORCIST) build.js.map > build.js
+	node_modules/.bin/uglifyjs --compress --mangle --source-map "content=build.js.map,filename=client.js.map" -o client.js -- build.js
 	rm -f build.js build.js.map
 	sed -i -r 's/JSBUILDNUM=[0-9]+/JSBUILDNUM=$(BUILDNUM)/g' templates/layout.html
 
 # Copying here so that Node/Browserify doesn't fall all over itself on paths
-pyritephp.js:	vendor/vphantom/pyritephp/assets/pyritephp.js
+pyritephp.js:	vendor/gflauder/pyritephp/assets/pyritephp.js
 	cp $^ $@
 
 locales/messages.pot:	$(GETTEXT_TEMPLATES)
