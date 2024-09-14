@@ -2,6 +2,10 @@
 
 [![license](https://img.shields.io/github/license/vphantom/pyriteview.svg?style=plastic)]() [![GitHub release](https://img.shields.io/github/release/vphantom/pyriteview.svg?style=plastic)]()
 
+## Attribution
+
+This project is a fork of [Original Project](https://github.com/original-author/original-project) by [Original Author](https://github.com/original-author).
+
 Article versioning hub for peer-reviewed publications.
 
 This simple hub allows publication editors, single edition editors, article authors as well as third-party reviewers to come together to centralize the peer-reviewing workflow.  It was developed as a multilingual application in English and French, and 100% of linguistic content is in templates and dedicated "locale" files, so translating to new languages should be very easy.

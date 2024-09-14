@@ -1,8 +1,8 @@
 {% use 'blocks.html' %}
-
+{% import 'lib' as lib %}
 
 {% block head %}
-    <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="{{ req.lang }}">
 <head>
     <meta charset="utf-8">
@@ -10,281 +10,43 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="format-detection" content="telephone=no">
     <meta id="appname" name="apple-mobile-web-app-title" content="{{ config.global.name }}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css">
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.5.0/css/flag-icon.min.css">
-    <link rel="stylesheet" href="/client.css?CSSBUILDNUM=1724796540273514423" type="text/css">
-    <script src="/client.js?JSBUILDNUM=1724378633342853316" type="text/javascript"></script>
-
-    {% endblock %}
-
-
-    {% block body %}
-    {% import 'lib' as lib %}
-    {% if req.redirect %}
-        <meta http-equiv="refresh"
-              content="{% if config.global.debug %}5{% else %}0{% endif %}; url={{ req.redirect }}">
-    {% endif %}
-    <title>{{ title }}</title>
+    <link rel="stylesheet" href="/client.css?CSSBUILDNUM=1726201894215427331" type="text/css">
+    <script src="/client.js?JSBUILDNUM=1726201894215427331" type="text/javascript"></script>
 </head>
-<body>
-<nav class="navbar navbar-expand-lg navbar-dark custom-bg">
-    <div class="container-fluid">
-        <a class="navbar-brand float-start" href="{{ req.base }}/">{{ __('title_program') }}</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar"
-                aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbar">
-            <ul class="navbar-nav ms-auto mb-2 mb-lg-0 navbar-nav-right">
-                <li class="nav-item{% if req.path_args[0] == 'about' %} active{% endif %}">
-                    <a class="nav-link" href="{{ req.base }}/articles/new">{{ __('title_submit_article') }}</a>
-                </li>
-                <li class="nav-item{% if req.path_args[0] == 'about' %} active{% endif %}">
-                    <a class="nav-link" href="{{ req.base }}/page/about">{{ __('title_about') }}</a>
-                </li>
-                <li class="nav-item{% if req.path_args[0] == 'contacts' %} active{% endif %}">
-                    <a class="nav-link" href="{{ req.base }}/page/contacts">{{ __('title_contacts') }}</a>
-                </li>
-                <li class="nav-item{% if req.path_args[0] == 'instructions' %} active{% endif %}">
-                    <a class="nav-link" href="{{ req.base }}/page/instructions">{{ __('title_instructions') }}</a>
-                </li>
-            </ul>
-            <!--Messages inbox-->
-            {% if session.identified %}
-                <ul class="navbar-nav ml-2 mb-2 mb-lg-0">
-                    {% if pass('has_role', 'admin') or (pass('can', 'edit', 'email') and session.outbox|length > 0) %}
-                        <li class="nav-item dropdown">
-                         <a class="nav-link dropdown-toggle  text-white" href="{{ req.base }}/outbox" id="navbarDropdown"
-                           role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <span class="bi bi-envelope text-white"></span>{% if session.outbox|length > 0 %}<span
-                                    class="badge bg-secondary">{{ session.outbox|length }}</span>{% endif %}
-                        </a>
-                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                                {% for email in session.outbox %}
-                                    <li>
-                                        <a class="dropdown-item" href="{{ req.base }}/outbox/{{ email.id }}">
-                                            <div>
-                                                <strong>{{ lib.format_user(email.recipients[0], true) }}</strong>
-                                                    <span class="text-muted float-end">
-                                                      <em>{{ lib.format_timestamp(email.localmodified) }}</em>
-                                                    </span>
-                                            </div>
-                                            <div>{{ email.subject }}</div>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <hr class="dropdown-divider">
-                                    </li>
-                                {% endfor %}
-                                <li>
-                                    <a class="dropdown-item text-center" href="{{ req.base }}/outbox">
-                                        <strong>{{ __('title_outbox') }}</strong>
-                                        <span class="bi bi-chevron-right"></span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                    {% endif %}
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
-                           data-bs-toggle="dropdown" aria-expanded="false">
-                            {{ session.user.name }} <span class="bi bi-person"></span>
-                        </a>
-                        <ul class="dropdown-menu" aria-labelledby="userDropdown">
-                            <li class="dropdown-header">{{ session.user.email }}</li>
-                            <li><a class="dropdown-item" href="{{ req.base }}/user/prefs"><span
-                                            class="bi bi-gear"></span> {{ __('title_prefs') }}</a></li>
-                            <li><a class="dropdown-item" href="{{ req.base }}/user/history"><span
-                                            class="bi bi-list"></span> {{ __('title_recent_history') }}</a></li>
-                            <li><a class="dropdown-item" href="{{ req.base }}/logout"><span class="text-danger"><span
-                                                class="bi bi-box-arrow-right"></span></span> {{ __('label_logout') }}
-                                </a></li>
-                        </ul>
-                    </li>
-                </ul>
-            {% endif %}
-            <!--Messages Inbox End-->
-
-            <li class="nav-item dropdown ms-4">
-                <a class="nav-link dropdown-toggle text-white" href="#" id="langDropdown" role="button"
-                   data-bs-toggle="dropdown" aria-expanded="false">
-                    {{ req.lang }}
-                    {% if req.lang == 'fr' %}
-                        <span class="flag-icon flag-icon-fr ms-1"></span>
-                    {% else %}
-                        <span class="flag-icon flag-icon-gb ms-1"></span>
-                    {% endif %}
-                </a>
-                <ul class="dropdown-menu dropdown-menu-end dropstart" aria-labelledby="langDropdown">
-                    <li><a class="dropdown-item"
-                           href="/{% if 'fr' != req.default_lang %}fr/{% endif %}{{ req.path }}{{ req.query }}">Français
-                            <span class="flag-icon flag-icon-fr ms-1"></span></a></li>
-                    <li><a class="dropdown-item"
-                           href="/{% if 'en' != req.default_lang %}en/{% endif %}{{ req.path }}{{ req.query }}">English<span
-                                    class="flag-icon flag-icon-gb ms-1"></span></a></li>
-                </ul>
-            </li>
-
-        </div>
-    </div>
-</nav>
-
-
-<div class="container-fluid">
-    <div class="row">
-        <!--Sidebar-->
-        {% if session.identified %}
-            <!--Menu Sidebar-->
-            <div class="col-sm-3 col-md-2 sidebar hidden-print">
-                <ul class="nav nav-sidebar d-block">
-                    <li><a href="{{ req.base }}/" {% if req.path== '' %} class="active"{% endif %}>
-                            <span class="bi bi-home"></span>
-                            {{ __('title_dashboard') }}
-                        </a>
-                    </li>
-
-                    {% if pass('can_any', 'view', 'issue') %}
-                        <li>
-                            <a href="{{ req.base }}/issues" {% if req.path starts with 'issues' %} class="active"{% endif %}><span
-                                        class=""></span> {{ __('title_issues') }}</a>
-                        </li>
-                    {% endif %}
-
-
-             {#       {% if pass('can_any', 'view', 'issue') %}
-                        <li>
-                            <a class="h2" href="#">
-                                <i class="bi bi-card-checklist fs-2"></i>
-                                Icon link
-                            </a>
-                        </li>
-                    {% endif %}#}
-
-
-
-                    {% if pass('can_any', 'view', 'article') or pass('can_any', 'edit', 'article') or pass('has_role',
-                        'peer') %}
-                        <li>
-                            <a href="{{ req.base }}/articles" {% if req.path starts with 'articles' %} class="active"{% endif %}><span
-                                        class="bi bi-align-left"></span> {{ __('title_articles') }}</a>
-                        </li>
-                    {% endif %}
-                    {% if pass('can', 'move', 'article') or pass('has_role', 'editor') %}
-                        <li><a href="#collapseReports" data-toggle="collapse" data-target="#collapseReports"
-                               aria-controls="collapseReports" {% if req.path starts with 'admin/reports' %} class="active"
-                                aria-expanded="true"{% else %} aria-expanded="false"{% endif %}><span
-                                        class="bi bi-folder-open"></span> {{ __('title_reports') }}<span
-                                        class="caret"></span></a></li>
-                        <ul id="collapseReports"
-                            class="nav nav-second-level collapse{% if req.path starts with 'admin/reports' %} in{% endif %}">
-                            <li><a href="{{ req.base }}/admin/reports/activity" {% if req.path starts with
-                                    'admin/reports/activity' %} class="active"{% endif %}><span
-                                            class="bi bi-stats"></span> {{ __('title_activity_report') }}
-                                </a>
-                            </li>
-                            <li><a href="{{ req.base }}/admin/reports/editing"
-                                        {% if req.path starts with 'admin/reports/editing' %} class="active"{% endif %}>
-                                    <span class="bi bi-stats"></span>
-                                    {{ __('title_editing_report') }}
-                                </a>
-                            </li>
-                        </ul>
-                    {% endif %}
-                    {% if pass('can', 'view', 'user') or pass('can', 'edit', 'user') %}
-                        <li>
-                            <a href="{{ req.base }}/admin/users" {% if req.path starts with 'admin/users' %} class="active"{% endif %}><span
-                                        class="bi bi-user"></span> {{ __('title_users') }}
-                            </a>
-                        </li>
-                    {% endif %}
-                    {% if pass('can', 'view', 'role') %}
-                        <li>
-                            <a href="{{ req.base }}/admin/roles" {% if req.path starts with 'admin/roles' %} class="active"{% endif %}><span
-                                        class="bi bi-education"></span> {{ __('title_roles') }}
-                            </a>
-                        </li>
-                    {% endif %}
-                </ul>
-            </div>
-        {% endif %}
-        <!--End Menu Sidebar-->
-        {% if session.identified %}
-        <div class="col-sm-9 col-md-10 offset-sm-3 offset-md-2 main">
-            <div class="container main">
-                {% else %}
-                <div class="col-12 main">
-                    <div class="container main">
-                        {% endif %}
-
-
-
-
-                        {% if req.status >= 400 %}
-                            <div class="jumbotron">
-                                {% if req.status == 404 %}
-                                    <h1>{{ __('error_notfound_title') }}</h1>
-                                    <p>{{ __('error_notfound_body') }}</p>
-                                {% elseif req.status == 403 %}
-                                    {% if session.identified %}
-                                        <h1>{{ __('error_denied_title') }}</h1>
-                                        <p>{{ __('error_denied_body') }}</p>
-                                    {% else %}
-                                        {% if req.get.onetime %}
-                                            <h1>{{ __('error_activation_title') }}</h1>
-                                            <p>{{ __('error_activation_body') }}</p>
-                                        {% elseif req.post.email %}
-                                            <h1>{{ __('error_login_title') }}</h1>
-                                            <p>{{ __('error_login_body') }}</p>
-                                        {% else %}
-
-                                            <div class="container main">
-                                                <div class="content-wrapper">
-                                                    <div class="new-content">
-                                                        <h1>{{ __('title_welcome_to') }} {{ __('title_program') }}</h1>
-                                                    </div>
-                                                    {{ block('welcome') }}
-                                                </div>
-                                            </div>
-
-                                        {% endif %}
-
-                                    {% endif %}
-                                {% elseif req.status == 440 %}
-                                    {% if session.identified %}
-                                        <h1>{{ __('error_duplicate_title') }}</h1>
-                                        <p>{{ __('error_duplicate_body') }}</p>
-                                    {% else %}
-                                        <h1>{{ __('error_expired_title') }}</h1>
-                                        <p>{{ __('error_expired_body') }}</p>
-                                    {% endif %}
-                                {% elseif req.status == 449 %}
-                                    <h1>{{ __('label_login') }}</h1>
-                                    <p>{{ __('info_mailclick') }}</p>
-                                {% endif %}
-                            </div>
-                        {% endif %}
-                        {% if req.redirect %}
-                            {{ lib.alert(true, __('redirecting')) }}
-                        {% endif %}
-                        {% if req.warnings|length > 0 %}
-                            {% for warning in req.warnings %}
-                                {{ lib.warning(warning[0], warning[1], warning[2]) }}
-                            {% endfor %}
-                        {% endif %}
-                        {% if pass('no_fatal_warnings') %}
-                            {{ body |raw }}
-                        {% endif %}
-                        {{ stdout |raw }}
-
-                        {% if session.identified %}
-                    </div>
-                </div>
-            </div>
-            {% else %}
-        </div>
-        {% endif %}
-    </div>
-</div>
-</body>
-</html>
 {% endblock %}
+
+{% block body %}
+{% if req.redirect %}
+    <meta http-equiv="refresh"
+          content="{% if config.global.debug %}5{% else %}0{% endif %}; url={{ req.redirect }}">
+{% endif %}
+<title>{{ title }}</title>
+<body>
+
+{% include 'components/top_navigation.html' %}
+{% include 'components/side_bar.html' %}
+{% include 'components/return_statuses.html' %}
+
+
+{% if req.warnings|length > 0 %}
+    {% for warning in req.warnings %}
+        {{ lib.warning(warning[0], warning[1], warning[2]) }}
+    {% endfor %}
+{% endif %}
+
+{% if pass('no_fatal_warnings') %}
+    {{ body |raw }}
+{% endif %}
+{{ stdout |raw }}
+
+{% include 'components/flash_messages.html' %}
+
+</body>
+{% endblock %}
+
+{% block footer %}
+{% endblock %}
+</html>

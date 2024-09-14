@@ -26,7 +26,7 @@
 					<a href="{{ req.base }}/outbox"><span class="glyphicon glyphicon-envelope"></span> {{ __('title_outbox') }}</a>
 				</div>
 				<div class="panel-body">
-					{% include 'outbox_list.html' with {'emails': session.outbox} %}
+					{% include 'outbox/outbox_list.html' with {'emails': session.outbox} %}
 				</div>
 			</div>
 			<!-- /Outbox Panel -->
@@ -39,7 +39,7 @@
 					<span class="glyphicon glyphicon-eye-open"></span> {{ __('title_reviews') }}
 				</div>
 				<div class="panel-body">
-					{% include 'review_list.html' %}
+					{% include 'articles/review_list.html' %}
 				</div>
 			</div>
 			<!-- /Reviews Panel -->
@@ -59,7 +59,7 @@
 					{% endif %}
 				</div>
 				<div class="panel-body">
-					{% include 'articles_list.html' %}
+					{% include 'articles/articles_list.html' %}
 				</div>
 			</div>
 			<!-- /Articles Panel -->
@@ -74,10 +74,12 @@
 				<span class="glyphicon glyphicon-list"></span> {{ __('title_recent') }}
 			</div>
 			<div class="panel-body">
-				{% include 'history.html' with {'history': recentHistory, 'narrow': true} %}
+				{% include 'articles/history.html' with {'history': recentHistory, 'narrow': true} %}
 			</div>
 		</div>
 		<!-- /Recent Activity Panel -->
 
 	</div>
 </div>
+
+

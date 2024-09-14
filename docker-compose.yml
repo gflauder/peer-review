@@ -19,11 +19,12 @@ services:
       context: .
       dockerfile: Dockerfile
       args:
-        - APP_MODE=${APP_MODE}
-    image: php:7.1-fpm
+        - APP_MODE=${APP_MODE:-development}
+    image: php:7.4-fpm
     container_name: php-app
     volumes:
       - /home/gary/pyriteview:/var/www/html
+      - /home/gary/pyritephp:/var/www/html/vendor/gflauder/pyritephp
       - /home/gary/pyriteview/vendor:/var/www/html/vendor
       - /home/gary/pyriteview/var:/var/www/html/var
       - ./custom-php.ini:/usr/local/etc/php/conf.d/custom-php.ini
@@ -41,6 +42,7 @@ services:
       - "8025:8025"  # Web interface
     networks:
       - app-network
+
 
 networks:
   app-network:

@@ -13,7 +13,6 @@
     "ext-fileinfo": "*",
     "ext-json": "*",
     "ext-mbstring": "*",
-    "ext-mcrypt": "*",
     "ext-pcre": "*",
     "ext-pdo_sqlite": "*",
     "ext-readline": "*",
@@ -21,8 +20,8 @@
   },
   "repositories": [
     {
-      "type": "vcs",
-      "url": "https://github.com/gflauder/pyritephp.git"
+      "type": "path",
+      "url": "/home/gary/pyritephp"
     }
   ]
 }

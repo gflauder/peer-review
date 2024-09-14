@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PyriteView v1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-08-26 19:29-0400\n"
+"POT-Creation-Date: 2024-09-13 00:33-0400\n"
 "PO-Revision-Date: 2018-11-07 11:15-0500\n"
 "Last-Translator: Stéphane Lavergne <lis@imars.com>\n"
 "Language-Team: PyriteView <lis@imars.com>\n"
@@ -17,18 +17,6 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 1.8.11\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-
-msgid "KB"
-msgstr "KO"
-
-msgid "MB"
-msgstr "MO"
-
-msgid "article_unknown"
-msgstr "Article inconnu"
-
-msgid "bytes"
-msgstr "octets"
 
 msgid "delete_failure"
 msgstr "Une erreur est survenue dans la tentative d'effacement."
@@ -115,9 +103,6 @@ msgstr "Accepter d'évaluer l'article plus tard"
 msgid "hint_review_decline"
 msgstr "Refuser d'évaluer l'article"
 
-msgid "hint_selectusers"
-msgstr "Cliquer pour choisir, chercher ou créer"
-
 msgid "hint_suggestions"
 msgstr "Suggestions d'autres évaluateurs"
 
@@ -203,9 +188,6 @@ msgstr "Depuis"
 msgid "label_by"
 msgstr "par"
 
-msgid "label_change_and_send"
-msgstr "Changer et envoyer"
-
 msgid "label_change_deadline"
 msgstr "Modifier date limite"
 
@@ -217,12 +199,6 @@ msgstr "changé"
 
 msgid "label_changepassword"
 msgstr "Changer mot de passe"
-
-msgid "label_close"
-msgstr "Fermer"
-
-msgid "label_comments"
-msgstr "Commentaires"
 
 msgid "label_copyright"
 msgstr "Droits d'auteur"
@@ -254,9 +230,6 @@ msgstr "refusé"
 msgid "label_delete"
 msgstr "Effacer"
 
-msgid "label_description"
-msgstr "Description"
-
 msgid "label_editors"
 msgstr "Éditeurs"
 
@@ -274,9 +247,6 @@ msgstr "jusqu'à"
 
 msgid "label_female"
 msgstr "Femme"
-
-msgid "label_file"
-msgstr "Fichier"
 
 msgid "label_files"
 msgstr "Fichiers"
@@ -332,12 +302,6 @@ msgstr "Mot-clef"
 msgid "label_keywords"
 msgstr "Mots-clefs"
 
-msgid "label_last_accepted"
-msgstr "Acceptation la plus récente"
-
-msgid "label_last_refused"
-msgstr "Refus le plus récent"
-
 msgid "label_last_visit"
 msgstr "Dernière visite"
 
@@ -365,12 +329,6 @@ msgstr "déplacé"
 msgid "label_name"
 msgstr "Nom"
 
-msgid "label_never"
-msgstr "jamais"
-
-msgid "label_new_file"
-msgstr "Attacher fichier"
-
 msgid "label_new_issue"
 msgstr "Nouveau numéro"
 
@@ -388,9 +346,6 @@ msgstr "Préfère ne pas répondre"
 
 msgid "label_not_all_users"
 msgstr "Voir seulement moi"
-
-msgid "label_number"
-msgstr "Numéro"
 
 msgid "label_objectType"
 msgstr "Type"
@@ -485,9 +440,6 @@ msgstr "retiré l'éditeur"
 msgid "label_uninvited_peer"
 msgstr "retiré le pair"
 
-msgid "label_upload"
-msgstr "Transmettre"
-
 msgid "label_user"
 msgstr "Usager"
 
@@ -499,9 +451,6 @@ msgstr "Version"
 
 msgid "label_versions"
 msgstr "Versions"
-
-msgid "label_view_details"
-msgstr "Voir détails"
 
 msgid "label_view_message"
 msgstr "voir message"
@@ -554,27 +503,6 @@ msgstr "Une erreur est survenue en tentant de créer votre compte."
 msgid "register_success"
 msgstr "Veuillez attendre notre courriel d'instructions."
 
-msgid "role_admin"
-msgstr "administrateur"
-
-msgid "role_author"
-msgstr "auteur"
-
-msgid "role_editor"
-msgstr "éditeur"
-
-msgid "role_editor-in-chief"
-msgstr "éditeur en chef"
-
-msgid "role_member"
-msgstr "membre"
-
-msgid "role_peer"
-msgstr "pair"
-
-msgid "role_reader"
-msgstr "lecteur"
-
 msgid "save_failure"
 msgstr "Une erreur et survenue dans la tentative de sauvegarde."
 
@@ -592,57 +520,6 @@ msgstr "Une erreur est survenue dans la tentative d'envoi du message."
 
 msgid "send_success"
 msgstr "Envoi réussi."
-
-msgid "status_approved"
-msgstr "approuvé"
-
-msgid "status_change_approved"
-msgstr "Approuver"
-
-msgid "status_change_created"
-msgstr "Réinitialiser"
-
-msgid "status_change_deleted"
-msgstr "Effacer"
-
-msgid "status_change_printing"
-msgstr "Mettre sous presse"
-
-msgid "status_change_published"
-msgstr "Publier"
-
-msgid "status_change_rejected"
-msgstr "Rejeter"
-
-msgid "status_change_reviewing"
-msgstr "Envoyer en évaluation"
-
-msgid "status_change_revision"
-msgstr "Demander révision"
-
-msgid "status_created"
-msgstr "nouveau"
-
-msgid "status_deleted"
-msgstr "effacé"
-
-msgid "status_printing"
-msgstr "mis sous presse"
-
-msgid "status_published"
-msgstr "publié"
-
-msgid "status_rejected"
-msgstr "rejeté"
-
-msgid "status_reviewing"
-msgstr "envoyé en évaluation"
-
-msgid "status_revision"
-msgstr "mis en révision"
-
-msgid "status_unknown"
-msgstr "état inconnu"
 
 msgid "title_about"
 msgstr "À propos"
@@ -746,20 +623,144 @@ msgstr "Usagers"
 msgid "title_welcome_to"
 msgstr "Bienvenue à"
 
-msgid "user_new"
-msgstr "Nouvel usager"
-
 msgid "user_unknown"
 msgstr "Usager inconnu"
 
-msgid "user_zero"
-msgstr "Le système"
+#~ msgid "KB"
+#~ msgstr "KO"
 
-msgid "warning_file_type"
-msgstr "Un fichier a été ignoré parce qu'il n'était pas d'un format accepté:"
+#~ msgid "MB"
+#~ msgstr "MO"
 
-msgid "warning_redirect_created"
-msgstr "Vous pouvez voir l'item créé à:"
+#~ msgid "article_unknown"
+#~ msgstr "Article inconnu"
+
+#~ msgid "bytes"
+#~ msgstr "octets"
+
+#~ msgid "hint_selectusers"
+#~ msgstr "Cliquer pour choisir, chercher ou créer"
+
+#~ msgid "label_change_and_send"
+#~ msgstr "Changer et envoyer"
+
+#~ msgid "label_close"
+#~ msgstr "Fermer"
+
+#~ msgid "label_comments"
+#~ msgstr "Commentaires"
+
+#~ msgid "label_description"
+#~ msgstr "Description"
+
+#~ msgid "label_file"
+#~ msgstr "Fichier"
+
+#~ msgid "label_last_accepted"
+#~ msgstr "Acceptation la plus récente"
+
+#~ msgid "label_last_refused"
+#~ msgstr "Refus le plus récent"
+
+#~ msgid "label_never"
+#~ msgstr "jamais"
+
+#~ msgid "label_new_file"
+#~ msgstr "Attacher fichier"
+
+#~ msgid "label_number"
+#~ msgstr "Numéro"
+
+#~ msgid "label_upload"
+#~ msgstr "Transmettre"
+
+#~ msgid "label_view_details"
+#~ msgstr "Voir détails"
+
+#~ msgid "role_admin"
+#~ msgstr "administrateur"
+
+#~ msgid "role_author"
+#~ msgstr "auteur"
+
+#~ msgid "role_editor"
+#~ msgstr "éditeur"
+
+#~ msgid "role_editor-in-chief"
+#~ msgstr "éditeur en chef"
+
+#~ msgid "role_member"
+#~ msgstr "membre"
+
+#~ msgid "role_peer"
+#~ msgstr "pair"
+
+#~ msgid "role_reader"
+#~ msgstr "lecteur"
+
+#~ msgid "status_approved"
+#~ msgstr "approuvé"
+
+#~ msgid "status_change_approved"
+#~ msgstr "Approuver"
+
+#~ msgid "status_change_created"
+#~ msgstr "Réinitialiser"
+
+#~ msgid "status_change_deleted"
+#~ msgstr "Effacer"
+
+#~ msgid "status_change_printing"
+#~ msgstr "Mettre sous presse"
+
+#~ msgid "status_change_published"
+#~ msgstr "Publier"
+
+#~ msgid "status_change_rejected"
+#~ msgstr "Rejeter"
+
+#~ msgid "status_change_reviewing"
+#~ msgstr "Envoyer en évaluation"
+
+#~ msgid "status_change_revision"
+#~ msgstr "Demander révision"
+
+#~ msgid "status_created"
+#~ msgstr "nouveau"
+
+#~ msgid "status_deleted"
+#~ msgstr "effacé"
+
+#~ msgid "status_printing"
+#~ msgstr "mis sous presse"
+
+#~ msgid "status_published"
+#~ msgstr "publié"
+
+#~ msgid "status_rejected"
+#~ msgstr "rejeté"
+
+#~ msgid "status_reviewing"
+#~ msgstr "envoyé en évaluation"
+
+#~ msgid "status_revision"
+#~ msgstr "mis en révision"
+
+#~ msgid "status_unknown"
+#~ msgstr "état inconnu"
+
+#~ msgid "user_new"
+#~ msgstr "Nouvel usager"
+
+#~ msgid "user_zero"
+#~ msgstr "Le système"
+
+#~ msgid "warning_file_type"
+#~ msgstr ""
+#~ "Un fichier a été ignoré parce qu'il n'était pas d'un format accepté:"
+
+#~ msgid "warning_redirect_created"
+#~ msgstr "Vous pouvez voir l'item créé à:"
 
 #~ msgid "label_navigation"
 #~ msgstr "Navigation"

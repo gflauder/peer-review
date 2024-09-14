@@ -1,0 +1,49 @@
+{% if req.redirect %}
+    {{ lib.alert(true, __('redirecting')) }}
+{% endif %}
+
+{% if req.status >= 400 %}
+    <div>
+        {% if req.status == 404 %}
+            {% include 'components/flash_messages.html' with {'alert_type': 'danger', 'alert_title': __('error_notfound_title'), 'alert_message': __('error_notfound_body')} %}
+        {% elseif req.status == 403 %}
+            {% if session.identified %}
+                {% include 'components/flash_messages.html' with {'alert_type': 'danger', 'alert_title': __('error_denied_title'), 'alert_message': __('error_denied_body')} %}
+            {% else %}
+                {% if req.get.onetime %}
+                    {% include 'components/flash_messages.html' with {'alert_type': 'danger', 'alert_title': __('error_activation_title'), 'alert_message': __('error_activation_body')} %}
+                {% elseif req.post.email %}
+                    {% include 'components/flash_messages.html' with {'alert_type': 'danger', 'alert_title': __('error_login_title'), 'alert_message': __('error_login_body')} %}
+                {% else %}
+                    <div class="container main">
+                        <div class="content-wrapper">
+                            <div class="new-content">
+                                <h1>{{ __('title_welcome_to') }} {{ __('title_program') }}</h1>
+                            </div>
+                         {% include 'authorizations/login.html' %}
+                        </div>
+                    </div>
+                {% endif %}
+            {% endif %}
+        {% elseif req.status == 440 %}
+            {% if session.identified %}
+                {% include 'components/flash_messages.html' with {'alert_type': 'danger', 'alert_title': __('error_duplicate_title'), 'alert_message': __('error_duplicate_body')} %}
+            {% else %}
+                {% include 'components/flash_messages.html' with {'alert_type': 'warning', 'alert_title': __('error_expired_title'), 'alert_message': __('error_expired_body')} %}
+            {% endif %}
+        {% elseif req.status == 449 %}
+            {% include 'components/flash_messages.html' with {'alert_type': 'info', 'alert_title': __('label_login'), 'alert_message': __('info_mailclick')} %}
+        {% endif %}
+    </div>
+{% endif %}
+
+{% if req.warnings|length > 0 %}
+    {% for warning in req.warnings %}
+        {{ lib.warning(warning[0], warning[1], warning[2]) }}
+    {% endfor %}
+{% endif %}
+
+{% if pass('no_fatal_warnings') %}
+    {{ body |raw }}
+{% endif %}
+{{ stdout |raw }}

@@ -1296,7 +1296,7 @@ on(
             $deadline = (new DateTime())->modify($PPHP['config']['reviews']['deadline_modifier'])->format('Y-m-d');
             trigger(
                 'render',
-                'articles_edit.html',
+                'articles/articles_edit.html',
                 array(
                     'saved' => $saved,
                     'success' => $success,

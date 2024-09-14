@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PyriteView v1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-08-26 19:29-0400\n"
+"POT-Creation-Date: 2024-09-13 00:33-0400\n"
 "PO-Revision-Date: 2018-11-07 11:15-0500\n"
 "Last-Translator: Stéphane Lavergne <lis@imars.com>\n"
 "Language-Team: PyriteView <lis@imars.com>\n"
@@ -18,18 +18,6 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 1.8.11\n"
 "X-Poedit-SourceCharset: UTF-8\n"
-
-msgid "KB"
-msgstr "KB"
-
-msgid "MB"
-msgstr "MB"
-
-msgid "article_unknown"
-msgstr "Unknown Article"
-
-msgid "bytes"
-msgstr "bytes"
 
 msgid "delete_failure"
 msgstr "An error has occurred while attempting to delete."
@@ -111,9 +99,6 @@ msgstr "Accept to evaluate this article later"
 
 msgid "hint_review_decline"
 msgstr "Decline to evaluate this article"
-
-msgid "hint_selectusers"
-msgstr "Click to choose, search or create"
 
 msgid "hint_suggestions"
 msgstr "Suggestions of other evaluators"
@@ -198,9 +183,6 @@ msgstr "From"
 msgid "label_by"
 msgstr "by"
 
-msgid "label_change_and_send"
-msgstr "Change and send"
-
 msgid "label_change_deadline"
 msgstr "Change deadline"
 
@@ -212,12 +194,6 @@ msgstr "changed"
 
 msgid "label_changepassword"
 msgstr "Change password"
-
-msgid "label_close"
-msgstr "Close"
-
-msgid "label_comments"
-msgstr "Comments"
 
 msgid "label_copyright"
 msgstr "Copyright"
@@ -249,9 +225,6 @@ msgstr "refused"
 msgid "label_delete"
 msgstr "Delete"
 
-msgid "label_description"
-msgstr "Description"
-
 msgid "label_editors"
 msgstr "Editors"
 
@@ -269,9 +242,6 @@ msgstr "until"
 
 msgid "label_female"
 msgstr "Woman"
-
-msgid "label_file"
-msgstr "File"
 
 msgid "label_files"
 msgstr "Files"
@@ -327,12 +297,6 @@ msgstr "Keyword"
 msgid "label_keywords"
 msgstr "Keywords"
 
-msgid "label_last_accepted"
-msgstr "Most recent acceptance"
-
-msgid "label_last_refused"
-msgstr "Most recent refusal"
-
 msgid "label_last_visit"
 msgstr "Last visit"
 
@@ -360,12 +324,6 @@ msgstr "moved"
 msgid "label_name"
 msgstr "Name"
 
-msgid "label_never"
-msgstr "never"
-
-msgid "label_new_file"
-msgstr "Attach file"
-
 msgid "label_new_issue"
 msgstr "New issue"
 
@@ -383,9 +341,6 @@ msgstr "Prefer not to answer"
 
 msgid "label_not_all_users"
 msgstr "View only myself"
-
-msgid "label_number"
-msgstr "Number"
 
 msgid "label_objectType"
 msgstr "Type"
@@ -480,9 +435,6 @@ msgstr "removed editor"
 msgid "label_uninvited_peer"
 msgstr "removed peer"
 
-msgid "label_upload"
-msgstr "Send"
-
 msgid "label_user"
 msgstr "User"
 
@@ -494,9 +446,6 @@ msgstr "Version"
 
 msgid "label_versions"
 msgstr "Versions"
-
-msgid "label_view_details"
-msgstr "See details"
 
 msgid "label_view_message"
 msgstr "view message"
@@ -548,27 +497,6 @@ msgstr "An error occurred while attempting to create your account."
 msgid "register_success"
 msgstr "Please wait for our e-mail with further instructions."
 
-msgid "role_admin"
-msgstr "administrator"
-
-msgid "role_author"
-msgstr "author"
-
-msgid "role_editor"
-msgstr "editor"
-
-msgid "role_editor-in-chief"
-msgstr "editor in chief"
-
-msgid "role_member"
-msgstr "member"
-
-msgid "role_peer"
-msgstr "peer"
-
-msgid "role_reader"
-msgstr "reader"
-
 msgid "save_failure"
 msgstr "An error has occurred while attempting to save."
 
@@ -585,57 +513,6 @@ msgstr "An error has occurred while attempting to send this message."
 
 msgid "send_success"
 msgstr "Sent successfully."
-
-msgid "status_approved"
-msgstr "approved"
-
-msgid "status_change_approved"
-msgstr "Approve"
-
-msgid "status_change_created"
-msgstr "Reset"
-
-msgid "status_change_deleted"
-msgstr "Delete"
-
-msgid "status_change_printing"
-msgstr "Send to press"
-
-msgid "status_change_published"
-msgstr "Publish"
-
-msgid "status_change_rejected"
-msgstr "Reject"
-
-msgid "status_change_reviewing"
-msgstr "Send for review"
-
-msgid "status_change_revision"
-msgstr "Ask revisions"
-
-msgid "status_created"
-msgstr "created"
-
-msgid "status_deleted"
-msgstr "deleted"
-
-msgid "status_printing"
-msgstr "sent to press"
-
-msgid "status_published"
-msgstr "published"
-
-msgid "status_rejected"
-msgstr "rejected"
-
-msgid "status_reviewing"
-msgstr "sent for review"
-
-msgid "status_revision"
-msgstr "set for revisions"
-
-msgid "status_unknown"
-msgstr "unknown status"
 
 msgid "title_about"
 msgstr "About us"
@@ -739,20 +616,143 @@ msgstr "Users"
 msgid "title_welcome_to"
 msgstr "Welcome to"
 
-msgid "user_new"
-msgstr "New User"
-
 msgid "user_unknown"
 msgstr "Unknown User"
 
-msgid "user_zero"
-msgstr "The System"
+#~ msgid "KB"
+#~ msgstr "KB"
 
-msgid "warning_file_type"
-msgstr "A file was ignored because its format is not accepted:"
+#~ msgid "MB"
+#~ msgstr "MB"
 
-msgid "warning_redirect_created"
-msgstr "You can view the created item at:"
+#~ msgid "article_unknown"
+#~ msgstr "Unknown Article"
+
+#~ msgid "bytes"
+#~ msgstr "bytes"
+
+#~ msgid "hint_selectusers"
+#~ msgstr "Click to choose, search or create"
+
+#~ msgid "label_change_and_send"
+#~ msgstr "Change and send"
+
+#~ msgid "label_close"
+#~ msgstr "Close"
+
+#~ msgid "label_comments"
+#~ msgstr "Comments"
+
+#~ msgid "label_description"
+#~ msgstr "Description"
+
+#~ msgid "label_file"
+#~ msgstr "File"
+
+#~ msgid "label_last_accepted"
+#~ msgstr "Most recent acceptance"
+
+#~ msgid "label_last_refused"
+#~ msgstr "Most recent refusal"
+
+#~ msgid "label_never"
+#~ msgstr "never"
+
+#~ msgid "label_new_file"
+#~ msgstr "Attach file"
+
+#~ msgid "label_number"
+#~ msgstr "Number"
+
+#~ msgid "label_upload"
+#~ msgstr "Send"
+
+#~ msgid "label_view_details"
+#~ msgstr "See details"
+
+#~ msgid "role_admin"
+#~ msgstr "administrator"
+
+#~ msgid "role_author"
+#~ msgstr "author"
+
+#~ msgid "role_editor"
+#~ msgstr "editor"
+
+#~ msgid "role_editor-in-chief"
+#~ msgstr "editor in chief"
+
+#~ msgid "role_member"
+#~ msgstr "member"
+
+#~ msgid "role_peer"
+#~ msgstr "peer"
+
+#~ msgid "role_reader"
+#~ msgstr "reader"
+
+#~ msgid "status_approved"
+#~ msgstr "approved"
+
+#~ msgid "status_change_approved"
+#~ msgstr "Approve"
+
+#~ msgid "status_change_created"
+#~ msgstr "Reset"
+
+#~ msgid "status_change_deleted"
+#~ msgstr "Delete"
+
+#~ msgid "status_change_printing"
+#~ msgstr "Send to press"
+
+#~ msgid "status_change_published"
+#~ msgstr "Publish"
+
+#~ msgid "status_change_rejected"
+#~ msgstr "Reject"
+
+#~ msgid "status_change_reviewing"
+#~ msgstr "Send for review"
+
+#~ msgid "status_change_revision"
+#~ msgstr "Ask revisions"
+
+#~ msgid "status_created"
+#~ msgstr "created"
+
+#~ msgid "status_deleted"
+#~ msgstr "deleted"
+
+#~ msgid "status_printing"
+#~ msgstr "sent to press"
+
+#~ msgid "status_published"
+#~ msgstr "published"
+
+#~ msgid "status_rejected"
+#~ msgstr "rejected"
+
+#~ msgid "status_reviewing"
+#~ msgstr "sent for review"
+
+#~ msgid "status_revision"
+#~ msgstr "set for revisions"
+
+#~ msgid "status_unknown"
+#~ msgstr "unknown status"
+
+#~ msgid "user_new"
+#~ msgstr "New User"
+
+#~ msgid "user_zero"
+#~ msgstr "The System"
+
+#~ msgid "warning_file_type"
+#~ msgstr "A file was ignored because its format is not accepted:"
+
+#~ msgid "warning_redirect_created"
+#~ msgstr "You can view the created item at:"
 
 #~ msgid "label_navigation"
 #~ msgstr "Navigation"

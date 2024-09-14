@@ -1,0 +1,55 @@
+<!--Messages inbox-->
+{% if session.identified %}
+    <ul class="navbar-nav ml-2 mb-2 mb-lg-0">
+        {% if pass('has_role', 'admin') or (pass('can', 'edit', 'email') and session.outbox|length > 0) %}
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle  text-white" href="{{ req.base }}/outbox" id="navbarDropdown"
+                   role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <span class="bi bi-envelope text-white"></span>{% if session.outbox|length > 0 %}<span
+                            class="badge bg-secondary">{{ session.outbox|length }}</span>{% endif %}
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                    {% for email in session.outbox %}
+                        <li>
+                            <a class="dropdown-item" href="{{ req.base }}/outbox/{{ email.id }}">
+                                <div>
+                                    <strong>{{ lib.format_user(email.recipients[0], true) }}</strong>
+                                    <span class="text-muted float-end">
+                                                      <em>{{ lib.format_timestamp(email.localmodified) }}</em>
+                                                    </span>
+                                </div>
+                                <div>{{ email.subject }}</div>
+                            </a>
+                        </li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                    {% endfor %}
+                    <li>
+                        <a class="dropdown-item text-center" href="{{ req.base }}/outbox">
+                            <strong>{{ __('title_outbox') }}</strong>
+                            <span class="bi bi-chevron-right"></span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+        {% endif %}
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
+               data-bs-toggle="dropdown" aria-expanded="false">
+                {{ session.user.name }} <span class="bi bi-person"></span>
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="userDropdown">
+                <li class="dropdown-header">{{ session.user.email }}</li>
+                <li><a class="dropdown-item" href="{{ req.base }}/user/prefs"><span
+                                class="bi bi-gear"></span> {{ __('title_prefs') }}</a></li>
+                <li><a class="dropdown-item" href="{{ req.base }}/user/history"><span
+                                class="bi bi-list"></span> {{ __('title_recent_history') }}</a></li>
+                <li><a class="dropdown-item" href="{{ req.base }}/logout"><span class="text-danger"><span
+                                    class="bi bi-box-arrow-right"></span></span> {{ __('label_logout') }}
+                    </a></li>
+            </ul>
+        </li>
+    </ul>
+{% endif %}
+<!--Messages Inbox End-->

@@ -12,11 +12,6 @@ BUILDNUM   := $(shell date +%s%N)
 
 FONT_SRC := $(wildcard node_modules/bootstrap/dist/fonts/*.*)
 
-CSS_SRC := node_modules/bootstrap/dist/css/bootstrap.css \
- node_modules/selectize/dist/css/selectize.css \
- node_modules/jquery-ui-pyritephp/jquery-ui.css \
- $(wildcard vendor/vphantom/pyritephp/assets/*.css) \
- $(wildcard modules/*.css)
 
 JS_SRC := pyritephp.js locales/loader.js $(wildcard modules/*.js)
 
@@ -91,7 +86,13 @@ archive:	deps var/archive.zip
 
 fonts: $(FONT_SRC)
 	mkdir -p fonts
-	cp $^ fonts/
+	cp $(FONT_SRC) fonts/
+
+CSS_SRC := node_modules/bootstrap/dist/css/bootstrap.css \
+ node_modules/selectize/dist/css/selectize.css \
+ node_modules/jquery-ui-pyritephp/jquery-ui.css \
+ $(wildcard vendor/gflauder/pyritephp/assets/*.css) \
+ $(wildcard modules/*.css)
 
 # Bootstrap hard-codes "../fonts/" which we need to clean up
 # Similarly, Summertime hard-codes "font/" whereas we need "fonts/"

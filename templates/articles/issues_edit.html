@@ -64,10 +64,10 @@
 			</form>
 		{% endif %}
 	</h3>
-	{% include 'articles_list.html' %}
+	{% include 'articles/articles_list.html' %}
 {% endif %}
 
 {% if issue and issue.id > 0 and pass('can', 'edit', 'issue', issue.id) %}
 	<h3>{{ __('title_history') }}</h3>
-	{% include 'history.html' %}
+	{% include 'articles/history.html' %}
 {% endif %}

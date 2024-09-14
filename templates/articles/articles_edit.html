@@ -241,7 +241,7 @@
 			{% if session.user.id in article.authors %}
 				{% set history_blacklist = article.peers %}
 			{% endif %}
-			{% include 'history.html' %}
+			{% include 'articles/history.html' %}
 		{% endif %}
 
 	{% endif %}

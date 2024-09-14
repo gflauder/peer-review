@@ -60,7 +60,7 @@ on(
             'dashboard.html',
             array(
                 'reviews' => grab('peer_reviews'),
-                'recentHistory' => grab('history', $historyFilter),
+                'recentHistory' => grab('articles/history', $historyFilter),
                 'noreviews' => grab('articles', array('current' => true, 'noReviews' => true)),
                 'miapeers' => grab('articles', array('current' => true, 'miaPeers' => true)),
                 'latereviews' => grab('articles', array('current' => true, 'lateReviews' => true)),

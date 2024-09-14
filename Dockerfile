@@ -1,4 +1,4 @@
-FROM php:7.1-fpm
+FROM php:7.4-fpm
 
 # Install dependencies
 RUN apt-get update && apt-get install -y \
@@ -12,30 +12,41 @@ RUN apt-get update && apt-get install -y \
     libicu-dev \
     libonig-dev \
     zlib1g-dev \
-    libmcrypt-dev \
     libsqlite3-dev \
-    && docker-php-ext-configure gd --with-freetype --with-jpeg \
-    && docker-php-ext-install -j$(nproc) gd \
-    && docker-php-ext-install -j$(nproc) iconv mbstring pdo_mysql zip bcmath opcache pdo_sqlite mcrypt
+    && rm -rf /var/lib/apt/lists/*  # Clean up apt cache
 
-# Clean up any existing Xdebug installation and install Xdebug
+# Install PHP extensions
+# Install PHP extensions
+RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
+    && docker-php-ext-install gd \
+    && docker-php-ext-install iconv mbstring pdo_mysql zip bcmath opcache pdo_sqlite
+
+
+
+# Uninstall Xdebug if it was previously installed
 RUN pecl uninstall -y xdebug || true
-RUN if ! pecl list | grep -q xdebug; then pecl install xdebug-2.7.2; fi && docker-php-ext-enable xdebug
+# Remove existing Xdebug configurations if any
+RUN sed -i '/xdebug/d' /usr/local/etc/php/conf.d/*.ini
+
+# Install Xdebug if not already installed
+RUN if ! pecl list | grep -q xdebug; then \
+      pecl install xdebug-3.0.4; \
+    fi \
+    && docker-php-ext-enable xdebug
 
 # Set the environment variable
 ARG APP_MODE=development
 
-# Copy custom PHP configuration files into the image
-COPY php.ini-development /usr/local/etc/php/php.ini-development
-COPY php.ini-production /usr/local/etc/php/php.ini-production
-COPY custom-php.ini /usr/local/etc/php/conf.d/custom-php.ini
-
-# Copy the correct PHP configuration based on APP_MODE
+# Set the PHP configuration file based on APP_MODE
 RUN if [ "$APP_MODE" = "development" ]; then \
       cp /usr/local/etc/php/php.ini-development /usr/local/etc/php/php.ini; \
- else \
-     cp /usr/local/etc/php/php.ini-production /usr/local/etc/php/php.ini; \
- fi
+    else \
+      cp /usr/local/etc/php/php.ini-production /usr/local/etc/php/php.ini; \
+    fi
+
+# Copy additional custom PHP configurations
+COPY custom-php.ini /usr/local/etc/php/conf.d/
+
 
 # Set the command to run php-fpm
 CMD ["php-fpm"]

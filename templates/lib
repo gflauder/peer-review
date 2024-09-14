@@ -385,7 +385,7 @@
 						<h4 class="modal-title" id="user-modal-label"><span class="glyphicon glyphicon-user"></span> <span class="text"></span></h4>
 					</div>
 					<div class="modal-body">
-						{% include 'user_edit.html' with {'modal': true} %}
+						{% include 'users/user_edit.html' with {'modal': true} %}
 					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-default"><span class="fg-ok"><span class="glyphicon glyphicon-plus"></span></span> {{ __('label_add') }}</button>
