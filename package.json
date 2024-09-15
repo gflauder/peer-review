@@ -18,11 +18,11 @@
   },
   "homepage": "https://github.com/vphantom/pyriteview#readme",
   "dependencies": {
+    "@selectize/selectize": "^0.15.2",
     "bootstrap": "^5.0.0",
     "jquery": "^3.6.0",
     "jquery-ui-pyritephp": "^1.12.1",
     "parsleyjs": "^2.8.0",
-    "selectize": "^0.12.4",
     "timeago.js": "^2.0.5"
   },
   "devDependencies": {

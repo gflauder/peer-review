@@ -2,6 +2,10 @@
     {{ lib.alert(true, __('redirecting')) }}
 {% endif %}
 
+{% if pass('no_fatal_warnings') %}
+    {{ body |raw }}
+{% endif %}
+
 {% if req.status >= 400 %}
     <div>
         {% if req.status == 404 %}
@@ -43,7 +47,5 @@
     {% endfor %}
 {% endif %}
 
-{% if pass('no_fatal_warnings') %}
-    {{ body |raw }}
-{% endif %}
+
 {{ stdout |raw }}

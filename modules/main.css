@@ -202,7 +202,7 @@ textarea {
 }
 
 /* Left menu */
-.nav-sidebar {
+/*.nav-sidebar {
 	margin: 0 -21px 20px -20px;
 }
 .nav-sidebar .active, .nav-sidebar .active:hover {
@@ -238,7 +238,7 @@ textarea {
 	.nav-sidebar .nav-second-level li {
 		display: block;
 	}
-}
+}*/
 
 /* Read-only data lists */
 dl.dl-horizontal dd {

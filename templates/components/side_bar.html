@@ -1,7 +1,7 @@
 <!--Sidebar-->
 {% if session.identified %}
     <!--Menu Sidebar-->
-    <div class="col-sm-3 col-md-2 sidebar hidden-print">
+
         <ul class="nav nav-sidebar d-block">
             <li>
                 <a href="{{ req.base }}/" {% if req.path == '' %} class="active"{% endif %}>
@@ -65,6 +65,6 @@
                 </li>
             {% endif %}
         </ul>
-    </div>
+
     <!--End Menu Sidebar-->
 {% endif %}
