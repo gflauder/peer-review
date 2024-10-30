@@ -21,7 +21,7 @@
   "repositories": [
     {
       "type": "path",
-      "url": "C:\\Development\\pyritephp"
+      "url": "/var/www/html/vendor/gflauder/pyritephp"
     }
   ]
 }
