@@ -10,10 +10,7 @@ GZIP       := gzip -f -n -k -9
 LANGUAGES  := `sed '/^languages\s*=/!d; s/^languages\s*=\s*"\([^"]*\)"\s*$$/\1/' var/config.ini |head -n1`
 BUILDNUM   := $(shell date +%s%N)
 
-FONT_SRC := $(wildcard node_modules/bootstrap/dist/fonts/*.*)
-
-
-JS_SRC := pyritephp.js locales/loader.js $(wildcard modules/*.js)
+JS_SRC     := pyritephp.js locales/loader.js $(wildcard modules/*.js)
 
 GETTEXT_TEMPLATES := $(wildcard templates/lib templates/*.html templates/*/lib templates/*/*.html)
 
@@ -89,7 +86,7 @@ fonts: $(FONT_SRC)
 	cp $(FONT_SRC) fonts/
 
 CSS_SRC := node_modules/bootstrap/dist/css/bootstrap.css \
- node_modules/selectize/dist/css/selectize.css \
+ node_modules/@selectize/selectize/dist/css/selectize.css \
  node_modules/jquery-ui-pyritephp/jquery-ui.css \
  $(wildcard vendor/gflauder/pyritephp/assets/*.css) \
  $(wildcard modules/*.css)

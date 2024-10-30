@@ -17,10 +17,10 @@
 				<div class="input-block">
 					{% if user.active %}
 					<label for="ban">{{ __('hint_ban') }}</label>
-						<button id="ban" class="form-control btn btn-default" name="ban" value="1"><span class="fg-err"><span class="glyphicon glyphicon-ban-circle"></span></span> {{ __('label_deactivate') }}</button>
+						<button id="ban" class="form-control btn btn-outline-secondary" name="ban" value="1"><span class="fg-err"><span class="glyphicon glyphicon-ban-circle"></span></span> {{ __('label_deactivate') }}</button>
 					{% else %}
 					<label for="unban">{{ __('hint_unban') }}</label>
-						<button id="unban" class="form-control btn btn-default" name="unban" value="1"><span class="fg-ok"><span class="glyphicon glyphicon-ok-circle"></span></span> {{ __('label_activate') }}</button>
+						<button id="unban" class="form-control btn btn-outline-secondary" name="unban" value="1"><span class="fg-ok"><span class="glyphicon glyphicon-ok-circle"></span></span> {{ __('label_activate') }}</button>
 					{% endif %}
 				</div>
 			</form>
@@ -121,7 +121,7 @@
 	{{ block('hint_login_link') }}
 	<form id="admin_user_loginlink" method="post" class="form-horizontal">
 		{{ filter('form_begin', 'admin_user_loginlink') |raw }}
-		<button type="submit" name="user_loginlink" value="user_loginlink" class="btn btn-default">{{ __('title_login_link') }}</button>
+		<button type="submit" name="user_loginlink" value="user_loginlink" class="btn btn-outline-secondary">{{ __('title_login_link') }}</button>
 	</form>
 
 {% endif %}

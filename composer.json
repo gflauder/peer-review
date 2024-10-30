@@ -21,7 +21,7 @@
   "repositories": [
     {
       "type": "path",
-      "url": "/home/gary/pyritephp"
+      "url": "C:\\Development\\pyritephp"
     }
   ]
 }

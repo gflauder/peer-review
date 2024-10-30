@@ -333,23 +333,23 @@
 
 {% macro input_file(id, size, required) %}
 	<div class="fileupload-single btn-group{% if size %} btn-group-{{ size }}{% endif %}" role="group">
-		<label for="{{ id }}" class="btn btn-default btn-file{% if size %} btn-{{ size }}{% endif %}">
+		<label for="{{ id }}" class="btn btn-outline-secondary btn-file{% if size %} btn-{{ size }}{% endif %}">
 			<span class="glyphicon glyphicon-plus"></span> {{ __('label_new_file') }}...
 			<input type="file" name="{{ id }}" id="{{ id }}" class="hidden"{{ required ? ' required' : '' }}>
 		</label>
-		<span class="file-name btn btn-default{% if size %} btn-{{ size }}{% endif %} disabled"></span>
-		<button type="submit" class="btn btn-default{% if size %} btn-{{ size }}{% endif %} disabled" disabled><span class="fg-ok"><span class="glyphicon glyphicon-upload"></span></span> {{ __('label_upload') }}</button>
+		<span class="file-name btn btn-outline-secondary{% if size %} btn-{{ size }}{% endif %} disabled"></span>
+		<button type="submit" class="btn btn-outline-secondary{% if size %} btn-{{ size }}{% endif %} disabled" disabled><span class="fg-ok"><span class="glyphicon glyphicon-upload"></span></span> {{ __('label_upload') }}</button>
 	</div>
 {% endmacro %}
 
 {% macro input_files(id, size, required) %}
 	<div class="fileupload-multiple btn-group{% if size %} btn-group-{{ size }}{% endif %}" data-basename="{{ id }}" data-i="0" role="group">
-		<label class="btn btn-default btn-file{% if size %} btn-{{ size }}{% endif %}">
+		<label class="btn btn-outline-secondary btn-file{% if size %} btn-{{ size }}{% endif %}">
 			<span class="filelabel-add"><span class="glyphicon glyphicon-plus fg-ok"></span> {{ __('label_new_file') }}...</span>
 			<span class="filelabel-change"><span class="glyphicon glyphicon-file"></span> {{ __('label_file') }}:</span>
 			<input type="file" class="hidden"{{ required ? ' required' : '' }}>
 		</label>
-		<span class="file-name btn btn-default{% if size %} btn-{{ size }}{% endif %} disabled"></span>
+		<span class="file-name btn btn-outline-secondary{% if size %} btn-{{ size }}{% endif %} disabled"></span>
 	</div>
 {% endmacro %}
 
@@ -364,7 +364,7 @@
 	{% if log %}
 		<div data-label="" class="input-group input-like">
 			<span class="input-group-btn">
-				<button type="submit" class="btn btn-default">
+				<button type="submit" class="btn btn-outline-secondary">
 	{%- else -%}
 		<button type="submit">
 	{%- endif -%}
@@ -388,7 +388,7 @@
 						{% include 'users/user_edit.html' with {'modal': true} %}
 					</div>
 					<div class="modal-footer">
-						<button type="button" class="btn btn-default"><span class="fg-ok"><span class="glyphicon glyphicon-plus"></span></span> {{ __('label_add') }}</button>
+						<button type="button" class="btn btn-outline-secondary"><span class="fg-ok"><span class="glyphicon glyphicon-plus"></span></span> {{ __('label_add') }}</button>
 					</div>
 				</div>
 			</div>

@@ -19,30 +19,30 @@
                 <li class="nav-item{% if req.path_args[0] == 'instructions' %} active{% endif %}">
                     <a class="nav-link" href="{{ req.base }}/page/instructions">{{ __('title_instructions') }}</a>
                 </li>
+
+
+                {% include 'components/messages_inbox.html' %}
+
+                <li class="nav-item dropdown ms-4">
+                    <a class="nav-link dropdown-toggle text-white" href="#" id="langDropdown" role="button"
+                       data-bs-toggle="dropdown" aria-expanded="false">
+                        {{ req.lang }}
+                        {% if req.lang == 'fr' %}
+                            <span class="flag-icon flag-icon-fr ms-1"></span>
+                        {% else %}
+                            <span class="flag-icon flag-icon-gb ms-1"></span>
+                        {% endif %}
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end dropstart" aria-labelledby="langDropdown">
+                        <li><a class="dropdown-item"
+                               href="/{% if 'fr' != req.default_lang %}fr/{% endif %}{{ req.path }}{{ req.query }}">Français
+                                <span class="flag-icon flag-icon-fr ms-1"></span></a></li>
+                        <li><a class="dropdown-item"
+                               href="/{% if 'en' != req.default_lang %}en/{% endif %}{{ req.path }}{{ req.query }}">English<span
+                                        class="flag-icon flag-icon-gb ms-1"></span></a></li>
+                    </ul>
+                </li>
             </ul>
-
-            {% include 'components/messages_inbox.html' %}
-
-            <li class="nav-item dropdown ms-4">
-                <a class="nav-link dropdown-toggle text-white" href="#" id="langDropdown" role="button"
-                   data-bs-toggle="dropdown" aria-expanded="false">
-                    {{ req.lang }}
-                    {% if req.lang == 'fr' %}
-                        <span class="flag-icon flag-icon-fr ms-1"></span>
-                    {% else %}
-                        <span class="flag-icon flag-icon-gb ms-1"></span>
-                    {% endif %}
-                </a>
-                <ul class="dropdown-menu dropdown-menu-end dropstart" aria-labelledby="langDropdown">
-                    <li><a class="dropdown-item"
-                           href="/{% if 'fr' != req.default_lang %}fr/{% endif %}{{ req.path }}{{ req.query }}">Français
-                            <span class="flag-icon flag-icon-fr ms-1"></span></a></li>
-                    <li><a class="dropdown-item"
-                           href="/{% if 'en' != req.default_lang %}en/{% endif %}{{ req.path }}{{ req.query }}">English<span
-                                    class="flag-icon flag-icon-gb ms-1"></span></a></li>
-                </ul>
-            </li>
-
         </div>
     </div>
 </nav>
