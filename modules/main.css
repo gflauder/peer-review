@@ -1,8 +1,6 @@
 /* Main styles */
 
-body {
-	/*padding-top: 70px;*/
-}
+
 
 /*Nav Bar*/
 .navbar-brand {
@@ -199,6 +197,80 @@ textarea {
 .user-identity {
 	margin-right: 1em;
 	white-space: nowrap;
+}
+/* Sidebar */
+.sidebar {
+	position: fixed;
+	top: 56px; /* Adjust this value to match the height of your top navigation */
+	bottom: 0;
+	left: 0;
+	z-index: 1000;
+	width: 250px; /* Fixed width for sidebar */
+	padding: 20px;
+	overflow-x: hidden;
+	overflow-y: auto;
+	background-color: #f5f5f5;
+	border-right: 1px solid #eee;
+	transition: width 0.3s;
+}
+
+.sidebar.collapsed {
+	width: 80px; /* Width for collapsed sidebar */
+}
+
+.sidebar .nav-item .nav-link {
+	display: flex;
+	align-items: center;
+}
+
+.sidebar .nav-item .nav-link .icon {
+	margin-right: 10px;
+}
+
+.sidebar.collapsed .nav-item .nav-link .text {
+	display: none;
+}
+
+/* Top Navigation */
+.top-navigation {
+	position: fixed;
+	top: 0;
+	width: 100%;
+	z-index: 1001;
+}
+
+/* Adjust body padding to account for fixed top navigation */
+body {
+	padding-top: 56px; /* Adjust this value to match the height of your top navigation */
+}
+
+/* Main content */
+.main-content {
+	padding: 20px;
+	transition: margin-left 0.3s;
+	display: flex;
+	flex-direction: column;
+	min-height: calc(100vh - 56px); /* Full height minus top navigation */
+}
+
+.main-content.collapsed {
+	margin-left: 80px; /* Adjust margin for collapsed sidebar */
+}
+
+.main-content > footer {
+	margin-top: auto; /* Push footer to the bottom */
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+	.sidebar {
+		width: 100%;
+		height: auto;
+		position: sticky;
+	}
+	.main-content {
+		margin-left: 0;
+	}
 }
 
 /* Left menu */

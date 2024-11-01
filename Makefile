@@ -89,7 +89,7 @@ fonts: $(FONT_SRC)
 	cp $(FONT_SRC) fonts/
 
 CSS_SRC := node_modules/bootstrap/dist/css/bootstrap.css \
- node_modules/selectize/dist/css/selectize.css \
+ node_modules/@selectize/selectize/dist/css/selectize.css \
  node_modules/jquery-ui-pyritephp/jquery-ui.css \
  $(wildcard vendor/gflauder/pyritephp/assets/*.css) \
  $(wildcard modules/*.css)
