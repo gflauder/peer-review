@@ -13,13 +13,13 @@
 		<div class="input-group">
 			<input class="form-control" placeholder="{{ __('label_keyword') }}..." name="keyword" value="{{ req.post.keyword }}" minlength="3">
 			<span class="input-group-btn">
-				<button class="btn btn-default" type="submit"><span class="glyphicon glyphicon-search"></span></button>
+				<button class="btn btn-outline-secondary" type="submit"><span class="glyphicon glyphicon-search"></span></button>
 			</span>
 		</div>
 	</form>
 	{% if pass('can', 'create', 'user') %}
 		<form action="{{ req.base }}/register" id="article_create" method="post" class="form-inline col-sm-6">
-			<button class="btn btn-default" type="submit"><span class="fg-ok"><span class="glyphicon glyphicon-plus"></span></span> {{ __('label_create') }}</button>
+			<button class="btn btn-outline-secondary" type="submit"><span class="fg-ok"><span class="glyphicon glyphicon-plus"></span></span> {{ __('label_create') }}</button>
 		</form>
 	{% endif %}
 </div>

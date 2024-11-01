@@ -53,7 +53,7 @@
 					{% if pass('can_create_article') %}
 						<div class="pull-right">
 							<form action="{{ req.base }}/articles/new" id="article_create" method="get" class="form-inline">
-								<button class="btn btn-default btn-xs" type="submit"><span class="fg-ok"><span class="glyphicon glyphicon-plus"></span></span> {{ __('label_create') }}</button>
+								<button class="btn btn-outline-secondary btn-xs" type="submit"><span class="fg-ok"><span class="glyphicon glyphicon-plus"></span></span> {{ __('label_create') }}</button>
 							</form>
 						</div>
 					{% endif %}

@@ -123,13 +123,13 @@
 				<input type="hidden" name="files_email_only" value="1">
 
 				<div data-label="{{ __('label_status') }}" class="btn-group input-like" data-toggle="buttons">
-					<label class="btn btn-default btn-sm active">
+					<label class="btn btn-outline-secondary btn-sm active">
 						<input type="radio" name="status" autocomplete="off" value="{{ article.status }}" checked>
 						{{ lib.format_status(article.status) }}
 					</label>
-					<span class="btn btn-default btn-sm active disabled"><span class="glyphicon glyphicon-arrow-right"></span></span>
+					<span class="btn btn-outline-secondary btn-sm active disabled"><span class="glyphicon glyphicon-arrow-right"></span></span>
 					{% for status in config.articles.states_next[article.status]|split(' ') %}
-						<label class="btn btn-default btn-sm">
+						<label class="btn btn-outline-secondary btn-sm">
 							<input type="radio" name="status" autocomplete="off" value="{{ status }}">
 							{{ lib.format_status(status, true) }}
 						</label>
@@ -153,7 +153,7 @@
 						{{ lib.select_users(__('label_peers'), 'peer') }}
 						<input data-colsize="2" data-label="{{ __('label_deadline') }} ({{ __('hint_ymd') }})" type="text" id="deadline" value="{{ deadline }}" maxlength="10" minlength="10">
 						<div class="input-block col-sm-2">
-							<button type="submit" name="submit" class="btn btn-default no-label"><span class="fg-ok"><span class="glyphicon glyphicon-plus"></span></span> {{ __('label_add') }}</button>
+							<button type="submit" name="submit" class="btn btn-outline-secondary "><span class="fg-ok"><span class="glyphicon glyphicon-plus"></span></span> {{ __('label_add') }}</button>
 						</div>
 					</div>
 				</form>
@@ -195,7 +195,7 @@
 													<div class="dropdown-menu" aria-labelledby="deadline-{{ review.id }}">
 														<div class="dropdown-header">{{ __('label_change_deadline') }}:</div>
 														<div><input type="text" name="deadline" class="form-control" value="{{ review.deadline }}"></div>
-														<button class="btn btn-default btn-xs" type="submit"><span class="glyphicon glyphicon-ok fg-ok"></span> {{ __('label_save') }}</button>
+														<button class="btn btn-outline-secondary btn-xs" type="submit"><span class="glyphicon glyphicon-ok fg-ok"></span> {{ __('label_save') }}</button>
 													</div>
 												</div>
 											</form>
@@ -215,7 +215,7 @@
 															<div>{{ lib.input_files('addfiletoreview' ~ review.id, 'xs', false) }}</div>
 														{% endif %}
 														{% for status in nexts %}
-															<button class="btn btn-default btn-xs" type="submit" name="status" value="{{ status }}">{{ lib.format_status(status, true) }}</button>
+															<button class="btn btn-outline-secondary btn-xs" type="submit" name="status" value="{{ status }}">{{ lib.format_status(status, true) }}</button>
 														{% endfor %}
 													</div>
 												</div>
@@ -297,15 +297,15 @@
 
 				{% if review.status == 'created' %}
 					<h4>{{ __('hint_review_accept') }}:</h4>
-					<button class="btn btn-default" type="submit" name="status" value="reviewing"><span class="glyphicon glyphicon-ok fg-ok"></span> {{ __('label_accept') }}</button>
+					<button class="btn btn-outline-secondary" type="submit" name="status" value="reviewing"><span class="glyphicon glyphicon-ok fg-ok"></span> {{ __('label_accept') }}</button>
 					<h4>{{ __('hint_review_decline') }}:</h4>
 					<div><input type="text" name="log" value="" placeholder="{{ __('hint_suggestions') }}" class="form-control no-submit"></div>
-					<button class="btn btn-default" type="submit" name="status" value="deleted"><span class="glyphicon glyphicon-remove fg-err"></span> {{ __('label_decline') }}</button>
+					<button class="btn btn-outline-secondary" type="submit" name="status" value="deleted"><span class="glyphicon glyphicon-remove fg-err"></span> {{ __('label_decline') }}</button>
 				{% else %}
 					{{ block('hint_review') }}
 					<div>{{ lib.input_files('addfilefrompeer', 'xs', true) }}</div>
 					{% for status in config.reviews.states_next[review.status]|split(' ') %}
-						<button class="btn btn-default" type="submit" name="status" value="{{ status }}">{{ lib.format_status(status, true) }}</button>
+						<button class="btn btn-outline-secondary" type="submit" name="status" value="{{ status }}">{{ lib.format_status(status, true) }}</button>
 					{% endfor %}
 				{% endif %}
 			</form>

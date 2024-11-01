@@ -667,8 +667,8 @@ msgstr "Unknown User"
 #~ msgid "label_upload"
 #~ msgstr "Send"
 
-#~ msgid "label_view_details"
-#~ msgstr "See details"
+msgid "label_view_details"
+msgstr "See details"
 
 #~ msgid "role_admin"
 #~ msgstr "administrator"

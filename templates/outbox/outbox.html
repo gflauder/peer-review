@@ -20,9 +20,9 @@
 	{% if pass('has_role', 'admin') and not email %}
 		<div class="pull-right">
 			{% if all %}
-				<a href="{{ req.base }}/outbox" class="btn btn-default btn-xs"><span class="glyphicon glyphicon-sunglasses fg-ok"></span> {{ __('label_not_all_users') }}</a>
+				<a href="{{ req.base }}/outbox" class="btn btn-outline-secondary btn-xs"><span class="glyphicon glyphicon-sunglasses fg-ok"></span> {{ __('label_not_all_users') }}</a>
 			{% else %}
-				<a href="{{ req.base }}/outbox/all" class="btn btn-default btn-xs"><span class="glyphicon glyphicon-sunglasses fg-err"></span> {{ __('label_all_users') }}</a>
+				<a href="{{ req.base }}/outbox/all" class="btn btn-outline-secondary btn-xs"><span class="glyphicon glyphicon-sunglasses fg-err"></span> {{ __('label_all_users') }}</a>
 			{% endif %}
 		</div>
 	{% endif %}
@@ -160,8 +160,8 @@ window.onload = function() {
 		{% if not email.isSent %}
 			<div class="form-group">
 				<div class="col-sm-offset-2 col-sm-10">
-					<button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-send fg-ok"></span> {{ __('label_send') }}</button>
-					<button type="submit" class="btn btn-default" name="delete" value="1"><span class="glyphicon glyphicon-trash fg-err"></span> {{ __('label_delete') }}</button>
+					<button type="submit" class="btn btn-outline-secondary"><span class="glyphicon glyphicon-send fg-ok"></span> {{ __('label_send') }}</button>
+					<button type="submit" class="btn btn-outline-secondary" name="delete" value="1"><span class="glyphicon glyphicon-trash fg-err"></span> {{ __('label_delete') }}</button>
 				</div>
 			</div>
 		{% endif %}
