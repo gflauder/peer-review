@@ -9,19 +9,31 @@
     }
   ],
   "require": {
-    "php": ">=5.6",
+    "php": ">=7.4",
     "ext-fileinfo": "*",
     "ext-json": "*",
     "ext-mbstring": "*",
+    "ext-mcrypt": "*",
     "ext-pcre": "*",
     "ext-pdo_sqlite": "*",
     "ext-readline": "*",
-    "gflauder/pyritephp": "dev-master"
+    "gflauder/pyritephp": "dev-master",
+    "phpmailer/phpmailer": "^6.9.1"
   },
+  "scripts": {
+    "install-all": [
+      "composer install --ignore-platform-reqs",
+      "cd ../pyritephp && composer install --ignore-platform-reqs"
+    ]
+  },
+
   "repositories": [
     {
       "type": "path",
-      "url": "/var/www/html/vendor/gflauder/pyritephp"
+      "url": "/home/gary/pyritephp",
+      "options": {
+        "symlink": true
+      }
     }
   ]
 }

@@ -1,9 +1,9 @@
-<nav class="navbar navbar-expand-lg navbar-dark top-navigation custom-bg  top-navigation">
+<nav class="navbar navbar-expand-lg navbar-dark top-navigation custom-bg">
     <div class="container-fluid">
         <a class="navbar-brand float-start" href="{{ req.base }}/">{{ __('title_program') }}</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar"
                 aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
+            <span class="navbar-toggler-icon"></span>`
         </button>
         <div class="collapse navbar-collapse" id="navbar">
             <ul class="navbar-nav ms-auto mb-2 mb-lg-0 navbar-nav-right">
@@ -33,13 +33,13 @@
                             <span class="flag-icon flag-icon-gb ms-1"></span>
                         {% endif %}
                     </a>
-                    <ul class="dropdown-menu dropdown-menu-end dropstart" aria-labelledby="langDropdown">
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="langDropdown">
                         <li><a class="dropdown-item"
                                href="/{% if 'fr' != req.default_lang %}fr/{% endif %}{{ req.path }}{{ req.query }}">Français
                                 <span class="flag-icon flag-icon-fr ms-1"></span></a></li>
                         <li><a class="dropdown-item"
-                               href="/{% if 'en' != req.default_lang %}en/{% endif %}{{ req.path }}{{ req.query }}">English<span
-                                        class="flag-icon flag-icon-gb ms-1"></span></a></li>
+                               href="/{% if 'en' != req.default_lang %}en/{% endif %}{{ req.path }}{{ req.query }}">English
+                                <span class="flag-icon flag-icon-gb ms-1"></span></a></li>
                     </ul>
                 </li>
             </ul>

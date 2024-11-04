@@ -1,0 +1,188 @@
+/* Main styles */
+
+/* Override from Bootstrap's huge font choice */
+blockquote {
+	font-size: inherit !important;
+}
+
+.inline {
+	display: inline-block;
+}
+
+.panel-heading {
+	font-weight: bold;
+}
+
+.fit {
+	white-space: nowrap;
+	width: 1%;
+}
+
+div.spaced {
+	margin-bottom: 2em;
+}
+
+tbody.spaced:after {
+	content: '';
+	display: table-row;
+	height: 20px;
+}
+
+.inbox table td.widest {
+	width: 100%;
+}
+.inbox table div.window {
+	width: 0;
+	min-width: 100%;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	padding-bottom: 0.1em;
+}
+.inbox table .time {
+	white-space: nowrap;
+	text-align: right;
+}
+.inbox table a {
+	color: #333;
+}
+.inbox table a:hover {
+	text-decoration: none;
+	cursor: pointer;
+}
+
+/* Assorted text colors, useful for glyphicons */
+.fg-new, .fg-info, .fg-pending, .fg-ok, .fg-stalled, .fg-warn, .fg-err {
+	text-shadow: 0 0 1px #888;
+}
+.fg-new {
+	color: #ffee00;
+}
+.fg-info, .fg-pending {
+	color: #80f;
+}
+.fg-ok {
+	color: #00aa00;
+}
+.fg-warn, .fg-stalled {
+	color: #ff8800;
+}
+.fg-err {
+	color: #cc0000;
+}
+
+html:not([lang="en"]) form label:first-letter,
+html:not([lang="en"]) .text-title:first-letter
+{
+	text-transform: uppercase;
+}
+html[lang="en"] form label,
+html[lang="en"] .text-title
+{
+	text-transform: capitalize;
+}
+
+.input-like {
+	height: auto !important;
+}
+
+.fileupload-multiple {
+	margin-bottom: 3px;
+}
+
+.log-part + .log-part {
+	margin-top: 0.5em;
+}
+
+.log-content {
+	padding-left: 6px;
+	padding-right: 20px;
+	margin-top: 0.5em;
+	margin-left: 30px;
+	color: #666;
+	font-size: 90%;
+	border-left: 2px solid #bbb;
+}
+.log-content:before {
+	content: '\e111';
+	font-family: 'Glyphicons Halflings', serif;
+	float: left;
+	margin-left: -30px;
+	color: #666;
+}
+
+.badge-subscript {
+	font-size: 80%;
+	position: relative;
+	top: 0.5em;
+	left: -0.5em;
+	padding: 0.1em 0.2em;
+	background-color: red !important;
+	animation: pulse 2s linear 0s normal infinite running;
+}
+.badge-hamburger {
+	position: absolute;
+	right: 0.1em;
+	bottom: 0.1em;
+	padding: 0.2em 0.4em;
+	background-color: red !important;
+	animation: pulse 2s linear 0s normal infinite running;
+}
+
+@keyframes pulse {
+	0%, 50% {
+		opacity: 1;
+	}
+	25% {
+		opacity: 0;
+	}
+}
+
+.dropdown-messages {
+	width: 310px;
+}
+.dropdown-messages div {
+	white-space: normal;
+}
+
+/* Large sizes */
+.grow-2x { font-size: 2em; }
+.grow-3x { font-size: 3em; }
+.grow-4x { font-size: 4em; }
+.grow-5x { font-size: 5em; }
+
+/* Hide-away boxes (brought back by JS) */
+.hideaway {
+	position: fixed;
+	left: -100%;
+}
+
+/* Selectize for users */
+.name_email_label {
+}
+.name_email_label .name {
+	color: #000;
+}
+.name_email_label .email {
+	color: #888;
+	display: block;
+}
+.name_email_label .extra {
+	color: #666;
+	display: block;
+	font-style: italic;
+}
+.name_email_tag {
+}
+.name_email_tag .name {
+	color: #000;
+}
+.name_email_tag .email {
+	color: #888;
+}
+.name_email_tag .email:before {
+	content: ' <';
+}
+.name_email_tag .email:after {
+	content: '>';
+}

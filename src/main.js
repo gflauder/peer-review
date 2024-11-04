@@ -51,10 +51,10 @@ $().ready(function() {
   }
 
   // Persistent dropdown: stay open if click was for an action.
-  $('.dropdown.persistent a, .dropdown.persistent input, .dropdown.persistent button, .dropdown.persistent label').on(  // eslint-disable-line max-len
+/*  $('.dropdown.persistent a, .dropdown.persistent input, .dropdown.persistent button, .dropdown.persistent label').on(  // eslint-disable-line max-len
     'click',
     function(e) {
       e.stopPropagation();
     }
-  );
+  );*/
 });

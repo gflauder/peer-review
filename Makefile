@@ -39,9 +39,6 @@ deps:
 	 @if ! which xgettext >/dev/null; then echo "  **  Please install gettext."; exit 1; fi
 
 
-
-
-
 bin/composer:
 	@mkdir -p bin
 	wget https://raw.githubusercontent.com/composer/getcomposer.org/6cf720ddb5567ef7f97b6855fda18dba92209f27/web/installer -O composer-setup.php

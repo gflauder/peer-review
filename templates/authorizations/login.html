@@ -7,7 +7,7 @@
     <form class="login-form" method="post" action="{{ req.base }}/login" id="login-form" onsubmit="return checkPassword()">
     {{ filter('form_begin', 'login-form') |raw }}
     <div class="form-group">
-        <input type="email" name="email" placeholder="{{ __('label_email') }}" value="{{ post.email }}" class="form-control" required>
+        <input type="email" name="email" placeholder="{{ __('label_email') }}" value="{{ post.email }}" class="form-control" required autocomplete="true">
     </div>
     <div class="form-group">
         <input type="password" name="password" id="password" placeholder="{{ __('label_password_opt') }}" class="form-control hideaway hideaway-focus" autocomplete="off">

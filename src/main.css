@@ -214,6 +214,7 @@ textarea {
 	transition: width 0.3s;
 }
 
+
 .sidebar.collapsed {
 	width: 80px; /* Width for collapsed sidebar */
 }
@@ -239,18 +240,13 @@ textarea {
 	z-index: 1001;
 }
 
-/* Adjust body padding to account for fixed top navigation */
-body {
-	padding-top: 56px; /* Adjust this value to match the height of your top navigation */
-}
-
 /* Main content */
 .main-content {
 	padding: 20px;
 	transition: margin-left 0.3s;
 	display: flex;
 	flex-direction: column;
-	min-height: calc(100vh - 56px); /* Full height minus top navigation */
+/*min-height: calc(100vh - 56px);*/ /* Full height minus top navigation */
 }
 
 .main-content.collapsed {

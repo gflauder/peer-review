@@ -17,7 +17,7 @@ RUN apt-get update && apt-get install -y \
     git \
     make \
     wget \
-    && rm -rf /var/lib/apt/lists/*  # Clean up apt cache
+    && rm -rf /var/lib.twig/apt/lists/*  # Clean up apt cache
 
 # Install PHP extensions
 RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
@@ -39,7 +39,7 @@ RUN if ! pecl list | grep -q xdebug; then \
 RUN curl -sL https://deb.nodesource.com/setup_14.x | bash - \
     && apt-get install -y nodejs \
     && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
+    && rm -rf /var/lib.twig/apt/lists/*
 
 # Set the environment variable
 ARG APP_MODE=development

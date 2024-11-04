@@ -1,36 +1,43 @@
 {% use 'blocks.html' %}
-{% import 'lib' as lib %}
-
-
+{% import 'lib.twig' as lib %}
+{% block head %}
 <!DOCTYPE html>
 <html lang="{{ req.lang }}">
 <head>
-    {% block head %}
+            <!-- test4 -->
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="format-detection" content="telephone=no">
+        <meta id="appname" name="apple-mobile-web-app-title" content="{{ config.global.name }}">
 
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="format-detection" content="telephone=no">
-    <meta id="appname" name="apple-mobile-web-app-title" content="{{ config.global.name }}">
-    <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.5.0/css/flag-icon.min.css">
-    <link rel="stylesheet" href="/client.css?CSSBUILDNUM=1728495089989702846" type="text/css">
-    <script src="/client.js?JSBUILDNUM=1726201894215427331" type="text/javascript"></script>
-    <title>{{ title }}</title>
-<style>
+        <!-- Stylesheets -->
+        <link rel="stylesheet" href="{{ mix('/dist/css/main.css') }}">
+        <link rel="stylesheet" href="{{ mix('/dist/css/bootstrap.css') }}">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.5.0/css/flag-icon.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css">
 
-    @keyframes fadeIn {
-        from {
-            opacity: 0;
-        }
-        to {
-            opacity: 1;
-        }
-    }
-</style>
-    {% endblock %}
+        <!-- Scripts -->
+       <script src="{{ mix('/dist/js/bootstrap.js') }}"></script>
+        <script src="{{ mix('/dist/js/main.js') }}"></script>
+
+
+        <title>{{ title }}</title>
+        <style>
+
+            @keyframes fadeIn {
+                from {
+                    opacity: 0;
+                }
+                to {
+                    opacity: 1;
+                }
+            }
+        </style>
+
+
 </head>
+{% endblock %}
 
 
 <body>
@@ -41,9 +48,8 @@
               content="{% if config.global.debug %}5{% else %}0{% endif %}; url={{ req.redirect }}">
     {% endif %}
 
-    <nav>
-        {% include 'components/top_navigation.html' %}
-    </nav>
+    {% include 'components/top_navigation.html' %}
+
 
     {% if session.identified %}
         <div class="sidebar">
@@ -51,7 +57,8 @@
         </div>
     {% endif %}
 
-    <div class="main-content" style="{% if session.identified %}margin-left: 250px;{% endif %}; animation: fadeIn 0.3s ease-in-out;">
+    <div class="main-content"
+         style="{% if session.identified %}margin-left: 250px;{% endif %}; animation: fadeIn 0.3s ease-in-out;">
         {% if session.identified %}
             {% include 'components/breadcrumb.html' %}
         {% endif %}
@@ -70,6 +77,7 @@
     </div>
 
 {% endblock %}
+
 </body>
 
 </html>
