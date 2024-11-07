@@ -1,19 +1,34 @@
 {% import 'lib.twig' as lib %}
 {% set currentEmail = email.id |default(0) %}
 <div class="table-responsive inbox">
-	<table class="table table-condensed table-hover">
-		<tbody>
-			{% for email in emails %}
-				<tr{% if email.id == currentEmail %} class="warning"{% endif %}>
-					<td class="col-sm-{{ all ? '4' : '3' }}"><div class="window">{% if all %}{{ lib.format_user(email.sender) }} <span class="glyphicon glyphicon-arrow-right"></span> {% endif %}<a href="{{ req.base }}/outbox/{{ email.id }}">{{ lib.format_users(email.recipients, true) }}</a></div></td>
-					<td class="fit">{% if email.files|length > 0 %}<span class="glyphicon glyphicon-paperclip"></span>{% endif %} </td>
-					<td class="widest"><div class="window"><a href="{{ req.base }}/outbox/{{ email.id }}">{{ lib.label_roles(email.roles, true) }} {{ email.subject }}</a></div></td>
-					<td class="time">{{ lib.format_timestamp(email.localmodified) }}</td>
-				</tr>
-			{% endfor %}
-			{% if emails|length == 0 %}
-				<tr><td colspan="3"><em>{{ __('no_emails') }}</em></td></tr>
-			{% endif %}
-		</tbody>
-	</table>
+    <table class="table table-condensed table-hover">
+        <tbody>
+            {% for email in emails %}
+                <tr{% if email.id == currentEmail %} class="table-warning"{% endif %}>
+                    <td class="col-sm-{{ all ? '4' : '3' }}">
+                        <div class="window">
+                            {% if all %}
+                                {{ lib.format_user(email.sender) }} <span class="bi bi-arrow-right"></span>
+                            {% endif %}
+                            <a href="{{ req.base }}/outbox/{{ email.id }}">{{ lib.format_users(email.recipients, true) }}</a>
+                        </div>
+                    </td>
+                    <td class="fit">
+                        {% if email.files|length > 0 %}
+                            <span class="bi bi-paperclip"></span>
+                        {% endif %}
+                    </td>
+                    <td class="widest">
+                        <div class="window">
+                            <a href="{{ req.base }}/outbox/{{ email.id }}">{{ lib.label_roles(email.roles, true) }} {{ email.subject }}</a>
+                        </div>
+                    </td>
+                    <td class="time">{{ lib.format_timestamp(email.localmodified) }}</td>
+                </tr>
+            {% endfor %}
+            {% if emails|length == 0 %}
+                <tr><td colspan="3"><em>{{ __('no_emails') }}</em></td></tr>
+            {% endif %}
+        </tbody>
+    </table>
 </div>

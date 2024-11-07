@@ -1,170 +1,162 @@
 {% import 'lib.twig' as lib %}
 <div class="table-responsive">
-	<table class="table table-hover table-condensed">
-		<tbody>
-			{% for tx in history %}
-		{% if loop.first or tx.timestamp|slice(0,18) != lastTime %}
-			<tr
-				{% if tx.objectType == 'user' and tx.action == 'modified' and (tx.fieldName=='email' or tx.fieldName=='password') %}class="warning"{% endif %}
-				{% if split_by_objectId and lastObjectId and lastObjectId != tx.objectId %}style="border-top: 1.5em solid transparent;"{% endif %}
-			>
-				<td>
-		{% endif %}
-				{% if tx.userId not in history_blacklist %}
-					<div class="log-part" data-txid="{{ tx.id }}">
-					{% if tx.action == 'login' %}
-						{% if tx.userId == session.user.id %}
-							{{ __('label_i_myself') }}
-						{% else %}
-							{{ lib.format_user(tx.userId) }}
-							{{ __('label_has_itself') }}
-						{% endif %}
-					{% else %}
-						{% if tx.userId == session.user.id %}
-							{{ __('label_i') }}
-						{% else %}
-							{{ lib.format_user(tx.userId) }}
-							{{ __('label_has') }}
-						{% endif %}
-					{% endif %}
+    <table class="table table-hover table-condensed">
+        <tbody>
+            {% for tx in history %}
+                {% if loop.first or tx.timestamp|slice(0,18) != lastTime %}
+                    <tr
+                        {% if tx.objectType == 'user' and tx.action == 'modified' and (tx.fieldName=='email' or tx.fieldName=='password') %}class="table-warning"{% endif %}
+                        {% if split_by_objectId and lastObjectId and lastObjectId != tx.objectId %}style="border-top: 1.5em solid transparent;"{% endif %}
+                    >
+                        <td>
+                {% endif %}
+                            {% if tx.userId not in history_blacklist %}
+                                <div class="log-part" data-txid="{{ tx.id }}">
+                                    {% if tx.action == 'login' %}
+                                        {% if tx.userId == session.user.id %}
+                                            {{ __('label_i_myself') }}
+                                        {% else %}
+                                            {{ lib.format_user(tx.userId) }}
+                                            {{ __('label_has_itself') }}
+                                        {% endif %}
+                                    {% else %}
+                                        {% if tx.userId == session.user.id %}
+                                            {{ __('label_i') }}
+                                        {% else %}
+                                            {{ lib.format_user(tx.userId) }}
+                                            {{ __('label_has') }}
+                                        {% endif %}
+                                    {% endif %}
 
-					{% if tx.action == 'modified' %}
-						{% if tx.fieldName == 'status' %}
-							{{ lib.format(tx.fieldName, tx.newValue) }}
-							{% if history_type != tx.objectType or history_id != tx.objectId %}
-								{{ lib.format(tx.objectType, tx.objectId) }}
-							{% endif %}
-						{% elseif tx.fieldName == 'issueId' %}
-							{{ __('label_moved') }}
-							{% if history_type != tx.objectType or history_id != tx.objectId %}
-								{{ lib.format(tx.objectType, tx.objectId) }}
-							{% endif %}
-							{{ __('label_from') }} {{ lib.format_issue(tx.oldValue) }}
-							{{ __('label_to') }} {{ lib.format_issue(tx.newValue) }}
-						{% elseif tx.fieldName %}
-							{{ __('label_changed') }}
-							<code>{{ lib.label_field(tx.fieldName) }}</code>
-							{% if tx.oldValue %}{{ __('label_from') }} <em>"{{ lib.format(tx.fieldName, tx.oldValue) |truncate(64, true) }}"</em>{% endif %}
-							{% if tx.newValue %}{{ __('label_to') }} <em>"{{ lib.format(tx.fieldName, tx.newValue) |truncate(64, true) }}"</em>{% endif %}
-							{% if history_type != tx.objectType or history_id != tx.objectId %}
-								{{ __('label_in') }}
-								{{ lib.format(tx.objectType, tx.objectId) }}
-							{% endif %}
-						{% else %}
-							{{ __('label_modified') }}
-							{{ lib.format(tx.objectType, tx.objectId) }}
-						{% endif %}
+                                    {% if tx.action == 'modified' %}
+                                        {% if tx.fieldName == 'status' %}
+                                            {{ lib.format(tx.fieldName, tx.newValue) }}
+                                            {% if history_type != tx.objectType or history_id != tx.objectId %}
+                                                {{ lib.format(tx.objectType, tx.objectId) }}
+                                            {% endif %}
+                                        {% elseif tx.fieldName == 'issueId' %}
+                                            {{ __('label_moved') }}
+                                            {% if history_type != tx.objectType or history_id != tx.objectId %}
+                                                {{ lib.format(tx.objectType, tx.objectId) }}
+                                            {% endif %}
+                                            {{ __('label_from') }} {{ lib.format_issue(tx.oldValue) }}
+                                            {{ __('label_to') }} {{ lib.format_issue(tx.newValue) }}
+                                        {% elseif tx.fieldName %}
+                                            {{ __('label_changed') }}
+                                            <code>{{ lib.label_field(tx.fieldName) }}</code>
+                                            {% if tx.oldValue %}{{ __('label_from') }} <em>"{{ lib.format(tx.fieldName, tx.oldValue) |truncate(64, true) }}"</em>{% endif %}
+                                            {% if tx.newValue %}{{ __('label_to') }} <em>"{{ lib.format(tx.fieldName, tx.newValue) |truncate(64, true) }}"</em>{% endif %}
+                                            {% if history_type != tx.objectType or history_id != tx.objectId %}
+                                                {{ __('label_in') }}
+                                                {{ lib.format(tx.objectType, tx.objectId) }}
+                                            {% endif %}
+                                        {% else %}
+                                            {{ __('label_modified') }}
+                                            {{ lib.format(tx.objectType, tx.objectId) }}
+                                        {% endif %}
 
-					{% elseif tx.action == 'login' %}
-						{{ __('label_logged_in') }}
+                                    {% elseif tx.action == 'login' %}
+                                        {{ __('label_logged_in') }}
 
-					{% elseif tx.action == 'created' %}
-						{{ __('label_created') }}
-						{% if not (tx.objectType == 'user' and tx.objectId == tx.userId) %}
-							{{ lib.format(tx.objectType, tx.objectId) }}
-						{% endif %}
+                                    {% elseif tx.action == 'created' %}
+                                        {{ __('label_created') }}
+                                        {% if not (tx.objectType == 'user' and tx.objectId == tx.userId) %}
+                                            {{ lib.format(tx.objectType, tx.objectId) }}
+                                        {% endif %}
 
-					{% elseif tx.action == 'attached' %}
-						{{ __('label_attached') }}
-						<span class="glyphicon glyphicon-file"></span>{{ tx.newValue }}
-						{% if history_type != tx.objectType or history_id != tx.objectId %}
-							{{ __('label_to') }}
-							{{ lib.format(tx.objectType, tx.objectId) }}
-						{% endif %}
+                                    {% elseif tx.action == 'attached' %}
+                                        {{ __('label_attached') }}
+                                        <span class="glyphicon glyphicon-file"></span>{{ tx.newValue }}
+                                        {% if history_type != tx.objectType or history_id != tx.objectId %}
+                                            {{ __('label_to') }}
+                                            {{ lib.format(tx.objectType, tx.objectId) }}
+                                        {% endif %}
 
-					{% elseif tx.action == 'invited' %}
-						{% if tx.fieldName == 'peers' %}
-							{{ __('label_invited_peer') }}
-						{% elseif tx.fieldName == 'authors' %}
-							{{ __('label_invited_author') }}
-						{% elseif tx.fieldName == 'editors' %}
-							{{ __('label_invited_editor') }}
-						{% else %}
-							???
-						{% endif %}
-						{{ tx.newValue in history_blacklist ? lib.format_user(-1) : lib.format_user(tx.newValue) }}
+                                    {% elseif tx.action == 'invited' %}
+                                        {% if tx.fieldName == 'peers' %}
+                                            {{ __('label_invited_peer') }}
+                                        {% elseif tx.fieldName == 'authors' %}
+                                            {{ __('label_invited_author') }}
+                                        {% elseif tx.fieldName == 'editors' %}
+                                            {{ __('label_invited_editor') }}
+                                        {% else %}
+                                            ???
+                                        {% endif %}
+                                        {{ tx.newValue in history_blacklist ? lib.format_user(-1) : lib.format_user(tx.newValue) }}
 
-					{% elseif tx.action == 'uninvited' %}
-						{% if tx.fieldName == 'peers' %}
-							{{ __('label_uninvited_peer') }}
-						{% elseif tx.fieldName == 'authors' %}
-							{{ __('label_uninvited_author') }}
-						{% elseif tx.fieldName == 'editors' %}
-							{{ __('label_uninvited_editor') }}
-						{% else %}
-							???
-						{% endif %}
-						{{ tx.newValue in history_blacklist ? lib.format_user(-1) : lib.format_user(tx.newValue) }}
+                                    {% elseif tx.action == 'uninvited' %}
+                                        {% if tx.fieldName == 'peers' %}
+                                            {{ __('label_uninvited_peer') }}
+                                        {% elseif tx.fieldName == 'authors' %}
+                                            {{ __('label_uninvited_author') }}
+                                        {% elseif tx.fieldName == 'editors' %}
+                                            {{ __('label_uninvited_editor') }}
+                                        {% else %}
+                                            ???
+                                        {% endif %}
+                                        {{ tx.newValue in history_blacklist ? lib.format_user(-1) : lib.format_user(tx.newValue) }}
 
-					{% elseif tx.action == 'reviewed' %}
-						{% if tx.newValue == 'reviewing' %}
-							{{ __('label_review_accepted') }}
-						{% elseif tx.newValue == 'deleted' %}
-							{{ __('label_review_declined') }}
-						{% else %}
-							{# Help gettext's msgmerge:
-								__('label_review_revision')
-								__('label_review_approved')
-								__('label_review_rejected')
-								__('label_review_created')
-							#}
-							{{ __('label_review_'~tx.newValue) }}
-						{% endif %}
-						{% if history_type != tx.objectType or history_id != tx.objectId %}
-							{{ lib.format(tx.objectType, tx.objectId) }}
-						{% endif %}
+                                    {% elseif tx.action == 'reviewed' %}
+                                        {% if tx.newValue == 'reviewing' %}
+                                            {{ __('label_review_accepted') }}
+                                        {% elseif tx.newValue == 'deleted' %}
+                                            {{ __('label_review_declined') }}
+                                        {% else %}
+                                            {{ __('label_review_'~tx.newValue) }}
+                                        {% endif %}
+                                        {% if history_type != tx.objectType or history_id != tx.objectId %}
+                                            {{ lib.format(tx.objectType, tx.objectId) }}
+                                        {% endif %}
 
-					{% elseif tx.action == 'sent' or tx.action == 'emailed' %}
-						{% set email = grab('outbox_email', tx.action == 'sent' ? tx.objectId : tx.newValue) %}
-						{% set visible = 1 %}
-						{% for blocked in history_blacklist %}
-							{% if blocked in email.recipients or blocked in email.ccs %}
-								{% set visible = 0 %}
-							{% endif %}
-						{% endfor %}
-						{{ __('label_sent') }}
-						<u><span class="glyphicon glyphicon-envelope"></span>{{ email.subject |truncate(64, true) }}</u>
-						{% if visible %}
-							{{ __('label_to') }}
-							{{ lib.format_users(email.recipients) }}
-							{{ lib.format_users(email.ccs) }}
-							<!-- Bcc excluded on purpose -->
-							[<a href="{{ req.base }}/outbox/{{ email.id }}">{{ __('label_view_message') }}</a>]
-						{% endif %}
+                                    {% elseif tx.action == 'sent' or tx.action == 'emailed' %}
+                                        {% set email = grab('outbox_email', tx.action == 'sent' ? tx.objectId : tx.newValue) %}
+                                        {% set visible = 1 %}
+                                        {% for blocked in history_blacklist %}
+                                            {% if blocked in email.recipients or blocked in email.ccs %}
+                                                {% set visible = 0 %}
+                                            {% endif %}
+                                        {% endfor %}
+                                        {{ __('label_sent') }}
+                                        <u><span class="glyphicon glyphicon-envelope"></span>{{ email.subject |truncate(64, true) }}</u>
+                                        {% if visible %}
+                                            {{ __('label_to') }}
+                                            {{ lib.format_users(email.recipients) }}
+                                            {{ lib.format_users(email.ccs) }}
+                                            [<a href="{{ req.base }}/outbox/{{ email.id }}">{{ __('label_view_message') }}</a>]
+                                        {% endif %}
 
-					{% elseif tx.action == 'activated' or tx.action == 'deactivated' %}
-						{# Help gettext's msgmerge: __('label_activated') __('label_deactivated') #}
-						{{ __('label_'~tx.action) }}
-						{{ lib.format(tx.objectType, tx.objectId) }}
+                                    {% elseif tx.action == 'activated' or tx.action == 'deactivated' %}
+                                        {{ __('label_'~tx.action) }}
+                                        {{ lib.format(tx.objectType, tx.objectId) }}
 
-					{% else %}
-						{{ tx.action }}
-						{{ tx.fieldName }}
-						{% if tx.oldValue %}{{ __('label_from') }} '{{ lib.format(tx.fieldName, tx.oldValue) }}'{% endif %}
-						{% if tx.newValue %}{{ __('label_to') }} '{{ lib.format(tx.fieldName, tx.newValue) }}'{% endif %}
-					{% endif %}
-					{% if tx.userId != tx.actingUserId %}
-						({{ __('label_by') }} {{ lib.format_user(tx.actingUserId) }})
-					{% endif %}
-					{% if tx.content and not narrow %}
-						<div class="log-content">{{ tx.content }}</div>
-					{% endif %}
-				</div>
-			{% endif %}
-		{% if loop.last or tx.timestamp|slice(0,18) != history[loop.index].timestamp|slice(0,18) %}
-				</td>
-				<td class="text-right fit">
-					{%- if narrow -%}
-						<span class="text-muted small">{{ lib.format_timestamp(tx.localtimestamp, raw_timestamps) }}</span>
-					{%- else -%}
-						{{ lib.format_timestamp(tx.localtimestamp, raw_timestamps) }} {% if not no_ip -%}{{ __('label_from_ip') }} {{ lib.format_ip(tx.ip) }}{%- endif -%}
-					{%- endif -%}
-				</td>
-			</tr>
-		{% endif %}
-		{% set lastTime = tx.timestamp|slice(0,18) %}
-		{% set lastObjectId = tx.objectId %}
-			{% endfor %}
-		</tbody>
-	</table>
+                                    {% else %}
+                                        {{ tx.action }}
+                                        {{ tx.fieldName }}
+                                        {% if tx.oldValue %}{{ __('label_from') }} '{{ lib.format(tx.fieldName, tx.oldValue) }}'{% endif %}
+                                        {% if tx.newValue %}{{ __('label_to') }} '{{ lib.format(tx.fieldName, tx.newValue) }}'{% endif %}
+                                    {% endif %}
+                                    {% if tx.userId != tx.actingUserId %}
+                                        ({{ __('label_by') }} {{ lib.format_user(tx.actingUserId) }})
+                                    {% endif %}
+                                    {% if tx.content and not narrow %}
+                                        <div class="log-content">{{ tx.content }}</div>
+                                    {% endif %}
+                                </div>
+                            {% endif %}
+                {% if loop.last or tx.timestamp|slice(0,18) != history[loop.index].timestamp|slice(0,18) %}
+                        </td>
+                        <td class="text-right fit">
+                            {% if narrow %}
+                                <span class="text-muted small">{{ lib.format_timestamp(tx.localtimestamp, raw_timestamps) }}</span>
+                            {% else %}
+                                {{ lib.format_timestamp(tx.localtimestamp, raw_timestamps) }} {% if not no_ip %}{{ __('label_from_ip') }} {{ lib.format_ip(tx.ip) }}{% endif %}
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endif %}
+                {% set lastTime = tx.timestamp|slice(0,18) %}
+                {% set lastObjectId = tx.objectId %}
+            {% endfor %}
+        </tbody>
+    </table>
 </div>

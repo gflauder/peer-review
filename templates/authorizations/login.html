@@ -1,28 +1,36 @@
 <!--Login Container-->
-<div class="login-container">
-    <p>
-        To use this application, you must sign into your account here. If you
-        do not have an account, you should register.
-    </p>
-    <form class="login-form" method="post" action="{{ req.base }}/login" id="login-form" onsubmit="return checkPassword()">
-    {{ filter('form_begin', 'login-form') |raw }}
-    <div class="form-group">
-        <input type="email" name="email" placeholder="{{ __('label_email') }}" value="{{ post.email }}" class="form-control" required autocomplete="true">
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <p>
+                        To use this application, you must sign into your account here. If you
+                        do not have an account, you should register.
+                    </p>
+                    <form class="login-form" method="post" action="{{ req.base }}/login" id="login-form" onsubmit="return checkPassword()">
+                        {{ filter('form_begin', 'login-form') |raw }}
+                        <div class="form-group">
+                            <input type="email" name="email" placeholder="{{ __('label_email') }}" value="{{ post.email }}" class="form-control" required autocomplete="true">
+                        </div>
+                        <div class="form-group">
+                            <input type="password" name="password" id="password" placeholder="{{ __('label_password_opt') }}" class="form-control hideaway hideaway-focus" autocomplete="off">
+                        </div>
+                        <button type="submit" class="btn btn-success">{{ __('label_login') }}</button>
+                    </form>
+                    <h5><a href="{{ req.base }}/register">{{ __('title_register') }} &raquo;</a></h5>
+                    <p>
+                        If your account does not have a password, or you would prefer not to use
+                        it, simply enter your e-mail address above.
+                    </p>
+                    <p>
+                        If you already have an account and a password, but forgot your password,
+                        <a href="{{ req.base }}/password_reset">click here</a>.
+                    </p>
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="form-group">
-        <input type="password" name="password" id="password" placeholder="{{ __('label_password_opt') }}" class="form-control hideaway hideaway-focus" autocomplete="off">
-    </div>
-    <button type="submit" class="btn btn-success">{{ __('label_login') }}</button>
-</form>
-    <h5><a href="{{ req.base }}/register">{{ __('title_register') }} &raquo;</a></h5>
-    <p>
-        If your account does not have a password, or you would prefer not to use
-        it, simply enter your e-mail address above.
-    </p>
-    <p>
-        If you already have an account and a password, but forgot your password,
-        <a href="{{ req.base }}/password_reset">click here</a>.
-    </p>
 </div>
 <script>
     function checkPassword() {
@@ -33,3 +41,9 @@
         return true; // Allow form submission
     }
 </script>
+<style>
+
+    #main {
+        margin-left: 0;
+    }
+</style>

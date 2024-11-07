@@ -48,4 +48,4 @@ if (!empty($lockFiles)) {
 } else {
     echo "No lock files found.\n";
 }
-?>
+

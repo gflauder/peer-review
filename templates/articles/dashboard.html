@@ -5,13 +5,13 @@
 {% if pass('can', 'delete', 'article') %}
 	<div class="row">
 		{% if noreviews|length > 0 %}
-			{{ lib.counter('align-left', 'red', noreviews|length, __('title_no_reviews'), req.base~'/articles?filter=noreviews') }}
+			{{ lib.counter('align-left', 'text-danger', noreviews|length, __('title_no_reviews'), req.base~'/articles?filter=noreviews') }}
 		{% endif %}
 		{% if miapeers|length > 0 %}
-			{{ lib.counter('eye-close', 'orange', miapeers|length, __('title_mia_peers'), req.base~'/articles?filter=miapeers') }}
+			{{ lib.counter('eye-close', 'text-warning', miapeers|length, __('title_mia_peers'), req.base~'/articles?filter=miapeers') }}
 		{% endif %}
 		{% if latereviews|length > 0 %}
-			{{ lib.counter('eye-open', 'orange', latereviews|length, __('title_late_reviews'), req.base~'/articles?filter=latereviews') }}
+			{{ lib.counter('eye-open', 'text-warning', latereviews|length, __('title_late_reviews'), req.base~'/articles?filter=latereviews') }}
 		{% endif %}
 	</div>
 {% endif %}
@@ -21,11 +21,11 @@
 
 		{% if session.outbox and session.outbox|length > 0 %}
 			<!-- Outbox Panel -->
-			<div class="panel panel-danger">
-				<div class="panel-heading">
+			<div class="card border-danger mb-3">
+				<div class="card-header">
 					<a href="{{ req.base }}/outbox"><span class="glyphicon glyphicon-envelope"></span> {{ __('title_outbox') }}</a>
 				</div>
-				<div class="panel-body">
+				<div class="card-body">
 					{% include 'outbox/outbox_list.html' with {'emails': session.outbox} %}
 				</div>
 			</div>
@@ -34,11 +34,11 @@
 
 		{% if reviews|length > 0 %}
 			<!-- Reviews Panel -->
-			<div class="panel panel-primary">
-				<div class="panel-heading">
+			<div class="card border-primary mb-3">
+				<div class="card-header">
 					<span class="glyphicon glyphicon-eye-open"></span> {{ __('title_reviews') }}
 				</div>
-				<div class="panel-body">
+				<div class="card-body">
 					{% include 'articles/review_list.html' %}
 				</div>
 			</div>
@@ -47,18 +47,16 @@
 
 		{% if articles|length > 0 or pass('has_role', 'author') %}
 			<!-- Articles Panel -->
-			<div class="panel panel-primary">
-				<div class="panel-heading">
-					<span class="glyphicon glyphicon-align-left"></span> {{ __('title_articles') }}
+			<div class="card border-primary mb-3">
+				<div class="card-header d-flex justify-content-between align-items-center">
+					<span><span class="glyphicon glyphicon-align-left"></span> {{ __('title_articles') }}</span>
 					{% if pass('can_create_article') %}
-						<div class="pull-right">
-							<form action="{{ req.base }}/articles/new" id="article_create" method="get" class="form-inline">
-								<button class="btn btn-outline-secondary btn-xs" type="submit"><span class="fg-ok"><span class="glyphicon glyphicon-plus"></span></span> {{ __('label_create') }}</button>
-							</form>
-						</div>
+						<form action="{{ req.base }}/articles/new" id="article_create" method="get" class="form-inline">
+							<button class="btn btn-outline-secondary btn-sm" type="submit"><span class="text-success"><span class="glyphicon glyphicon-plus"></span></span> {{ __('label_create') }}</button>
+						</form>
 					{% endif %}
 				</div>
-				<div class="panel-body">
+				<div class="card-body">
 					{% include 'articles/articles_list.html' %}
 				</div>
 			</div>
@@ -69,11 +67,11 @@
 	<div class="col-lg-5">
 
 		<!-- Recent Activity Panel -->
-		<div class="panel panel-warning">
-			<div class="panel-heading">
+		<div class="card border-warning mb-3">
+			<div class="card-header">
 				<span class="glyphicon glyphicon-list"></span> {{ __('title_recent') }}
 			</div>
-			<div class="panel-body">
+			<div class="card-body">
 				{% include 'articles/history.html' with {'history': recentHistory, 'narrow': true} %}
 			</div>
 		</div>
@@ -81,5 +79,3 @@
 
 	</div>
 </div>
-
-

@@ -29,287 +29,114 @@
 	{{ lib.modal() }}
 
 	{% set form_begin_edit = filter('form_begin', 'articles_edit') %}
-	<form id="articles_edit" method="post" class="form-leftright" enctype="multipart/form-data">
+	<form id="articles_edit" method="post" enctype="multipart/form-data">
 		{{ form_begin_edit |raw }}
 		{% if article.id %}
 			<input type="hidden" name="id" value="{{ article.id }}">
 		{% endif %}
 
-		<span data-label="{{ __('label_status') }}" class="input-like">{{ lib.format_status(article.status) }}</span>
+		<div class="form-group">
+			<label for="title">{{ __('label_title') }}</label>
+			<input type="text" class="form-control" id="title" value="{{ article.title }}" required>
+		</div>
 
-		<input data-label="{{ __('label_title') }}" type="text" id="title" value="{{ article.title }}" required>
 		{% if pass('can', 'move', 'article', article.id) or pass('can', 'move', 'issue', article.issueId) or not article.id %}
-			<select data-label="{{ __('label_issueId') }}" id="issueId" class="feedback-book" required>
-				{% if not article.id %}
-					<option selected disabled>{{ __('label_issueId') }}...
-				{% endif %}
-				{% if config.issues.allow_issue_zero or (article.id and issueId == 0) %}
-					<option value="0"{% if article.id and issueId == 0 %} selected{% endif %}>{{ __('issue_zero') }}
-				{% endif %}
-				{% for issue in issues %}
-					<option value="{{ issue.id }}"{% if issue.id == issueId %} selected{% endif %}>{{ issue.volume ? issue.volume~'.' : '' }}{{ issue.number }} {{ issue.title }}
+			<div class="form-group">
+				<label for="issueId">{{ __('label_issueId') }}</label>
+				<select class="form-control" id="issueId" required>
+					{% if not article.id %}
+						<option selected disabled>{{ __('label_issueId') }}...</option>
+					{% endif %}
+					{% if config.issues.allow_issue_zero or (article.id and issueId == 0) %}
+						<option value="0"{% if article.id and issueId == 0 %} selected{% endif %}>{{ __('issue_zero') }}</option>
+					{% endif %}
+					{% for issue in issues %}
+						<option value="{{ issue.id }}"{% if issue.id == issueId %} selected{% endif %}>{{ issue.volume ? issue.volume~'.' : '' }}{{ issue.number }} {{ issue.title }}</option>
+					{% endfor %}
+				</select>
+			</div>
+		{% else %}
+			<div class="form-group">
+				<label>{{ __('label_issueId') }}</label>
+				<span class="form-control-plaintext">{{ lib.format_issue(article.issueId) }}</span>
+			</div>
+		{% endif %}
+
+		<div class="form-group">
+			<label for="wordCount">{{ __('label_wordcount') }}</label>
+			<input type="number" class="form-control" id="wordCount" value="{{ article.wordCount }}" required>
+		</div>
+
+		<div class="form-group">
+			<label for="keywords[]">{{ __('label_keywords') }}</label>
+			<select class="form-control" id="keywords[]" multiple>
+				{% for keyword in article.keywords %}
+					<option selected>{{ keyword }}</option>
 				{% endfor %}
 			</select>
-		{% else %}
-			<span data-label="{{ __('label_issueId') }}" class="input-like">{{ lib.format_issue(article.issueId) }}</span>
-		{% endif %}
-		<input data-label="{{ __('label_wordcount') }}" type="number" id="wordCount" value="{{ article.wordCount }}" required>
-		<input type="hidden" name="__arrays[]" value="keywords">
-		<select data-label="{{ __('label_keywords') }}" data-maxcount="{{ config.articles.max_keywords }}" id="keywords[]" placeholder="{{ __('hint_keywords') }}" class="keywords feedback-tags" multiple>
-			{% for keyword in article.keywords %}
-				<option selected>{{ keyword }}
-			{% endfor %}
-		</select>
-		<textarea data-label="{{ __('label_abstract') }}" id="abstract">{{ article.abstract }}</textarea>
+		</div>
+
+		<div class="form-group">
+			<label for="abstract">{{ __('label_abstract') }}</label>
+			<textarea class="form-control" id="abstract">{{ article.abstract }}</textarea>
+		</div>
+
 		{% if pass('can', 'move', 'article', article.id) or pass('can', 'move', 'issue', article.issueId) or pass('has_role', 'author') %}
 			{{ lib.select_users(__('label_authors'), 'author', article.authors, config.articles.max_authors) }}
 		{% elseif article.id %}
-			<span data-label="{{ __('label_authors') }}" class="input-like">
-				{% for author in article.authors %}
-					{{ lib.format_user(author) }}
-				{% endfor %}
-				&nbsp;
-			</span>
+			<div class="form-group">
+				<label>{{ __('label_authors') }}</label>
+				<span class="form-control-plaintext">
+					{% for author in article.authors %}
+						{{ lib.format_user(author) }}
+					{% endfor %}
+				</span>
+			</div>
 		{% else %}
 			<input type="hidden" name="authors[]" value="{{ session.user.id }}">
 		{% endif %}
-		<div data-label="{{ __('label_files') }}" class="input-like" id="file-list">
-			{% set vid = 1 %}
-			{% for version in article.versions %}
-				<a class="list-group-item small" data-toggle="collapse" data-target="#version-{{ version.id }}" data-parent="#file-list"><strong>{{ __('label_version') }} {{ vid }}</strong> <em>{{ lib.format_timestamp(version.localcreated) }}</em></a>
-				<div id="version-{{ version.id }}" class="collapse{{ loop.last ? ' in' : '' }}">
-					{% for file in version.files %}
-						{% if pass('can', 'delete', 'article', article.id) or pass('can', 'delete', 'issue', article.issueId) %}
-							<a href="{{ req.base }}/articles/{{ article.id }}/{{ file.name }}?unlink=1"><span class="fg-err"><span class="glyphicon glyphicon-minus"></span></span></a>
-						{% endif %}
-						<a href="/=bin/articles/{{ article.id }}/{{ file.name }}" target="_blank"><span class="glyphicon glyphicon-file"></span>{{ file.name }}</a> ({{ lib.format_bytes(file.bytes) }})<br>
-					{% endfor %}
-				</div>
-				{% set vid = vid + 1 %}
-			{% endfor %}
-			{% if article.versions|length > 0 %}
-				<a class="list-group-item small"><strong>{{ __('label_new_version') }}:</strong></a>
-			{% endif %}
-			{{ lib.input_files('addfile', 'xs') }}
+
+		<div class="form-group">
+			<label>{{ __('label_files') }}</label>
+			<div id="file-list">
+				{% set vid = 1 %}
+				{% for version in article.versions %}
+					<a class="list-group-item small" data-toggle="collapse" data-target="#version-{{ version.id }}" data-parent="#file-list"><strong>{{ __('label_version') }} {{ vid }}</strong> <em>{{ lib.format_timestamp(version.localcreated) }}</em></a>
+					<div id="version-{{ version.id }}" class="collapse{{ loop.last ? ' show' : '' }}">
+						{% for file in version.files %}
+							{% if pass('can', 'delete', 'article', article.id) or pass('can', 'delete', 'issue', article.issueId) %}
+								<a href="{{ req.base }}/articles/{{ article.id }}/{{ file.name }}?unlink=1"><span class="text-danger"><span class="glyphicon glyphicon-minus"></span></span></a>
+							{% endif %}
+							<a href="/=bin/articles/{{ article.id }}/{{ file.name }}" target="_blank"><span class="glyphicon glyphicon-file"></span>{{ file.name }}</a> ({{ lib.format_bytes(file.bytes) }})<br>
+						{% endfor %}
+					</div>
+					{% set vid = vid + 1 %}
+				{% endfor %}
+				{% if article.versions|length > 0 %}
+					<a class="list-group-item small"><strong>{{ __('label_new_version') }}:</strong></a>
+				{% endif %}
+				{{ lib.input_files('addfile', 'md') }}
+			</div>
 		</div>
-		<div data-label="{{ __('label_plagiarism') }}" class="input-like">
-			<input type="checkbox" id="plagiarism_ok" name="plagiarism_ok" value="1" {{ article.plagiarism == '1' ? 'checked' : '' }}>
-			{{ __('info_plagiarism') }}
-			<br>
+
+		<div class="form-group form-check">
+			<input type="checkbox" class="form-check-input" id="plagiarism_ok" name="plagiarism_ok" value="1" {{ article.plagiarism == '1' ? 'checked' : '' }}>
+			<label class="form-check-label" for="plagiarism_ok">{{ __('info_plagiarism') }}</label>
 			<textarea class="form-control" id="plagiarism" name="plagiarism" required {% if article.plagiarism == '1' %}style="display: none;"{% endif %}>{{ article.plagiarism }}</textarea>
 		</div>
-		<div data-label="{{ __('label_policy') }}" class="input-like">
-			<input type="checkbox" id="policy" name="policy" value="1" {% if article.id %}checked{% endif %} required>
-			{{ __('info_policy') }}
+
+		<div class="form-group form-check">
+			<input type="checkbox" class="form-check-input" id="policy" name="policy" value="1" {% if article.id %}checked{% endif %} required>
+			<label class="form-check-label" for="policy">{{ __('info_policy') }}</label>
 			<a id="policy_link" target="_blank" href="{{ req.base }}/page/policy">{{ __('title_policy') }}</a>
 		</div>
-		<div data-label="{{ __('label_copyright') }}" class="input-like">
-			<input type="checkbox" id="copyright" name="copyright" value="1" {% if article.id %}checked{% endif %} required>
-			{{ __('info_copyright') }}
+
+		<div class="form-group form-check">
+			<input type="checkbox" class="form-check-input" id="copyright" name="copyright" value="1" {% if article.id %}checked{% endif %} required>
+			<label class="form-check-label" for="copyright">{{ __('info_copyright') }}</label>
 			<a id="copyright_link" target="_blank" href="{{ req.base }}/page/copyright?d={{ 'now'|date('Y-m-d') }}">{{ __('title_copyright') }}</a>
 		</div>
-		{{ lib.leftright_submit('save', article.id) }}
+
+		<button type="submit" class="btn btn-primary">{{ __('save') }}</button>
 	</form>
-
-
-	{% if article.id %}
-
-		{% if pass('can', 'delete', 'article', article.id) or pass('can', 'delete', 'issue', article.issueId) %}
-			<h3>{{ __('title_change_status') }}</h3>
-			{{ block('hint_article_change_status') }}
-			<form id="articles_edit_status" method="post" class="form-leftright" enctype="multipart/form-data">
-				{{ form_begin_edit |raw }}
-				<input type="hidden" name="id" value="{{ article.id }}">
-				<input type="hidden" name="files_email_only" value="1">
-
-				<div data-label="{{ __('label_status') }}" class="btn-group input-like" data-toggle="buttons">
-					<label class="btn btn-outline-secondary btn-sm active">
-						<input type="radio" name="status" autocomplete="off" value="{{ article.status }}" checked>
-						{{ lib.format_status(article.status) }}
-					</label>
-					<span class="btn btn-outline-secondary btn-sm active disabled"><span class="glyphicon glyphicon-arrow-right"></span></span>
-					{% for status in config.articles.states_next[article.status]|split(' ') %}
-						<label class="btn btn-outline-secondary btn-sm">
-							<input type="radio" name="status" autocomplete="off" value="{{ status }}">
-							{{ lib.format_status(status, true) }}
-						</label>
-					{% endfor %}
-				</div>
-
-				<div data-label="{{ __('label_files') }}" class="input-like" id="file-list">
-					{{ lib.input_files('addfiletomail', 'xs') }}
-				</div>
-				{{ lib.leftright_submit('change_and_send', true) }}
-			</form>
-		{% endif %}
-
-		{% if pass('can', 'move', 'article', article.id) or pass('can', 'move', 'issue', article.issueId) %}
-			{% if (session.user.id not in article.authors) and article.versions|length > 0 %}
-				<h3>{{ __('title_reviews') }}</h3>
-				<form class="form-tight" method="post">
-					{{ form_begin_review |raw }}
-					<input type="hidden" name="review" value="1">
-					<div class="form-group">
-						{{ lib.select_users(__('label_peers'), 'peer') }}
-						<input data-colsize="2" data-label="{{ __('label_deadline') }} ({{ __('hint_ymd') }})" type="text" id="deadline" value="{{ deadline }}" maxlength="10" minlength="10">
-						<div class="input-block col-sm-2">
-							<button type="submit" name="submit" class="btn btn-outline-secondary "><span class="fg-ok"><span class="glyphicon glyphicon-plus"></span></span> {{ __('label_add') }}</button>
-						</div>
-					</div>
-				</form>
-				<table class="table">
-					<thead>
-						<th>{{ __('label_version') }}</th>
-						<th class="text-center">{{ __('label_deadline') }}</th>
-						<th>{{ __('label_status') }}</th>
-						<th>{{ __('label_peer') }}</th>
-						<th>{{ __('label_files') }}</th>
-					</thead>
-					<tbody>
-						{% set vid = 1 %}
-						{% for version in article.versions %}
-							{% for review in version.reviews %}
-								{% set nexts = config.reviews.states_next[review.status]|split(' ') %}
-								{# Work around same bug as PHP... stupid! #}
-								{% if nexts[0] == '' %}{% set nexts = [] %}{% endif %}
-								{% if 'deleted' not in nexts %}{% set nexts = nexts|merge(['deleted']) %}{% endif %}
-								<tr class="{{
-									review.daysLeft < 0 and review.status not in config.reviews.states_final
-									? ' danger'
-									: (review.status in config.reviews.states_final ? ' success' : ' active')
-								}}{{ review.status == 'deleted' ? ' deleted' : '' }}">
-									<td class="fit text-right">{{ vid }}</td>
-									<td class="fit text-right">
-										{% if review.daysLeft < 0 and review.status not in config.reviews.states_final %}
-											<span class="glyphicon glyphicon-exclamation-sign fg-err"></span>
-										{% endif %}
-										{% if review.status in config.reviews.states_final %}
-											{{ review.deadline }} <span class="caret spacing"></span>
-										{% else %}
-											<form id="review" method="post" class="form-inline inline">
-												{{ form_begin_review |raw }}
-												<input type="hidden" name="review" value="1">
-												<input type="hidden" name="id" value="{{ review.id }}">
-												<div class="dropdown buttons inline">
-													<span class="dropdown-toggle" id="deadline-{{ review.id }}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">{{ review.deadline }} <span class="caret"></span></span>
-													<div class="dropdown-menu" aria-labelledby="deadline-{{ review.id }}">
-														<div class="dropdown-header">{{ __('label_change_deadline') }}:</div>
-														<div><input type="text" name="deadline" class="form-control" value="{{ review.deadline }}"></div>
-														<button class="btn btn-outline-secondary btn-xs" type="submit"><span class="glyphicon glyphicon-ok fg-ok"></span> {{ __('label_save') }}</button>
-													</div>
-												</div>
-											</form>
-										{% endif %}
-									</td>
-									<td class="fit">
-										{% if nexts|length > 0 %}
-											<form id="review" method="post" class="form-inline inline" enctype="multipart/form-data">
-												{{ form_begin_review |raw }}
-												<input type="hidden" name="review" value="1">
-												<input type="hidden" name="id" value="{{ review.id }}">
-												<div class="persistent dropdown buttons">
-													<span class="dropdown-toggle" id="status-{{ review.id }}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">{{ lib.format_status(review.status) }} <span class="caret"></span></span>
-													<div class="dropdown-menu" aria-labelledby="status-{{ review.id }}">
-														<div class="dropdown-header">{{ __('label_change_status') }}:</div>
-														{% if review.status == 'reviewing' %}
-															<div>{{ lib.input_files('addfiletoreview' ~ review.id, 'xs', false) }}</div>
-														{% endif %}
-														{% for status in nexts %}
-															<button class="btn btn-outline-secondary btn-xs" type="submit" name="status" value="{{ status }}">{{ lib.format_status(status, true) }}</button>
-														{% endfor %}
-													</div>
-												</div>
-											</form>
-										{% else %}
-											{{ lib.format_status(review.status) }}
-										{% endif %}
-									</td>
-									<td class="fit">{{ lib.format_user(review.peerId) }}</td>
-									<td>
-										{% for file in review.files %}
-											<a href="/=bin/articles/{{ article.id }}/{{ file.name }}" target="_blank"><span class="glyphicon glyphicon-file"></span>{{ file.name }}</a>
-										{% endfor %}
-									</td>
-								</tr>
-							{% endfor %}
-							{% set vid = vid + 1 %}
-						{% endfor %}
-					</tbody>
-				</table>
-			{% endif %}
-			<h3>{{ __('title_history') }}</h3>
-			{% if session.user.id in article.authors %}
-				{% set history_blacklist = article.peers %}
-			{% endif %}
-			{% include 'articles/history.html' %}
-		{% endif %}
-
-	{% endif %}
-
-{% elseif article.id and (pass('can', 'view', 'article', article.id) or pass('can', 'view', 'issue', article.issueId) or article.isPeer) %}
-
-	{% set review = false %}
-	{% if article.isPeer %}
-		{% for r in article.versions|last.reviews %}
-			{% if r.peerId == session.user.id %}
-				{% set review = r %}
-			{% endif %}
-		{% endfor %}
-	{% endif %}
-
-	<dl class="dl-horizontal">
-		<dt>{{ __('label_issueId') }}</dt><dd>{{ lib.format_issue(article.issueId) }}</dd>
-		{% if article.isPeer %}
-			<dt>{{ __('label_editors') }}</dt><dd>
-				{% for editor in article.editors %}
-					{{ lib.format_user(editor, true, false, true) }}
-				{% endfor %}
-			</dd>
-		{% endif %}
-		<dt>{{ __('label_status') }}</dt><dd>{{ lib.format_status(article.status) }}</dd>
-		<dt>{{ __('label_wordCount') }}</dt><dd>{{ article.wordCount }}</dd>
-		<dt>{{ __('label_keywords') }}</dt><dd>{{ article.keywords |join(', ') }}</dd>
-		<dt>{{ __('label_abstract') }}</dt><dd>{{ article.abstract }}</dd>
-		{% if not article.isPeer %}
-			<dt>{{ __('label_authors') }}</dt><dd>
-				{% for author in article.authors %}
-					{{ lib.format_user(author) }}
-				{% endfor %}
-			</dd>
-		{% endif %}
-		{% if review and review.status != 'created' %}
-			<dt>{{ __('label_files') }}</td><dd>
-				{% for file in article.versions|last.files %}
-					<a href="/=bin/articles/{{ article.id }}/{{ file.name }}" target="_blank"><span class="glyphicon glyphicon-file"></span>{{ file.name }}</a> ({{ lib.format_bytes(file.bytes) }})<br>
-				{% endfor %}
-			</dd>
-		{% endif %}
-	</dl>
-
-	{% if article.isPeer %}
-		{% if review.id and (review.status == 'created' or review.status == 'reviewing') %}
-			<h3>{{ __('title_review') }}</h3>
-			<p>{{ __('label_review_deadline') }}: {{ review.deadline }}</p>
-			<form id="peer_review" method="post" enctype="multipart/form-data">
-				{{ form_begin_review |raw }}
-				<input type="hidden" name="review" value="1">
-				<input type="hidden" name="id" value="{{ review.id }}">
-
-				{% if review.status == 'created' %}
-					<h4>{{ __('hint_review_accept') }}:</h4>
-					<button class="btn btn-outline-secondary" type="submit" name="status" value="reviewing"><span class="glyphicon glyphicon-ok fg-ok"></span> {{ __('label_accept') }}</button>
-					<h4>{{ __('hint_review_decline') }}:</h4>
-					<div><input type="text" name="log" value="" placeholder="{{ __('hint_suggestions') }}" class="form-control no-submit"></div>
-					<button class="btn btn-outline-secondary" type="submit" name="status" value="deleted"><span class="glyphicon glyphicon-remove fg-err"></span> {{ __('label_decline') }}</button>
-				{% else %}
-					{{ block('hint_review') }}
-					<div>{{ lib.input_files('addfilefrompeer', 'xs', true) }}</div>
-					{% for status in config.reviews.states_next[review.status]|split(' ') %}
-						<button class="btn btn-outline-secondary" type="submit" name="status" value="{{ status }}">{{ lib.format_status(status, true) }}</button>
-					{% endfor %}
-				{% endif %}
-			</form>
-		{% endif %}
-	{% endif %}
-
 {% endif %}

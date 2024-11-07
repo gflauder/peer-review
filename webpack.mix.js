@@ -18,7 +18,7 @@ mix.webpackConfig({
 
 mix.js([
     'src/main.js',
- /*   'src/pyritephp.js',*/
+    'src/pyritephp.js',
     'node_modules/selectize/dist/js/standalone/selectize.min.js',
     'node_modules/@popperjs/core/dist/umd/popper.min.js'
 ], 'dist/js/main.js')
@@ -32,6 +32,7 @@ mix.styles([
     'src/main.css',
     'src/print.css',
     'src/pyritephp.css',
+    'src/style.css',
  /*   'src/sbadmin2.css',*/
 ], 'dist/css/main.css')
     .sourceMaps()

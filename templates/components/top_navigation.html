@@ -1,48 +1,60 @@
-<nav class="navbar navbar-expand-lg navbar-dark top-navigation custom-bg">
-    <div class="container-fluid">
-        <a class="navbar-brand float-start" href="{{ req.base }}/">{{ __('title_program') }}</a>
+<header class="header fixed-top d-flex align-items-center custom-bg">
+
+    {# <a class="navbar-brand float-start" href="{{ req.base }}/">{{ __('title_program') }}</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar"
                 aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>`
-        </button>
-        <div class="collapse navbar-collapse" id="navbar">
-            <ul class="navbar-nav ms-auto mb-2 mb-lg-0 navbar-nav-right">
-                <li class="nav-item{% if req.path_args[0] == 'about' %} active{% endif %}">
-                    <a class="nav-link" href="{{ req.base }}/articles/new">{{ __('title_submit_article') }}</a>
-                </li>
-                <li class="nav-item{% if req.path_args[0] == 'about' %} active{% endif %}">
-                    <a class="nav-link" href="{{ req.base }}/page/about">{{ __('title_about') }}</a>
-                </li>
-                <li class="nav-item{% if req.path_args[0] == 'contacts' %} active{% endif %}">
-                    <a class="nav-link" href="{{ req.base }}/page/contacts">{{ __('title_contacts') }}</a>
-                </li>
-                <li class="nav-item{% if req.path_args[0] == 'instructions' %} active{% endif %}">
-                    <a class="nav-link" href="{{ req.base }}/page/instructions">{{ __('title_instructions') }}</a>
-                </li>
+        </button> #}
 
+    <div class="d-flex align-items-center justify-content-between">
+        <a href="{{ req.base }}/" class="logo d-flex align-items-center">
+            <img src="/assets/img/logo.png" alt="">
+            <span class="d-none d-lg-block text-white">{{ __('title_program') }}</span>
+        </a>
+        <i class="bi bi-list toggle-sidebar-btn text-white"></i>
+    </div><!-- End Logo -->
 
-                {% include 'components/messages_inbox.html' %}
+    <nav class="header-nav ms-auto">
+        <ul class="d-flex align-items-end">
 
-                <li class="nav-item dropdown ms-4">
-                    <a class="nav-link dropdown-toggle text-white" href="#" id="langDropdown" role="button"
-                       data-bs-toggle="dropdown" aria-expanded="false">
-                        {{ req.lang }}
-                        {% if req.lang == 'fr' %}
-                            <span class="flag-icon flag-icon-fr ms-1"></span>
-                        {% else %}
-                            <span class="flag-icon flag-icon-gb ms-1"></span>
-                        {% endif %}
-                    </a>
-                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="langDropdown">
-                        <li><a class="dropdown-item"
-                               href="/{% if 'fr' != req.default_lang %}fr/{% endif %}{{ req.path }}{{ req.query }}">Français
-                                <span class="flag-icon flag-icon-fr ms-1"></span></a></li>
-                        <li><a class="dropdown-item"
-                               href="/{% if 'en' != req.default_lang %}en/{% endif %}{{ req.path }}{{ req.query }}">English
-                                <span class="flag-icon flag-icon-gb ms-1"></span></a></li>
-                    </ul>
-                </li>
-            </ul>
-        </div>
-    </div>
-</nav>
+            <li class="h5 text-white nav-item m-2{% if req.path_args[0] == 'instructions' %}active{% endif %}">
+                <a class="nav-link" href="{{ req.base }}/page/instructions">{{ __('title_instructions') }}</a>
+            </li>
+            <li class="h5 text-white nav-item m-2{% if req.path_args[0] == 'contacts' %} active{% endif %}">
+                <a class="nav-link" href="{{ req.base }}/page/contacts">{{ __('title_contacts') }}</a>
+            </li>
+            <li class="h5 text-white nav-item m-2 {% if req.path_args[0] == 'about' %}active{% endif %}">
+                <a class="nav-link"
+                   href="{{ req.base }}/articles/new">{{ __('title_submit_article') }}</a>
+            </li>
+            <li class="h5 text-white nav-item m-2{% if req.path_args[0] == 'about' %} active{% endif %}">
+                <a class="nav-link" href="{{ req.base }}/page/about">{{ __('title_about') }}</a>
+            </li>
+
+            <li class="text-white nav-item m-2">
+            {% include 'components/messages_inbox.html' %}
+            </li>
+
+            <li class="nav-item dropdown m-2">
+                <a class="nav-link dropdown-toggle text-white" href="#" id="langDropdown" role="button"
+                   data-bs-toggle="dropdown" aria-expanded="false">
+                    {{ req.lang }}
+                    {% if req.lang == 'fr' %}
+                        <span class="flag-icon flag-icon-fr ms-1"></span>
+                    {% else %}
+                        <span class="flag-icon flag-icon-gb ms-1"></span>
+                    {% endif %}
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="langDropdown">
+                    <li><a class="dropdown-item"
+                           href="/{% if 'fr' != req.default_lang %}fr/{% endif %}{{ req.path }}{{ req.query }}">Français
+                            <span class="flag-icon flag-icon-fr ms-1"></span></a></li>
+                    <li><a class="dropdown-item"
+                           href="/{% if 'en' != req.default_lang %}en/{% endif %}{{ req.path }}{{ req.query }}">English
+                            <span class="flag-icon flag-icon-gb ms-1"></span></a></li>
+                </ul>
+            </li>
+        </ul>
+    </nav>
+
+</header>

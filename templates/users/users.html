@@ -4,51 +4,51 @@
 <h2 class="page-header"><span class="glyphicon glyphicon-user"></span> {{ __('title_users') }}</h2>
 
 {% if not pass('can', 'view', 'user') %}
-	{% exit %}
+    {% exit %}
 {% endif %}
 
-<div class="row spaced">
-	<form id="user_search" method="post" class="form-inline col-sm-6">
-		{{ filter('form_begin', 'user_search') |raw }}
-		<div class="input-group">
-			<input class="form-control" placeholder="{{ __('label_keyword') }}..." name="keyword" value="{{ req.post.keyword }}" minlength="3">
-			<span class="input-group-btn">
-				<button class="btn btn-outline-secondary" type="submit"><span class="glyphicon glyphicon-search"></span></button>
-			</span>
-		</div>
-	</form>
-	{% if pass('can', 'create', 'user') %}
-		<form action="{{ req.base }}/register" id="article_create" method="post" class="form-inline col-sm-6">
-			<button class="btn btn-outline-secondary" type="submit"><span class="fg-ok"><span class="glyphicon glyphicon-plus"></span></span> {{ __('label_create') }}</button>
-		</form>
-	{% endif %}
+<div class="row mt-3">
+    <form id="user_search" method="post" class="form-inline col-md-6">
+        {{ filter('form_begin', 'user_search') |raw }}
+        <div class="input-group">
+            <input class="form-control" placeholder="{{ __('label_keyword') }}..." name="keyword" value="{{ req.post.keyword }}" minlength="3">
+            <span class="input-group-btn">
+                <button class="btn btn-outline-secondary" type="submit"><span class="glyphicon glyphicon-search"></span></button>
+            </span>
+        </div>
+    </form>
+    {% if pass('can', 'create', 'user') %}
+        <form action="{{ req.base }}/register" id="article_create" method="post" class="form-inline col-md-6">
+            <button class="btn btn-outline-secondary" type="submit"><span class="fg-ok"><span class="glyphicon glyphicon-plus"></span></span> {{ __('label_create') }}</button>
+        </form>
+    {% endif %}
 </div>
 
-<div class="table-responsive">
-	<table class="table table-hover table-condensed">
-		<thead>
-			<tr>
-				<th>{{ __('label_user') }}</th>
-				<th>{{ __('label_email') }}</th>
-				<th>{{ __('title_roles') }}</th>
-				<th>{{ __('label_last_visit') }}</th>
-			</tr>
-		</thead>
-		<tbody>
-			{% for user in users %}
-			{% set roles = grab('user_roles', user.id) %}
-			{% set login = grab('user_seen', user.id) %}
-			<tr>
-				<td class="fit">{{ lib.format_user(user) }}
-					{% if not user.active %}
-					<span class="label label-danger"><span class="glyphicon glyphicon-exclamation-sign"></span>{{ __('label_deactivated') }}</span>
-					{% endif %}
-				</td>
-				<td class="fit">{{ lib.format_email(user.email) }}</td>
-				<td class="fit">{{ lib.label_roles(roles) }}</td>
-				<td>{{ lib.format_timestamp(login.localtimestamp) }}{% if login.ip %} {{ __('label_since') }} {{ lib.format_ip(login.ip) }}{% endif %}</td>
-			</tr>
-			{% endfor %}
-		</tbody>
-	</table>
+<div class="table-responsive mt-3">
+    <table class="table table-hover table-condensed">
+        <thead>
+            <tr>
+                <th>{{ __('label_user') }}</th>
+                <th>{{ __('label_email') }}</th>
+                <th>{{ __('title_roles') }}</th>
+                <th>{{ __('label_last_visit') }}</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in users %}
+            {% set roles = grab('user_roles', user.id) %}
+            {% set login = grab('user_seen', user.id) %}
+            <tr>
+                <td class="fit">{{ lib.format_user(user) }}
+                    {% if not user.active %}
+                    <span class="badge badge-danger"><span class="glyphicon glyphicon-exclamation-sign"></span>{{ __('label_deactivated') }}</span>
+                    {% endif %}
+                </td>
+                <td class="fit">{{ lib.format_email(user.email) }}</td>
+                <td class="fit">{{ lib.label_roles(roles) }}</td>
+                <td>{{ lib.format_timestamp(login.localtimestamp) }}{% if login.ip %} {{ __('label_since') }} {{ lib.format_ip(login.ip) }}{% endif %}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 </div>

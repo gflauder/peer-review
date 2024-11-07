@@ -57,8 +57,7 @@
         </div>
     {% endif %}
 
-    <div class="main-content"
-         style="{% if session.identified %}margin-left: 250px;{% endif %}; animation: fadeIn 0.3s ease-in-out;">
+    <main id="main" class="main" style="{% if session.identified %}margin-left: 250px;{% endif %}; animation: fadeIn 0.3s ease-in-out;">
         {% if session.identified %}
             {% include 'components/breadcrumb.html' %}
         {% endif %}
@@ -71,10 +70,10 @@
         {% endif %}
 
         {% include 'components/flash_messages.html' %}
-        <footer>
-            {% include 'components/footer.html' %}
-        </footer>
-    </div>
+
+    </main>
+
+        {% include 'components/footer.html' %}
 
 {% endblock %}
 

@@ -3,94 +3,106 @@
 {{ title(__('title_roles')) }}
 
 {% if added or deleted %}
-	{% if success %}
-		{{ lib.alert(success, __('save_success')) }}
-	{% else %}
-		{{ lib.alert(success, __('save_failure')) }}
-	{% endif %}
+    {% if success %}
+        {{ lib.alert(success, __('save_success')) }}
+    {% else %}
+        {{ lib.alert(success, __('save_failure')) }}
+    {% endif %}
 {% endif %}
 
-<h2 class="page-header"><span class="glyphicon glyphicon-education"></span> {{ __('title_roles') }}</h2>
+<div class="container mt-5">
+    <h2 class="page-header"><span class="glyphicon glyphicon-education"></span> {{ __('title_roles') }}</h2>
 
-{% if pass('can', 'create', 'role') %}{{ block('hint_role_creation') }}{% endif %}
+    {% if pass('can', 'create', 'role') %}
+        {{ block('hint_role_creation') }}
+    {% endif %}
 
-{% if pass('can', 'edit', 'role') %}
-	<p>
-		<form id="admin_role_acl_add" method="post" class="form-compact">
-			{{ filter('form_begin', 'admin_role_acl_add') |raw }}
-			<input type="hidden" name="f" value="add">
-			<strong>{{ __('label_new_permission') }}</strong>
-			<select data-label="Action" id="action" required>
-				<option selected disabled>{{ __('label_action') }}...
-				<option value="*">* {{ __('label_any_action') }}
-				{% for action in actions %}
-					<option>{{ action }}
-				{% endfor %}
-			</select>
-			<select data-label="Object Type" id="objectType" required>
-				<option selected disabled>{{ __('label_type') }}...
-				<option value="*">* {{ __('label_any_type') }}
-				{% for objectType in objectTypes %}
-					<option>{{ objectType }}
-				{% endfor %}
-			</select>
-			<input data-label="Object ID" placeholder="Object ID" id="objectId">
-			<button type="submit"><span class="fg-ok"><span class="glyphicon glyphicon-plus"></span></span> {{ __('label_add') }}</button>
-		</form>
-	</p>
-{% endif %}
+    {% if pass('can', 'edit', 'role') %}
+        <form id="admin_role_acl_add" method="post" class="form-inline mb-3">
+            {{ filter('form_begin', 'admin_role_acl_add') |raw }}
+            <input type="hidden" name="f" value="add">
+            <div class="form-group">
+                <label for="action"><strong>{{ __('label_new_permission') }}</strong></label>
+                <select data-label="Action" id="action" required class="form-control mx-2">
+                    <option selected disabled>{{ __('label_action') }}...</option>
+                    <option value="*">* {{ __('label_any_action') }}</option>
+                    {% for action in actions %}
+                        <option>{{ action }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group">
+                <select data-label="Object Type" id="objectType" required class="form-control mx-2">
+                    <option selected disabled>{{ __('label_type') }}...</option>
+                    <option value="*">* {{ __('label_any_type') }}</option>
+                    {% for objectType in objectTypes %}
+                        <option>{{ objectType }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group">
+                <input data-label="Object ID" placeholder="Object ID" id="objectId" class="form-control mx-2">
+            </div>
+            <button type="submit" class="btn btn-primary"><span class="fg-ok"><span class="glyphicon glyphicon-plus"></span></span> {{ __('label_add') }}</button>
+        </form>
+    {% endif %}
 
-{% if pass('can', 'view', 'role') %}
-	{% set canEdit = pass('can', 'edit', 'role') %}
-	<ul class="nav nav-tabs">
-		{% set first = true %}
-		{% for roleId in roles %}
-		<li{% if roleId == role %} class="active"{% endif %}>{{ lib.format_role(roleId) }}</li>
-			{% set first = false %}
-		{% endfor %}
-	</ul>
-	<div class="tab-content">
-			<div class="tab-pane active in" id="{{ role }}">
-				<div class="table-responsive">
-					<table class="table table-hover table-condensed">
-						<thead>
-							<tr>
-								<th>&nbsp;</th>
-								<th>{{ __('label_action') }}</th>
-								<th>{{ __('label_type') }}</th>
-								<th>objectId</th>
-							</tr>
-						</thead>
-						<tbody>
-							{% set aclDelNonce = filter('form_begin', 'admin_role_acl_del') %}
-							{% for right in rights %}
-							<tr>
-								<td class="fit">
-									{% if not canEdit or (role == 'admin' and right.action == '*') or (role == 'member' and right.action == 'login') %}
-										&nbsp;
-									{% else %}
-										<form id="admin_role_acl_del" class="form-toolbar" method="post">
-											{{ aclDelNonce |raw }}
-											<input type="hidden" name="f" value="del">
-											<input type="hidden" name="role" value="{{ role }}">
-											<input type="hidden" name="action" value="{{ right.action }}">
-											<input type="hidden" name="objectType" value="{{ right.objectType }}">
-											<input type="hidden" name="objectId" value="{{ right.objectId }}">
-											<button type="submit" class="btn btn-link fg-err"><span class="glyphicon glyphicon-minus"></span></button>
-										</form>
-									{% endif %}
-								</td>
-								<td class="fit">{% if right.action == '*' %}<em>{{ __('label_any_action') }}</em>{% else %}{{ right.action }}{% endif %}</td>
-								<td class="fit">{% if right.objectType == '*' %}<em>{{ __('label_any_type') }}</em>{% else %}{{ right.objectType }}{% endif %}</td>
-								<td>{% if right.objectId == 0 %}<em>{{ __('label_all') }}</em>{% else %}{{ right.objectId }}{% endif %}</td>
-							</tr>
-							{% endfor %}
-							{% if rights|length == 0 %}
-							<tr><td colspan="4"><em>{{ __('no_permission') }}</em></td></tr>
-							{% endif %}
-						</tbody>
-					</table>
-				</div>
-			</div>
-	</div>
-{% endif %}
+    {% if pass('can', 'view', 'role') %}
+        {% set canEdit = pass('can', 'edit', 'role') %}
+        <ul class="nav nav-tabs">
+            {% set first = true %}
+            {% for roleId in roles %}
+                <li class="nav-item">
+                    <a class="nav-link {% if roleId == role %}active{% endif %}" href="#{{ roleId }}" data-toggle="tab">{{ lib.format_role(roleId) }}</a>
+                </li>
+                {% set first = false %}
+            {% endfor %}
+        </ul>
+        <div class="tab-content mt-3">
+            {% for roleId in roles %}
+                <div class="tab-pane {% if roleId == role %}active{% endif %}" id="{{ roleId }}">
+                    <div class="table-responsive">
+                        <table class="table table-hover table-condensed">
+                            <thead>
+                                <tr>
+                                    <th>&nbsp;</th>
+                                    <th>{{ __('label_action') }}</th>
+                                    <th>{{ __('label_type') }}</th>
+                                    <th>objectId</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% set aclDelNonce = filter('form_begin', 'admin_role_acl_del') %}
+                                {% for right in rights %}
+                                    <tr>
+                                        <td class="fit">
+                                            {% if not canEdit or (role == 'admin' and right.action == '*') or (role == 'member' and right.action == 'login') %}
+                                                &nbsp;
+                                            {% else %}
+                                                <form id="admin_role_acl_del" class="form-inline" method="post">
+                                                    {{ aclDelNonce |raw }}
+                                                    <input type="hidden" name="f" value="del">
+                                                    <input type="hidden" name="role" value="{{ role }}">
+                                                    <input type="hidden" name="action" value="{{ right.action }}">
+                                                    <input type="hidden" name="objectType" value="{{ right.objectType }}">
+                                                    <input type="hidden" name="objectId" value="{{ right.objectId }}">
+                                                    <button type="submit" class="btn btn-link text-danger"><span class="glyphicon glyphicon-minus"></span></button>
+                                                </form>
+                                            {% endif %}
+                                        </td>
+                                        <td class="fit">{% if right.action == '*' %}<em>{{ __('label_any_action') }}</em>{% else %}{{ right.action }}{% endif %}</td>
+                                        <td class="fit">{% if right.objectType == '*' %}<em>{{ __('label_any_type') }}</em>{% else %}{{ right.objectType }}{% endif %}</td>
+                                        <td>{% if right.objectId == 0 %}<em>{{ __('label_all') }}</em>{% else %}{{ right.objectId }}{% endif %}</td>
+                                    </tr>
+                                {% endfor %}
+                                {% if rights|length == 0 %}
+                                    <tr><td colspan="4"><em>{{ __('no_permission') }}</em></td></tr>
+                                {% endif %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+</div>

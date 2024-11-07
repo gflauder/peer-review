@@ -1,42 +1,42 @@
 {% import 'lib.twig' as lib %}
 {% if reviews|length > 0 %}
-	<table class="table table-condensed">
-		{% set form_begin_review = filter('form_begin', 'review') %}
-		{% for status in config.reviews.states_wip %}
-			{% if reviews[status] |length > 0 %}
-				{# Help gettext's msgmerge:
-					__('title_peer_created')
-					__('title_peer_reviewing')
-				#}
-				<tbody class="spaced">
-					<tr class="panel-info"><td colspan="3" class="panel-heading">{{ __('title_peer_'~status) }}</td></tr>
-					<tr>
-						<th>{{ __('label_deadline') }}</th>
-						<th colspan="2">{{ __('title_articles') }}</th>
-					</tr>
-					{% for review in reviews[status] %}
-						<tr>
-							<td class="fit">{{ review.deadline }}</td>
-							<td>{{ lib.format_article(review.articleId) }}</td>
-							<td>
-								{% if status == 'created' %}
-									<form action="{{ req.base }}/articles/{{ review.articleId }}" id="review" method="post" class="form-inline">
-										{{ form_begin_review |raw }}
-										<input type="hidden" name="review" value="1">
-										<input type="hidden" name="id" value="{{ review.id }}">
-										<div class="dropdown-header">{{ __('hint_review_accept') }}:</div>
-										<button class="btn btn-outline-secondary btn-sm" type="submit" name="status" value="reviewing"><span class="glyphicon glyphicon-ok fg-ok"></span> {{ __('label_accept') }}</button>
+    <table class="table table-condensed">
+        {% set form_begin_review = filter('form_begin', 'review') %}
+        {% for status in config.reviews.states_wip %}
+            {% if reviews[status] |length > 0 %}
+                {# Help gettext's msgmerge:
+                    __('title_peer_created')
+                    __('title_peer_reviewing')
+                #}
+                <tbody class="spaced">
+                    <tr class="table-info"><td colspan="3" class="table-heading">{{ __('title_peer_'~status) }}</td></tr>
+                    <tr>
+                        <th>{{ __('label_deadline') }}</th>
+                        <th colspan="2">{{ __('title_articles') }}</th>
+                    </tr>
+                    {% for review in reviews[status] %}
+                        <tr>
+                            <td class="fit">{{ review.deadline }}</td>
+                            <td>{{ lib.format_article(review.articleId) }}</td>
+                            <td>
+                                {% if status == 'created' %}
+                                    <form action="{{ req.base }}/articles/{{ review.articleId }}" id="review" method="post" class="form-inline">
+                                        {{ form_begin_review |raw }}
+                                        <input type="hidden" name="review" value="1">
+                                        <input type="hidden" name="id" value="{{ review.id }}">
+                                        <div class="dropdown-header">{{ __('hint_review_accept') }}:</div>
+                                        <button class="btn btn-outline-secondary btn-sm" type="submit" name="status" value="reviewing"><span class="glyphicon glyphicon-ok text-success"></span> {{ __('label_accept') }}</button>
 
-										<div class="dropdown-header">{{ __('hint_review_decline') }}:</div>
-										<div><input type="text" name="log" value="" placeholder="{{ __('hint_suggestions') }}" class="form-control no-submit"></div>
-										<button class="btn btn-outline-secondary btn-sm" type="submit" name="status" value="deleted"><span class="glyphicon glyphicon-remove fg-err"></span> {{ __('label_decline') }}</button>
-									</form>
-								{% endif %}
-							</td>
-						</tr>
-					{% endfor %}
-				</tbody>
-			{% endif %}
-		{% endfor %}
-	</table>
+                                        <div class="dropdown-header">{{ __('hint_review_decline') }}:</div>
+                                        <div><input type="text" name="log" value="" placeholder="{{ __('hint_suggestions') }}" class="form-control no-submit"></div>
+                                        <button class="btn btn-outline-secondary btn-sm" type="submit" name="status" value="deleted"><span class="glyphicon glyphicon-remove text-danger"></span> {{ __('label_decline') }}</button>
+                                    </form>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            {% endif %}
+        {% endfor %}
+    </table>
 {% endif %}

@@ -1,34 +1,38 @@
 <form id="user_prefs" method="post" class="form-tight">
-	{% if modal %}
-		<input type="hidden" name="email" value="">
-	{% else %}
-		{{ filter('form_begin', 'user_prefs') |raw }}
-	{% endif %}
-	{% if not modal and user.id != session.user.id and pass('can', 'edit', 'user', user.id) %}
-		<input type="hidden" name="id" value="{{ user.id }}">
-		<div class="form-group">
-			<input data-label="{{ __('label_email') }}" type="email" id="email" value="{{ user.email }}" required maxlength="100"{% if not modal and not user.active %} disabled{% endif %}>
-		</div>
-	{% endif %}
-	<div class="form-group">
-		<input data-colsize="9" data-label="{{ __('label_name') }}" type="text" id="name" value="{{ user.name }}" required minlength="2" maxlength="100"{% if not modal and not user.active %} disabled{% endif %}>
-		<select data-colsize="3" data-label="{{ __('label_gender') }}" name="gender" required{% if not modal and not user.active %} disabled{% endif %}>
-			<option disabled{% if not user.id %} selected{% endif %}>{{ __('label_gender') }}...</option>
-			<option {% if user.id and user.gender == 'X' %}selected {% endif %}value="X">{{ __('label_nogender') }}</option>
-			<option {% if user.id and user.gender == 'F' %}selected {% endif %}value="F">{{ __('label_female') }}</option>
-			<option {% if user.id and user.gender == 'M' %}selected {% endif %}value="M">{{ __('label_male') }}</option>
-			<option {% if user.id and user.gender == 'O' %}selected {% endif %}value="O">{{ __('label_othergender') }}</option>
-		</select>
-	</div>
-	<div class="form-group">
-		<input data-label="{{ __('label_profession') }}" type="text" id="profession" value="{{ user.profession }}" minlength="3" maxlength="100" required{% if not modal and not user.active %} disabled{% endif %}>
-		<input data-label="{{ __('label_employer') }}" type="text" id="employer" value="{{ user.employer }}" minlength="3" maxlength="100"{% if not modal and not user.active %} disabled{% endif %}>
-	</div>
-	{% if not modal and user.id != session.user.id and pass('can', 'edit', 'user', user.id) %}
-		<div class="form-group hideaway">
-			<input data-label="{{ __('label_new_password') }}" type="password" id="newpassword1" minlength="8" maxlength="72" placeholder="{{ __('hint_new_password') }}" class="hideaway-focus">
-			<input data-label="{{ __('label_again_password') }}" type="password" id="newpassword2" maxlength="72" placeholder="{{ __('hint_again_password') }}" data-parsley-equalto="#newpassword1" data-parsley-validate-if-empty>
-		</div>
-		<button type="submit"{% if not user.active %} disabled{% endif %}><span class="fg-ok"><span class="glyphicon glyphicon-ok"></span></span> {{ __('label_save') }}</button>
-	{% endif %}
+    {% if modal %}
+        <input type="hidden" name="email" value="">
+    {% else %}
+        {{ filter('form_begin', 'user_prefs') |raw }}
+    {% endif %}
+    {% if not modal and user.id != session.user.id and pass('can', 'edit', 'user', user.id) %}
+        <input type="hidden" name="id" value="{{ user.id }}">
+        <div class="form-group">
+            <input data-label="{{ __('label_email') }}" type="email" id="email" value="{{ user.email }}" required maxlength="100" class="form-control"{% if not modal and not user.active %} disabled{% endif %}>
+        </div>
+    {% endif %}
+    <div class="form-group row">
+        <div class="col-md-9">
+            <input data-colsize="9" data-label="{{ __('label_name') }}" type="text" id="name" value="{{ user.name }}" required minlength="2" maxlength="100" class="form-control"{% if not modal and not user.active %} disabled{% endif %}>
+        </div>
+        <div class="col-md-3">
+            <select data-colsize="3" data-label="{{ __('label_gender') }}" name="gender" required class="form-control"{% if not modal and not user.active %} disabled{% endif %}>
+                <option disabled{% if not user.id %} selected{% endif %}>{{ __('label_gender') }}...</option>
+                <option {% if user.id and user.gender == 'X' %}selected {% endif %}value="X">{{ __('label_nogender') }}</option>
+                <option {% if user.id and user.gender == 'F' %}selected {% endif %}value="F">{{ __('label_female') }}</option>
+                <option {% if user.id and user.gender == 'M' %}selected {% endif %}value="M">{{ __('label_male') }}</option>
+                <option {% if user.id and user.gender == 'O' %}selected {% endif %}value="O">{{ __('label_othergender') }}</option>
+            </select>
+        </div>
+    </div>
+    <div class="form-group">
+        <input data-label="{{ __('label_profession') }}" type="text" id="profession" value="{{ user.profession }}" minlength="3" maxlength="100" required class="form-control"{% if not modal and not user.active %} disabled{% endif %}>
+        <input data-label="{{ __('label_employer') }}" type="text" id="employer" value="{{ user.employer }}" minlength="3" maxlength="100" class="form-control"{% if not modal and not user.active %} disabled{% endif %}>
+    </div>
+    {% if not modal and user.id != session.user.id and pass('can', 'edit', 'user', user.id) %}
+        <div class="form-group hideaway">
+            <input data-label="{{ __('label_new_password') }}" type="password" id="newpassword1" minlength="8" maxlength="72" placeholder="{{ __('hint_new_password') }}" class="form-control hideaway-focus">
+            <input data-label="{{ __('label_again_password') }}" type="password" id="newpassword2" maxlength="72" placeholder="{{ __('hint_again_password') }}" data-parsley-equalto="#newpassword1" data-parsley-validate-if-empty class="form-control">
+        </div>
+        <button type="submit" class="btn btn-primary"{% if not user.active %} disabled{% endif %}><span class="fg-ok"><span class="glyphicon glyphicon-ok"></span></span> {{ __('label_save') }}</button>
+    {% endif %}
 </form>

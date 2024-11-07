@@ -2,55 +2,108 @@
 {% use 'blocks.html' %}
 {{ title(__('title_register')) }}
 {% if created %}
-	{% if success %}
-		{{ lib.alert(success, __('register_success')) }}
-	{% else %}
-		{{ lib.alert(success, __('register_failure')) }}
-	{% endif %}
-	{% exit %}
+    {% if success %}
+        {{ lib.alert(success, __('register_success')) }}
+    {% else %}
+        {{ lib.alert(success, __('register_failure')) }}
+    {% endif %}
+    {% exit %}
 {% endif %}
 
-<div class="panel panel-default">
-	<div class="panel-heading">
-		<h2>{{ __('title_register') }}</h2>
-	</div>
-	<div class="panel-body">
-		<form class="form-tight" method="post" id="registration">
-			{{ filter('form_begin', 'registration') |raw }}
-			<div class="form-group">
-				<input data-label="{{ __('label_email') }}" type="email" id="email" placeholder="{{ __('hint_email') }}" maxlength="100" tabindex="10" required>
-			</div>
-			<div class="form-group">
-				<input data-colsize="9" data-label="{{ __('label_name') }}" type="text" id="name" minlength="3" maxlength="100" tabindex="11" required>
-				<select data-colsize="3" data-label="{{ __('label_gender') }}" name="isMale" tabindex="12" required>
-					<option selected disabled>{{ __('label_gender') }}...</option>
-					<option value="X">{{ __('label_nogender') }}</option>
-					<option value="F">{{ __('label_female') }}</option>
-					<option value="M">{{ __('label_male') }}</option>
-					<option value="O">{{ __('label_othergender') }}</option>
-				</select>
-			</div>
-			<div class="form-group">
-				<input data-label="{{ __('label_profession') }}" type="text" id="profession" minlength="3" maxlength="100" tabindex="13" required>
-				<input data-label="{{ __('label_employer') }}" type="text" id="employer" minlength="3" maxlength="100" tabindex="14">
-			</div>
-
-			<div class="optional hideaway">
-				{{ block('hint_password_creation') }}
-				{% if session.user.id %}
-					{% set pass_type = 'text' %}
-					{% set pass_name = 'token' %}
-				{% else %}
-					{% set pass_type = 'password' %}
-					{% set pass_name = 'password' %}
-				{% endif %}
-				<div class="form-group">
-					<input data-label="{{ __('label_new_password') }}" type="{{ pass_type }}" id="{{ pass_name }}" minlength="8" maxlength="72" tabindex="15" class="input-password hideaway-focus">
-					<input data-label="{{ __('label_again_password') }}" type="{{ pass_type }}" id="{{ pass_name }}2" data-parsley-equalto="#{{ pass_name }}" data-parsley-validate-if-empty tabindex="16" class="input-password">
-				</div>
-			</div>
-
-			<button type="submit" tabindex="17"><span class="fg-ok"><span class="glyphicon glyphicon-envelope"></span></span> {{ __('label_emailconfirm') }}</button>
-		</form>
-	</div>
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h2>{{ __('title_register') }}</h2>
+                </div>
+                <div class="card-body">
+                    <form method="post" id="registration" class="needs-validation" novalidate>
+                        {{ filter('form_begin', 'registration') |raw }}
+                        <div class="mb-3">
+                            <label for="email" class="form-label">{{ __('label_email') }}</label>
+                            <input type="email" class="form-control" id="email" placeholder="{{ __('hint_email') }}"
+                                   maxlength="100" required>
+                            <div class="invalid-feedback">
+                                Please provide a valid email.
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="name" class="form-label">{{ __('label_name') }}</label>
+                            <input type="text" class="form-control" id="name" minlength="3" maxlength="100" required>
+                            <div class="invalid-feedback">
+                                Please provide a valid name.
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="isMale" class="form-label">{{ __('label_gender') }}</label>
+                            <select class="form-select" id="isMale" required>
+                                <option selected disabled>{{ __('label_gender') }}...</option>
+                                <option value="X">{{ __('label_nogender') }}</option>
+                                <option value="F">{{ __('label_female') }}</option>
+                                <option value="M">{{ __('label_male') }}</option>
+                                <option value="O">{{ __('label_othergender') }}</option>
+                            </select>
+                            <div class="invalid-feedback">
+                                Please select a gender.
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="profession" class="form-label">{{ __('label_profession') }}</label>
+                            <input type="text" class="form-control" id="profession" minlength="3" maxlength="100"
+                                   required>
+                            <div class="invalid-feedback">
+                                Please provide a valid profession.
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="employer" class="form-label">{{ __('label_employer') }}</label>
+                            <input type="text" class="form-control" id="employer" minlength="3" maxlength="100">
+                            <div class="invalid-feedback">
+                                Please provide a valid employer.
+                            </div>
+                        </div>
+                        <div class="optional hideaway">
+                            {{ block('hint_password_creation') }}
+                            {% if session.user.id %}
+                                {% set pass_type = 'text' %}
+                                {% set pass_name = 'token' %}
+                            {% else %}
+                                {% set pass_type = 'password' %}
+                                {% set pass_name = 'password' %}
+                            {% endif %}
+                            <div class="mb-3">
+                                <label for="{{ pass_name }}" class="form-label">{{ __('label_new_password') }}</label>
+                                <input type="{{ pass_type }}" class="form-control" id="{{ pass_name }}" minlength="8"
+                                       maxlength="72" required>
+                                <div class="invalid-feedback">
+                                    Please provide a valid password.
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="{{ pass_name }}2"
+                                       class="form-label">{{ __('label_again_password') }}</label>
+                                <input type="{{ pass_type }}" class="form-control" id="{{ pass_name }}2"
+                                       data-parsley-equalto="#{{ pass_name }}" required>
+                                <div class="invalid-feedback">
+                                    Passwords must match.
+                                </div>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary"><span class="fg-ok"><span
+                                        class="glyphicon glyphicon-envelope"></span></span> {{ __('label_emailconfirm') }}
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+
+
+<style>
+
+    #main {
+        margin-left: 0;
+    }
+</style>

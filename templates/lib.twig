@@ -1,11 +1,9 @@
 {% macro alert(good, body) %}
-<div class="alert alert-{% if good %}success{% else %}danger{% endif %} alert-dismissable" role="alert">
-	<button type="button" class="close" data-dismiss="alert" aria-label="{{ __('label_close') }}">
-		<span aria-hidden="true">&times;</span>
-	</button>
-	<span class="glyphicon glyphicon-alert" aria-hidden="true"></span>
-	{{ body }}
-</div>
+	<div class="alert alert-{% if good %}success{% else %}danger{% endif %} alert-dismissible" role="alert">
+		<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="{{ __('label_close') }}"></button>
+		<span class="bi bi-exclamation-triangle" aria-hidden="true"></span>
+		{{ body }}
+	</div>
 {% endmacro %}
 
 {% macro warning(level, code, args) %}
@@ -18,15 +16,9 @@
 	{% else %}
 		{% set context = 'warning' %}
 	{% endif %}
-	<div class="alert alert-{{ context }} alert-dismissable" role="alert">
-		<button type="button" class="close" data-dismiss="alert" aria-label="{{ __('label_close') }}">
-			<span aria-hidden="true">&times;</span>
-		</button>
-		<span class="glyphicon glyphicon-alert" aria-hidden="true"></span>
-		{# Help gettext's msgmerge:
-			__('warning_file_type')
-			__('warning_redirect_created')
-		#}
+	<div class="alert alert-{{ context }} alert-dismissible" role="alert">
+		<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="{{ __('label_close') }}"></button>
+		<span class="bi bi-exclamation-triangle" aria-hidden="true"></span>
 		{{ __('warning_'~code) }}
 		{% for arg in args %}
 			{% if arg starts with 'http://' or arg starts with 'https://' %}
@@ -40,16 +32,16 @@
 
 {% macro flashbox(context, text, target, target_label) %}
 	<div class="col-lg-3 col-md-6">
-		<div class="panel panel-{{ context }}">
-			<div class="panel-heading">
+		<div class="card text-white bg-{{ context }} mb-3">
+			<div class="card-header">
 				<div class="row">
 					{{ text |raw }}
 				</div>
 			</div>
-			<a href="{{ target }}">
-				<div class="panel-footer">
-					<span class="pull-left">{{ target_label }}</span>
-					<span class="pull-right"><span class="glyphicon glyphicon-circle-arrow-right"></span></span>
+			<a href="{{ target }}" class="stretched-link">
+				<div class="card-footer">
+					<span class="float-start">{{ target_label }}</span>
+					<span class="float-end"><span class="bi bi-arrow-right-circle"></span></span>
 					<div class="clearfix"></div>
 				</div>
 			</a>
@@ -57,13 +49,13 @@
 	</div>
 {% endmacro %}
 
-{% macro counter(glyphicon, context, count, text, target) %}
+{% macro counter(bi, context, count, text, target) %}
 	{% import _self as lib %}
 	{% set inside %}
-		<div class="col-xs-3">
-			<span class="glyphicon glyphicon-{{ glyphicon }} grow-5x"></span>
+		<div class="col-3">
+			<span class="bi bi-{{ bi }} grow-5x"></span>
 		</div>
-		<div class="col-xs-9 text-right">
+		<div class="col-9 text-end">
 			<div class="grow-3x">{{ count }}</div>
 			<div>{{ text }}</div>
 		</div>
@@ -84,11 +76,11 @@
 {% endmacro %}
 
 {% macro format_ip(ip) -%}
-<a href="http://www.ip-adress.com/ip_tracer/{{ ip }}">{{ ip }}</a>
+	<a href="http://www.ip-adress.com/ip_tracer/{{ ip }}">{{ ip }}</a>
 {%- endmacro %}
 
 {% macro format_email(email) -%}
-<a href="mailto:{{ email }}"><span class="glyphicon glyphicon-envelope"></span>{{ email }}</a>
+	<a href="mailto:{{ email }}"><span class="bi bi-envelope"></span>{{ email }}</a>
 {%- endmacro %}
 
 {% macro format_bytes(bytes) -%}
@@ -102,49 +94,31 @@
 {%- endmacro %}
 
 {% macro format_status(status, act, nohtml) -%}
-	{# Help gettext's msgmerge:
-		__('status_created')
-		__('status_reviewing')
-		__('status_revision')
-		__('status_approved')
-		__('status_printing')
-		__('status_published')
-		__('status_rejected')
-		__('status_deleted')
-		__('status_change_created')
-		__('status_change_reviewing')
-		__('status_change_revision')
-		__('status_change_approved')
-		__('status_change_printing')
-		__('status_change_published')
-		__('status_change_rejected')
-		__('status_change_deleted')
-	#}
 	{%- if act -%}
 		{% set label = __('status_change_'~status) %}
 	{%- else -%}
 		{% set label = __('status_'~status) %}
 	{%- endif -%}
 	{%- if not nohtml -%}<span class="status">{%- endif -%}
-		{%- if status == 'created' -%}
-			{%- if not nohtml %}<span class="glyphicon glyphicon-star fg-new"></span> {% endif %}{{ label }}
+	{%- if status == 'created' -%}
+		{%- if not nohtml %}<span class="bi bi-star fg-new"></span> {% endif %}{{ label }}
 		{%- elseif status == 'reviewing' -%}
-			{%- if not nohtml %}<span class="glyphicon glyphicon-time fg-pending"></span> {% endif %}{{ label }}
+		{%- if not nohtml %}<span class="bi bi-clock fg-pending"></span> {% endif %}{{ label }}
 		{%- elseif status == 'revision' -%}
-			{%- if not nohtml %}<span class="glyphicon glyphicon-flag fg-stalled"></span> {% endif %}{{ label }}
+		{%- if not nohtml %}<span class="bi bi-flag fg-stalled"></span> {% endif %}{{ label }}
 		{%- elseif status == 'approved' -%}
-			{%- if not nohtml %}<span class="glyphicon glyphicon-ok fg-ok"></span> {% endif %}{{ label }}
+		{%- if not nohtml %}<span class="bi bi-check fg-ok"></span> {% endif %}{{ label }}
 		{%- elseif status == 'printing' -%}
-			{%- if not nohtml %}<span class="glyphicon glyphicon-flag fg-stalled"></span> {% endif %}{{ label }}
+		{%- if not nohtml %}<span class="bi bi-flag fg-stalled"></span> {% endif %}{{ label }}
 		{%- elseif status == 'published' -%}
-			{%- if not nohtml %}<span class="glyphicon glyphicon-lock fg-ok"></span> {% endif %}{{ label }}
+		{%- if not nohtml %}<span class="bi bi-lock fg-ok"></span> {% endif %}{{ label }}
 		{%- elseif status == 'rejected' -%}
-			{%- if not nohtml %}<span class="glyphicon glyphicon-remove fg-err"></span> {% endif %}{{ label }}
+		{%- if not nohtml %}<span class="bi bi-x fg-err"></span> {% endif %}{{ label }}
 		{%- elseif status == 'deleted' -%}
-			{%- if not nohtml %}<span class="glyphicon glyphicon-trash fg-err"></span> {% endif %}{{ label }}
+		{%- if not nohtml %}<span class="bi bi-trash fg-err"></span> {% endif %}{{ label }}
 		{%- else -%}
-			{%- if not nohtml %}<span class="glyphicon glyphicon-question-sign fg-err"></span> {% endif %}{{ __('status_unknown') }}
-		{%- endif -%}
+		{%- if not nohtml %}<span class="bi bi-question-circle fg-err"></span> {% endif %}{{ __('status_unknown') }}
+	{%- endif -%}
 	{%- if not nohtml -%}</span>{%- endif -%}
 {%- endmacro %}
 
@@ -158,18 +132,18 @@
 		{%- endif -%}
 	{%- endif -%}
 	{%- if user and user.id == 0 -%}
-		<span class="glyphicon glyphicon-user"></span>{{ __('user_zero') }}
+		<span class="bi bi-person"></span>{{ __('user_zero') }}
 	{%- else -%}
 		{%- if user != false -%}
 			{%- if pass('can', 'view', 'user', id) and not flat -%}
-				<a href="{{ req.base }}/admin/users/edit?id={{ user.id }}">{% if not user.active %}<s>{% endif %}<span class="glyphicon glyphicon-user"></span>{{ user.name|default(__('user_new')) }}{% if not user.active %}</s>{% endif %}</a>
+				<a href="{{ req.base }}/admin/users/edit?id={{ user.id }}">{% if not user.active %}<s>{% endif %}<span class="bi bi-person"></span>{{ user.name|default(__('user_new')) }}{% if not user.active %}</s>{% endif %}</a>
 			{%- elseif nohtml -%}
 				{{ user.name|default(__('user_new')) }}{% if withmail %} &lt;{{ pass('can', 'view', 'user', id) ? user.email : filter('protect_email', user.email) }}&gt;{% endif %}
 			{%- else -%}
-				{% if not user.active %}<s>{% endif %}<span class="glyphicon glyphicon-user"></span>{{ user.name|default(__('user_new')) }}{% if withmail %} &lt;<a href="mailto:{{ user.email }}">{{ user.email }}</a>&gt;{% endif %}{% if not user.active %}</s>{% endif %}
+				{% if not user.active %}<s>{% endif %}<span class="bi bi-person"></span>{{ user.name|default(__('user_new')) }}{% if withmail %} &lt;<a href="mailto:{{ user.email }}">{{ user.email }}</a>&gt;{% endif %}{% if not user.active %}</s>{% endif %}
 			{%- endif -%}
 		{%- else -%}
-			<span class="glyphicon glyphicon-user"></span>{{ __('user_unknown') }}
+			<span class="bi bi-person"></span>{{ __('user_unknown') }}
 		{%- endif -%}
 	{%- endif -%}
 {%- endmacro %}
@@ -181,21 +155,12 @@
 {% endmacro %}
 
 {% macro format_role(role, flat) -%}
-	{# Help gettext's msgmerge:
-		__('role_admin')
-		__('role_member')
-		__('role_editor-in-chief')
-		__('role_editor')
-		__('role_author')
-		__('role_peer')
-		__('role_reader')
-	#}
 	{%- set name = __('role_'~role) -%}
 	{%- set req = grab('request') -%}
 	{%- if pass('can', 'view', 'role', role) and not flat -%}
-		<a href="{{ req.base }}/admin/roles/{{ role }}"><span class="glyphicon glyphicon-education"></span>{{ name }}</a>
+		<a href="{{ req.base }}/admin/roles/{{ role }}"><span class="bi bi-mortarboard"></span>{{ name }}</a>
 	{%- else -%}
-		<span class="glyphicon glyphicon-education"></span>{{ name }}
+		<span class="bi bi-mortarboard"></span>{{ name }}
 	{%- endif -%}
 {%- endmacro %}
 
@@ -206,9 +171,9 @@
 	{%- elseif role == 'admin' %}{% set v = 'danger' -%}
 	{%- elseif role == 'author' %}{% set v = 'primary' -%}
 	{%- elseif role == 'peer' %}{% set v = 'warning' -%}
-	{%- else %}{% set v = 'default' -%}
+	{%- else %}{% set v = 'secondary' -%}
 	{%- endif -%}
-	<span class="label label-{{ v }}">{{ lib.format_role(role, flat) }}</span>
+	<span class="badge bg-{{ v }}">{{ lib.format_role(role, flat) }}</span>
 {%- endmacro %}
 {% macro label_roles(roles, flat) %}
 	{% import _self as lib %}
@@ -218,17 +183,6 @@
 {% endmacro %}
 
 {% macro label_field(field) -%}
-	{# Help gettext's msgmerge:
-	   __('label_issueId')
-		__('label_wordCount')
-		__('label_title')
-		__('label_keywords')
-		__('label_abstract')
-		__('label_volume')
-		__('label_number')
-		__('label_publication')
-		__('label_description')
-	#}
 	{{ __('label_'~field) }}
 {%- endmacro %}
 
@@ -239,18 +193,18 @@
 	{%- endif -%}
 	{%- if issue != false -%}
 		{%- if pass('can', 'view', 'issue', issue.id) and not flat -%}
-			<a href="{{ req.base }}/issues/{{ issue.id }}/{{ issue.permalink }}"><span class="glyphicon glyphicon-book"></span>{{ issue.volume ? issue.volume~'.' : '' }}{{ issue.number }} {{ issue.title }}</a>
+			<a href="{{ req.base }}/issues/{{ issue.id }}/{{ issue.permalink }}"><span class="bi bi-book"></span>{{ issue.volume ? issue.volume~'.' : '' }}{{ issue.number }} {{ issue.title }}</a>
 		{%- else -%}
-			{% if not nohtml %}<span class="glyphicon glyphicon-book"></span>{% endif %}{{ issue.volume ? issue.volume~'.' : '' }}{{ issue.number }} {{ issue.title }}
+			{% if not nohtml %}<span class="bi bi-book"></span>{% endif %}{{ issue.volume ? issue.volume~'.' : '' }}{{ issue.number }} {{ issue.title }}
 		{%- endif -%}
 		{%- if withdate -%}
 			&nbsp; <small>{{ issue.publication }}</small>
 		{%- endif -%}
 	{%- else -%}
 		{%- if pass('can', 'view', 'issue', 0) and not flat -%}
-			<a href="{{ req.base }}/issues/0"><span class="glyphicon glyphicon-book"></span>{{ __('issue_zero') }}</a>
+			<a href="{{ req.base }}/issues/0"><span class="bi bi-book"></span>{{ __('issue_zero') }}</a>
 		{%- else -%}
-			{%- if not nohtml %}<span class="glyphicon glyphicon-book"></span>{% endif %}{{ __('issue_zero') }}
+			{%- if not nohtml %}<span class="bi bi-book"></span>{% endif %}{{ __('issue_zero') }}
 		{%- endif -%}
 	{%- endif -%}
 {%- endmacro %}
@@ -262,17 +216,17 @@
 	{%- endif -%}
 	{%- if article != false -%}
 		{%- if (
-				pass('can', 'view', 'article', article.id)
-				or pass('can', 'edit', 'article', article.id)
-				or pass('can', 'view', 'issue', article.issueId)
-				or article.versions|last.isPeer
+			pass('can', 'view', 'article', article.id)
+			or pass('can', 'edit', 'article', article.id)
+			or pass('can', 'view', 'issue', article.issueId)
+			or article.versions|last.isPeer
 			) and not flat -%}
-			<a href="{{ req.base }}/articles/{{ article.id }}/{{ article.permalink }}"><span class="glyphicon glyphicon-align-left"></span>{{ article.title }}</a>
+			<a href="{{ req.base }}/articles/{{ article.id }}/{{ article.permalink }}"><span class="bi bi-align-left"></span>{{ article.title }}</a>
 		{%- else -%}
-			{%- if not nohtml %}<span class="glyphicon glyphicon-align-left"></span>{% endif %}{{ article.title }}
+			{%- if not nohtml %}<span class="bi bi-align-left"></span>{% endif %}{{ article.title }}
 		{%- endif -%}
 	{%- else -%}
-		{%- if not nohtml %}<span class="glyphicon glyphicon-align-left"></span>{% endif %}{{ __('article_unknown') }}
+		{%- if not nohtml %}<span class="bi bi-align-left"></span>{% endif %}{{ __('article_unknown') }}
 	{%- endif -%}
 {%- endmacro %}
 
@@ -311,43 +265,43 @@
 	<input type="hidden" name="_{{ role }}s" value="1">
 	<select data-label="{{ label }}" {% if maxcount %}data-maxcount="{{ maxcount }}"{% endif %} placeholder="{{ __('hint_selectusers') }}" id="{{ role }}s[]" class="users{% if not nocreate and pass('can', 'create', 'user') %}-create{% endif %} feedback-user" multiple>
 		{% for user in selected %}
-			<option value="{{ user }}" selected>{{ lib.format_user(user, true, true, true) }}
-		{% endfor %}
-		{% if role %}
-			{% for user in grab('all_users') %}
-				{% if user not in selected %}
-					{% set times = grab('peer_last_choices', user) %}
-					<option value="{{ user }}"
-						{% if role == 'peer' -%}
-							data-label-lastaccepted="{{ __('label_last_accepted') }}"
-							data-val-lastaccepted="{{ times.accepted |default(__('label_never')) }}"
-							data-label-lastrefused="{{ __('label_last_refused') }}"
-							data-val-lastrefused="{{ times.refused |default(__('label_never')) }}"
-						{%- endif -%}
-					>{{ lib.format_user(user, true, true, true) }}
-				{% endif %}
+		<option value="{{ user }}" selected>{{ lib.format_user(user, true, true, true) }}
 			{% endfor %}
-		{% endif %}
+			{% if role %}
+			{% for user in grab('all_users') %}
+			{% if user not in selected %}
+			{% set times = grab('peer_last_choices', user) %}
+		<option value="{{ user }}"
+				{% if role == 'peer' -%}
+					data-label-lastaccepted="{{ __('label_last_accepted') }}"
+					data-val-lastaccepted="{{ times.accepted |default(__('label_never')) }}"
+					data-label-lastrefused="{{ __('label_last_refused') }}"
+					data-val-lastrefused="{{ times.refused |default(__('label_never')) }}"
+				{%- endif -%}
+		>{{ lib.format_user(user, true, true, true) }}
+			{% endif %}
+			{% endfor %}
+			{% endif %}
 	</select>
 {% endmacro %}
 
 {% macro input_file(id, size, required) %}
 	<div class="fileupload-single btn-group{% if size %} btn-group-{{ size }}{% endif %}" role="group">
 		<label for="{{ id }}" class="btn btn-outline-secondary btn-file{% if size %} btn-{{ size }}{% endif %}">
-			<span class="glyphicon glyphicon-plus"></span> {{ __('label_new_file') }}...
-			<input type="file" name="{{ id }}" id="{{ id }}" class="hidden"{{ required ? ' required' : '' }}>
+			<span class="bi bi-plus"></span> {{ __('label_new_file') }}...
+			<input type="file" name="{{ id }}" id="{{ id }}" class="d-none"{{ required ? ' required' : '' }}>
 		</label>
 		<span class="file-name btn btn-outline-secondary{% if size %} btn-{{ size }}{% endif %} disabled"></span>
-		<button type="submit" class="btn btn-outline-secondary{% if size %} btn-{{ size }}{% endif %} disabled" disabled><span class="fg-ok"><span class="glyphicon glyphicon-upload"></span></span> {{ __('label_upload') }}</button>
+		<button type="submit" class="btn btn-outline-secondary{% if size %} btn-{{ size }}{% endif %} disabled" disabled><span class="fg-ok"><span class="bi bi-upload"></span></span> {{ __('label_upload') }}</button>
 	</div>
 {% endmacro %}
 
 {% macro input_files(id, size, required) %}
 	<div class="fileupload-multiple btn-group{% if size %} btn-group-{{ size }}{% endif %}" data-basename="{{ id }}" data-i="0" role="group">
 		<label class="btn btn-outline-secondary btn-file{% if size %} btn-{{ size }}{% endif %}">
-			<span class="filelabel-add"><span class="glyphicon glyphicon-plus fg-ok"></span> {{ __('label_new_file') }}...</span>
-			<span class="filelabel-change"><span class="glyphicon glyphicon-file"></span> {{ __('label_file') }}:</span>
-			<input type="file" class="hidden"{{ required ? ' required' : '' }}>
+			<span class="filelabel-add"><span class="bi bi-plus fg-ok"></span> {{ __('label_new_file') }}...</span>
+			<span class="filelabel-change"><span class="bi bi-file"></span> {{ __('label_file') }}:</span>
+			<input type="file" class="d-none"{{ required ? ' required' : '' }}>
 		</label>
 		<span class="file-name btn btn-outline-secondary{% if size %} btn-{{ size }}{% endif %} disabled"></span>
 	</div>
@@ -358,40 +312,39 @@
 		{% set icon = 'envelope' %}
 		{% set label = __('label_change_and_send') %}
 	{% else %}
-		{% set icon = 'ok' %}
+		{% set icon = 'check' %}
 		{% set label = __('label_save') %}
 	{% endif %}
-	{% if log %}
-		<div data-label="" class="input-group input-like">
-			<span class="input-group-btn">
-				<button type="submit" class="btn btn-outline-secondary">
-	{%- else -%}
-		<button type="submit">
-	{%- endif -%}
-	<span class="fg-ok"><span class="glyphicon glyphicon-{{ icon }}"></span></span> {{ label }}</button>
-	{%- if log -%}
-		</span>
-		<input type="text" name="log" class="form-control" placeholder="{{ __('label_comments') }}...">
-	</div>
-	{% endif %}
+{% if log %}
+    <div data-label="" class="input-group input-like">
+        <span class="input-group-btn">
+            <button type="submit" class="btn btn-outline-secondary">
+{% else %}
+    <button type="submit">
+{% endif %}
+    <span class="fg-ok"><span class="bi bi-{{ icon }}"></span></span> {{ label }}</button>
+{% if log %}
+    <div data-label="" class="input-group input-like">
+    <input type="text" name="log" class="form-control" placeholder="{{ __('label_comments') }}...">
+</div>
+{% endif %}
 {% endmacro %}
 
 {% macro modal() %}
-	<div class="modal" id="user-modal" data-append-base="userdata" data-append-key="email" tabindex="-1" role="dialog" aria-labelledby="user-modal-label">
-		<div class="modal-vertical">
-			<div class="modal-dialog modal-middle" role="document">
-				<div class="modal-content">
-					<div class="modal-header">
-						<h4 class="modal-title" id="user-modal-label"><span class="glyphicon glyphicon-user"></span> <span class="text"></span></h4>
-					</div>
-					<div class="modal-body">
-						{% include 'users/user_edit.html' with {'modal': true} %}
-					</div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-outline-secondary"><span class="fg-ok"><span class="glyphicon glyphicon-plus"></span></span> {{ __('label_add') }}</button>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
+    <div class="modal" id="user-modal" data-append-base="userdata" data-append-key="email" tabindex="-1" aria-labelledby="user-modal-label">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="user-modal-label"><span class="bi bi-person"></span> <span class="text"></span></h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="{{ __('label_close') }}"></button>
+                </div>
+                <div class="modal-body">
+                    {% include 'users/user_edit.html' with {'modal': true} %}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary"><span class="fg-ok"><span class="bi bi-plus"></span></span> {{ __('label_add') }}</button>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endmacro %}

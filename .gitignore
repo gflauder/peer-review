@@ -8,7 +8,6 @@ zz_remote.sh
 /bin
 /locales/*~
 /locales/loader.js
-/pyritephp.js
 /tags
 /var/*.sql
 /var/articles

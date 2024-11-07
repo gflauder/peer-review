@@ -25,7 +25,7 @@ RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install iconv mbstring pdo_mysql zip bcmath opcache pdo_sqlite
 
 # Uninstall Xdebug if it was previously installed
-RUN pecl uninstall -y xdebug || true
+RUN timeout 300 pecl uninstall -y xdebug || true
 # Remove existing Xdebug configurations if any
 RUN sed -i '/xdebug/d' /usr/local/etc/php/conf.d/*.ini
 

@@ -1,68 +1,73 @@
-<!--Sidebar-->
+<!-- ======= Sidebar ======= -->
+<aside id="sidebar" class="sidebar">
+    <ul class="sidebar-nav" id="sidebar-nav">
+        <li class="nav-item">
+            <a href="{{ req.base }}/" class="nav-link {% if req.path == '' %} active{% endif %}">
+                <i class="bi bi-home"></i>
+                <span> {{ __('title_dashboard') }}</span>
+            </a>
+        </li>
 
-
-        <ul class="nav nav-sidebar d-block">
-            <li>
-                <a href="{{ req.base }}/" {% if req.path == '' %} class="active"{% endif %}>
-                    <span class="bi bi-home"></span>
-                    {{ __('title_dashboard') }}
+        {% if pass('can_any', 'view', 'issue') %}
+            <li class="nav-item">
+                <a href="{{ req.base }}/issues"
+                   class="nav-link{% if req.path starts with 'issues' %} active{% endif %}">
+                    <i class="bi bi-card-checklist"></i>
+                    <span> {{ __('title_issues') }}</span>
                 </a>
             </li>
+        {% endif %}
 
-            {% if pass('can_any', 'view', 'issue') %}
-                <li>
-                    <a href="{{ req.base }}/issues" {% if req.path starts with 'issues' %} class="active"{% endif %}>
-                        <span class="bi bi-card-checklist"></span> {{ __('title_issues') }}
-                    </a>
-                </li>
-            {% endif %}
+        {% if pass('can_any', 'view', 'article') or pass('can_any', 'edit', 'article') or pass('has_role', 'peer') %}
+            <li class="nav-item">
+                <a href="{{ req.base }}/articles"
+                   class="nav-link {% if req.path starts with 'articles' %}active{% endif %}">
+                    <i class="bi bi-align-left"></i>
+                    <span>{{ __('title_articles') }}</span>
+                </a>
+            </li>
+        {% endif %}
 
-            {% if pass('can_any', 'view', 'article') or pass('can_any', 'edit', 'article') or pass('has_role', 'peer') %}
-                <li>
-                    <a href="{{ req.base }}/articles" {% if req.path starts with 'articles' %} class="active"{% endif %}>
-                        <span class="bi bi-align-left"></span> {{ __('title_articles') }}
-                    </a>
-                </li>
-            {% endif %}
+        {% if pass('can', 'move', 'article') or pass('has_role', 'editor') %}
+        <li class="nav-item">
+            <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
+                <i class="bi bi-menu-button-wide"></i><span>{{ __('title_reports') }}</span>
+                <i class="bi bi-chevron-down ms-auto"></i>
+            </a>
+            <ul id="components-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
 
-            {% if pass('can', 'move', 'article') or pass('has_role', 'editor') %}
-                <li>
-                    <a href="#collapseReports" data-toggle="collapse" data-target="#collapseReports"
-                       aria-controls="collapseReports" {% if req.path starts with 'admin/reports' %} class="active"
-                       aria-expanded="true"{% else %} aria-expanded="false"{% endif %}>
-                        <span class="bi bi-folder-open"></span> {{ __('title_reports') }}<span class="caret"></span>
-                    </a>
-                </li>
-                <ul id="collapseReports"
-                    class="nav nav-second-level collapse{% if req.path starts with 'admin/reports' %} in{% endif %}">
+
+
                     <li>
                         <a href="{{ req.base }}/admin/reports/activity" {% if req.path starts with 'admin/reports/activity' %} class="active"{% endif %}>
-                            <span class="bi bi-stats"></span> {{ __('title_activity_report') }}
+                            <i class="bi bi-stats"></i>
+                            <span > {{ __('title_activity_report') }}</span>
                         </a>
                     </li>
                     <li>
                         <a href="{{ req.base }}/admin/reports/editing" {% if req.path starts with 'admin/reports/editing' %} class="active"{% endif %}>
-                            <span class="bi bi-stats"></span> {{ __('title_editing_report') }}
+                            <i class="bi bi-stats"></i>
+                            <span >{{ __('title_editing_report') }}</span>
                         </a>
                     </li>
                 </ul>
-            {% endif %}
+                {% endif %}
 
-            {% if pass('can', 'view', 'user') or pass('can', 'edit', 'user') %}
-                <li>
-                    <a href="{{ req.base }}/admin/users" {% if req.path starts with 'admin/users' %} class="active"{% endif %}>
-                        <span class="bi bi-user"></span> {{ __('title_users') }}
-                    </a>
-                </li>
-            {% endif %}
+                {% if pass('can', 'view', 'user') or pass('can', 'edit', 'user') %}
+                    <li>
+                        <a href="{{ req.base }}/admin/users" {% if req.path starts with 'admin/users' %} class="active"{% endif %}>
+                            <span class="bi bi-user"></span> {{ __('title_users') }}
+                        </a>
+                    </li>
+                {% endif %}
 
-            {% if pass('can', 'view', 'role') %}
-                <li>
-                    <a href="{{ req.base }}/admin/roles" {% if req.path starts with 'admin/roles' %} class="active"{% endif %}>
-                        <span class="bi bi-education"></span> {{ __('title_roles') }}
-                    </a>
-                </li>
-            {% endif %}
-        </ul>
+                {% if pass('can', 'view', 'role') %}
+                    <li>
+                        <a href="{{ req.base }}/admin/roles" {% if req.path starts with 'admin/roles' %} class="active"{% endif %}>
+                            <span class="bi bi-education"></span> {{ __('title_roles') }}
+                        </a>
+                    </li>
+                {% endif %}
+            </ul>
 
-    <!--End Sidebar-->
+</aside><!-- End Sidebar-->

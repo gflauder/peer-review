@@ -1,18 +1,20 @@
 {% import 'lib.twig' as lib %}
 <div class="table-responsive">
-	<table class="table table-condensed">
-		{% for status in config.articles.states %}
-			{% if articles[status] |length > 0 %}
-				<tbody class="spaced">
-					<tr class="table-section panel-info"><td colspan="2" class="panel-heading">{{ lib.format_status(status) }}</td></tr>
-					{% for article in articles[status] %}
-						<tr>
-							<td class="fit">{{ article.volume ? article.volume~'.' : '' }}{{ article.number |default(__('issue_zero')) }}</td>
-							<td>{{ lib.format_article(article) }}</td>
-						</tr>
-					{% endfor %}
-				</tbody>
-			{% endif %}
-		{% endfor %}
-	</table>
+    <table class="table table-striped table-bordered">
+        {% for status in config.articles.states %}
+            {% if articles[status] |length > 0 %}
+                <tbody>
+                    <tr class="table-info">
+                        <td colspan="2" class="table-primary">{{ lib.format_status(status) }}</td>
+                    </tr>
+                    {% for article in articles[status] %}
+                        <tr>
+                            <td class="text-nowrap">{{ article.volume ? article.volume~'.' : '' }}{{ article.number |default(__('issue_zero')) }}</td>
+                            <td>{{ lib.format_article(article) }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            {% endif %}
+        {% endfor %}
+    </table>
 </div>
