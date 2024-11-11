@@ -333,3 +333,17 @@ form#peer_review button {
 		color: #fff !important;
 	}
 }
+
+.selectize-control.multi .selectize-input > div {
+    display: inline-flex;
+    align-items: center;
+    margin-right: 5px;
+    padding: 5px;
+    background-color: #e9ecef;
+    border-radius: 4px;
+}
+
+.selectize-control.multi .selectize-input > div .btn-close {
+    margin-left: 5px;
+}
+

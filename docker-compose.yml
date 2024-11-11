@@ -12,6 +12,8 @@ services:
       - php
     networks:
       - app-network
+   # command: /bin/sh -c "nginx -g 'daemon off;'"
+
 
   # PHP service
   php:

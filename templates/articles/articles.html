@@ -1,40 +1,43 @@
-{{ title(__('title_articles')) }}
-<h2 class="page-header"><span class="glyphicon glyphicon-align-left"></span> {{ __('title_articles') }}</h2>
+{% import 'lib.twig' as lib %}
 
-{% include 'articles/review_list.html' %}
+<div class="card  p-3 mb-3">
+    <div class="card-body">
+        {{ lib.title_with_icon('journal-text', __('title_articles')) }}
+        {% include 'articles/review_list.html' %}
 
-{% if articles|length == 0 %}
-	{% exit %}
-{% endif %}
+        {% if articles|length == 0 %}
+            {% exit %}
+        {% endif %}
 
-<div class="row spaced">
-	<form id="article_search" method="post" class="form-inline col-sm-6">
-		{{ filter('form_begin', 'article_search') |raw }}
-		<div class="input-group">
-			<input class="form-control" placeholder="{{ __('label_keyword') }}..." name="keyword" value="{{ req.post.keyword }}" minlength="3">
-			<span class="input-group-btn">
-				<button class="btn btn-outline-secondary" type="submit"><span class="glyphicon glyphicon-search"></span></button>
-			</span>
-		</div>
-	</form>
-	{% if pass('can', 'create', 'article') %}
-		<form action="{{ req.base }}/articles/new" id="article_create" method="post" class="form-inline col-sm-6">
-			<button class="btn btn-outline-secondary" type="submit"><span class="fg-ok"><span class="glyphicon glyphicon-plus"></span></span> {{ __('label_create') }}</button>
-		</form>
-	{% endif %}
+        <div class="row mb-3">
+            <form id="article_search" method="post" class="col-md-6">
+                {{ filter('form_begin', 'article_search') |raw }}
+                <div class="input-group">
+                    <input class="form-control" placeholder="{{ __('label_keyword') }}..." name="keyword"
+                           value="{{ req.post.keyword }}" minlength="3">
+                    <button class="btn btn-outline-secondary" type="submit"><span class="bi bi-search"></span></button>
+                </div>
+            </form>
+            {% if pass('can', 'create', 'article') %}
+                <form action="{{ req.base }}/articles/new" id="article_create" method="post" class="col-md-6">
+                    <button class="btn btn-outline-secondary" type="submit"><span
+                                class="bi bi-plus"></span> {{ __('label_create') }}</button>
+                </form>
+            {% endif %}
+        </div>
+
+        {% if req.get.filter %}
+            <h3 class="mt-3">
+                {% if req.get.filter == 'noreviews' %}
+                    {{ __('title_no_reviews') }}
+                {% elseif req.get.filter == 'miapeers' %}
+                    {{ __('title_mia_peers') }}
+                {% elseif req.get.filter == 'latereviews' %}
+                    {{ __('title_late_reviews') }}
+                {% endif %}
+            </h3>
+        {% endif %}
+
+        {% include 'articles/articles_list.html' %}
+    </div>
 </div>
-
-{% if req.get.filter %}
-	<h3>
-		{% if req.get.filter == 'noreviews' %}
-			{{ __('title_no_reviews') }}
-		{% elseif req.get.filter == 'miapeers' %}
-			{{ __('title_mia_peers') }}
-		{% elseif req.get.filter == 'latereviews' %}
-			{{ __('title_late_reviews') }}
-		{% endif %}
-	</h3>
-{% endif %}
-
-
-{% include 'articles/articles_list.html' %}

@@ -493,11 +493,11 @@ class Articles
             $base = "{$config['path']}/{$issue}/{$articleId}/{$filename}";
 
             if (!file_exists("{$config['path']}/{$issue}")) {
-                mkdir("{$config['path']}/{$issue}", 06770);
+                mkdir("{$config['path']}/{$issue}", 06770,true);
             };
             $path = "{$config['path']}/{$issue}/{$articleId}";
             if (!file_exists($path)) {
-                mkdir($path, 06770);
+                mkdir($path, 06770,true);
             };
 
             // Attempt to save the file, avoiding name collisions

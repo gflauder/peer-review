@@ -15,68 +15,102 @@
         {{ lib.alert(success, __('save_failure')) }}
     {% endif %}
 {% endif %}
+<div class="card mb-3">
+    <div class="card mb-3">
+        <div class="card-body">
+            {{ lib.title_with_icon('journal', (issue.volume ? issue.volume~'.' : '') ~ issue.number ~ ' ' ~ (issue.title|default(__('issue_zero'))) ~ ' <small>' ~ issue.publication ~ '</small>') }}
 
-<h2 class="page-header"><span class="glyphicon glyphicon-book"></span> {{ issue.volume ? issue.volume~'.' : '' }}{{ issue.number }}
-    {% if issue %}
-        {{ issue.title|default(__('issue_zero')) }}
-    {% else %}
-        {{ __('label_new_issue') }}
-    {% endif %}
-    <small>{{ issue.publication }}</small>
-</h2>
+            {% if (issue and issue.id > 0 and pass('can', 'edit', 'issue', issue.id)) or (not issue and pass('can', 'create', 'issue')) %}
 
-{% if (issue and issue.id > 0 and pass('can', 'edit', 'issue', issue.id)) or (not issue and pass('can', 'create', 'issue')) %}
+            {{ lib.modal() }}
 
-    {{ lib.modal() }}
-
-    <form id="issues_edit" method="post" class="form-tight">
-        {{ filter('form_begin', 'issues_edit') |raw }}
-        {% if issue.id %}
-            <input type="hidden" name="id" value="{{ issue.id }}">
-        {% endif %}
-        <div class="form-group">
-            <label for="volume">{{ __('label_volume') }}</label>
-            <input type="text" class="form-control" id="volume" value="{{ issue.volume }}" required maxlength="16"{% if issue.id %} disabled{% endif %}>
+            <form id="issues_edit" method="post" class="form-tight">
+                {{ filter('form_begin', 'issues_edit') |raw }}
+                {% if issue.id %}
+                    <input type="hidden" name="id" value="{{ issue.id }}">
+                {% endif %}
+                <div class="row mb-3">
+                    <label for="volume" class="col-sm-2 col-form-label text-end">{{ __('label_volume') }}</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="volume" name="volume" value="{{ issue.volume }}"
+                               required maxlength="16"{% if issue.id %} disabled{% endif %}>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <label for="number" class="col-sm-2 col-form-label text-end">{{ __('label_issueId') }}</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="number" name="number" value="{{ issue.number }}"
+                               required maxlength="16"{% if issue.id %} disabled{% endif %}>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <label for="publication" class="col-sm-2 col-form-label text-end">{{ __('label_publication') }}
+                        ({{ __('hint_ymd') }})</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="publication" name="publication"
+                               value="{{ issue.publication }}" maxlength="10" minlength="10">
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <label for="title"
+                           class="col-sm-2 col-form-label text-end">{{ __('label_title')|default('Title') }}</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="title" name="title"
+                               value="{{ article.title|default('') }}" required>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <label class="col-sm-2 col-form-label text-end">{{ __('label_editors') }}</label>
+                    <div class="col-sm-10">
+                        {{ lib.select_users(__('label_editors'), 'editor', issue.editors) }}
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <label for="description"
+                           class="col-sm-2 col-form-label text-end">{{ __('label_description') }}</label>
+                    <div class="col-sm-10">
+                    <textarea name="description" class="form-control rich-edit"
+                              id="description">{{ issue.description }}</textarea>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-sm-10 offset-sm-2">
+                        {{ lib.leftright_submit('save', issue and issue.id > 0) }}
+                    </div>
+                </div>
+            </form>
         </div>
-        <div class="form-group">
-            <label for="number">{{ __('label_issueId') }}</label>
-            <input type="text" class="form-control" id="number" value="{{ issue.number }}" required maxlength="16"{% if issue.id %} disabled{% endif %}>
-        </div>
-        <div class="form-group">
-            <label for="publication">{{ __('label_publication') }} ({{ __('hint_ymd') }})</label>
-            <input type="text" class="form-control" id="publication" value="{{ issue.publication }}" maxlength="10" minlength="10">
-        </div>
-        <div class="form-group">
-            <label for="title">{{ __('label_title') }}</label>
-            <input type="text" class="form-control" id="title" value="{{ issue.title }}" required>
-        </div>
-        <div class="form-group">
-            {{ lib.select_users(__('label_editors'), 'editor', issue.editors) }}
-        </div>
-        <div class="form-group">
-            <label for="description">{{ __('label_description') }}</label>
-            <textarea name="description" class="form-control rich-edit">{{ issue.description }}</textarea>
-        </div>
-        {{ lib.leftright_submit('save', issue and issue.id > 0) }}
-    </form>
+    </div>
+</div>
 {% endif %}
 
 {% if issue %}
-    {% if not pass('can', 'edit', 'issue', issue.id) %}
-        {{ issue.description |raw }}
-    {% endif %}
-    <h3>{{ __('title_articles') }}
-        {% if pass('can_create_article') %}
-            <form action="{{ req.base }}/articles/new" id="article_create" method="get" class="form-inline inline">
-                <input type="hidden" name="issueId" value="{{ issue.id }}">
-                <button class="btn btn-outline-secondary btn-xs" type="submit"><span class="text-success"><span class="glyphicon glyphicon-plus"></span></span> {{ __('label_create') }}</button>
-            </form>
-        {% endif %}
-    </h3>
-    {% include 'articles/articles_list.html' %}
+    <div class="card mb-3">
+        <div class="card-body">
+            {% if not pass('can', 'edit', 'issue', issue.id) %}
+                {{ issue.description |raw }}
+            {% endif %}
+            <h3>{{ __('title_articles') }}
+                {% if pass('can_create_article') %}
+                    <form action="{{ req.base }}/articles/new" id="article_create" method="get"
+                          class="form-inline inline">
+                        <input type="hidden" name="issueId" value="{{ issue.id }}">
+                        <button class="btn btn-outline-secondary btn-xs" type="submit"><span class="text-success"><span
+                                        class="glyphicon glyphicon-plus"></span></span> {{ __('label_create') }}
+                        </button>
+                    </form>
+                {% endif %}
+            </h3>
+            {% include 'articles/articles_list.html' %}
+        </div>
+    </div>
 {% endif %}
 
 {% if issue and issue.id > 0 and pass('can', 'edit', 'issue', issue.id) %}
-    <h3>{{ __('title_history') }}</h3>
-    {% include 'articles/history.html' %}
+    <div class="card mb-3">
+        <div class="card-body">
+            <h3>{{ __('title_history') }}</h3>
+            {% include 'articles/history.html' %}
+        </div>
+    </div>
 {% endif %}

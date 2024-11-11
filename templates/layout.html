@@ -4,45 +4,50 @@
 <!DOCTYPE html>
 <html lang="{{ req.lang }}">
 <head>
-            <!-- test4 -->
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta name="format-detection" content="telephone=no">
-        <meta id="appname" name="apple-mobile-web-app-title" content="{{ config.global.name }}">
+    <!-- test4 -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="format-detection" content="telephone=no">
+    <meta id="appname" name="apple-mobile-web-app-title" content="{{ config.global.name }}">
 
-        <!-- Stylesheets -->
-        <link rel="stylesheet" href="{{ mix('/dist/css/main.css') }}">
-        <link rel="stylesheet" href="{{ mix('/dist/css/bootstrap.css') }}">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.5.0/css/flag-icon.min.css">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css">
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="{{ mix('/dist/css/main.css') }}">
+    <link rel="stylesheet" href="{{ mix('/dist/css/bootstrap.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.5.0/css/flag-icon.min.css">
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css">
 
-        <!-- Scripts -->
-       <script src="{{ mix('/dist/js/bootstrap.js') }}"></script>
-        <script src="{{ mix('/dist/js/main.js') }}"></script>
+    <!-- Scripts -->
+    <script src="{{ mix('/dist/js/bootstrap.js') }}"></script>
+    <script src="{{ mix('/dist/js/main.js') }}"></script>
 
-
-        <title>{{ title }}</title>
-        <style>
-
-            @keyframes fadeIn {
-                from {
-                    opacity: 0;
-                }
-                to {
-                    opacity: 1;
-                }
+    <title>{{ title }}</title>
+    <style>
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
             }
-        </style>
+            to {
+                opacity: 1;
+            }
+        }
 
+        .wrapper {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
 
+        .content {
+            flex: 1;
+        }
+    </style>
 </head>
 {% endblock %}
 
-
 <body>
 {% block body %}
-
     {% if req.redirect %}
         <meta http-equiv="refresh"
               content="{% if config.global.debug %}5{% else %}0{% endif %}; url={{ req.redirect }}">
@@ -50,33 +55,32 @@
 
     {% include 'components/top_navigation.html' %}
 
+    <div class="wrapper">
+        <div class="content">
+            {% if session.identified %}
+                <div class="sidebar">
+                    {% include 'components/side_bar.html' %}
+                </div>
+            {% endif %}
 
-    {% if session.identified %}
-        <div class="sidebar">
-            {% include 'components/side_bar.html' %}
+            <main id="main" class="main"
+                  style="{% if not session.identified %}margin-left: 0;{% endif %}; animation: fadeIn 0.3s ease-in-out;">
+                {#                {% if session.identified %}
+                    {% include 'components/breadcrumb.html' %}
+                {% endif %} #}
+
+                {% include 'components/return_statuses.html' %}
+                {% if req.warnings|length > 0 %}
+                    {% for warning in req.warnings %}
+                        {{ lib.warning(warning[0], warning[1], warning[2]) }}
+                    {% endfor %}
+                {% endif %}
+
+                {% include 'components/flash_messages.html' %}
+            </main>
         </div>
-    {% endif %}
-
-    <main id="main" class="main" style="{% if session.identified %}margin-left: 250px;{% endif %}; animation: fadeIn 0.3s ease-in-out;">
-        {% if session.identified %}
-            {% include 'components/breadcrumb.html' %}
-        {% endif %}
-
-        {% include 'components/return_statuses.html' %}
-        {% if req.warnings|length > 0 %}
-            {% for warning in req.warnings %}
-                {{ lib.warning(warning[0], warning[1], warning[2]) }}
-            {% endfor %}
-        {% endif %}
-
-        {% include 'components/flash_messages.html' %}
-
-    </main>
-
         {% include 'components/footer.html' %}
-
+    </div>
 {% endblock %}
-
 </body>
-
 </html>

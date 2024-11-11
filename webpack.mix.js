@@ -7,20 +7,22 @@ const webpack = require('webpack');
 mix.setPublicPath('dist');
 mix.webpackConfig({
     plugins: [
-        new CleanWebpackPlugin(),
         new webpack.ProvidePlugin({
             $: 'jquery',
             jQuery: 'jquery',
             'window.jQuery': 'jquery'
-        })
+        }),
+        new CleanWebpackPlugin({
+            cleanOnceBeforeBuildPatterns: ['**/*'], // This will clean all files in the dist folder
+        }),
     ]
 });
 
 mix.js([
     'src/main.js',
     'src/pyritephp.js',
-    'node_modules/selectize/dist/js/standalone/selectize.min.js',
-    'node_modules/@popperjs/core/dist/umd/popper.min.js'
+    'node_modules/@selectize/selectize/dist/js/selectize.js',
+    'node_modules/jquery-ui/ui/widgets/sortable.js'
 ], 'dist/js/main.js')
     .sourceMaps()
     .version();
@@ -28,6 +30,7 @@ mix.js([
 mix.styles([
     'src/bootstrap-feedback-left.css',
     'src/bootstrap-modal-vertical.css',
+    'node_modules/@selectize/selectize/dist/css/selectize.bootstrap5.css',
     'src/inline-labels.css',
     'src/main.css',
     'src/print.css',
@@ -38,7 +41,7 @@ mix.styles([
     .sourceMaps()
     .version();
 
-mix.js('node_modules/bootstrap/dist/js/bootstrap.bundle.min.js', 'dist/js/bootstrap.js')
+mix.js('node_modules/bootstrap/dist/js/bootstrap.bundle.js', 'dist/js/bootstrap.js')
     .sass('node_modules/bootstrap/scss/bootstrap.scss', 'dist/css/bootstrap.css')
     .sourceMaps()
     .version();

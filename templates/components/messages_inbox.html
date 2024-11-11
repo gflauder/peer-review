@@ -1,8 +1,8 @@
 <!--Messages inbox-->
 {% if session.identified %}
-    <ul class="navbar-nav ml-2 mb-2 mb-lg-0">
+
         {% if pass('has_role', 'admin') or (pass('can', 'edit', 'email') and session.outbox|length > 0) %}
-            <li class="nav-item dropdown">
+            <li class="nav-item dropdown m-2">
                 <a class="nav-link dropdown-toggle  text-white" href="{{ req.base }}/outbox" id="navbarDropdown"
                    role="button" data-bs-toggle="dropdown" aria-expanded="false">
                     <span class="bi bi-envelope text-white"></span>{% if session.outbox|length > 0 %}<span
@@ -34,7 +34,7 @@
                 </ul>
             </li>
         {% endif %}
-        <li class="nav-item dropdown">
+        <li class="nav-item text-white dropdown m-2">
             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                data-bs-toggle="dropdown" aria-expanded="false">
                 {{ session.user.name }} <span class="bi bi-person"></span>
@@ -50,6 +50,6 @@
                     </a></li>
             </ul>
         </li>
-    </ul>
+
 {% endif %}
 <!--Messages Inbox End-->

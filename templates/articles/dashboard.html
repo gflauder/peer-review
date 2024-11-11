@@ -1,19 +1,19 @@
 {% import 'lib.twig' as lib %}
 {{ title(__('title_dashboard')) }}
-<h2 class="page-header"><span class="glyphicon glyphicon-home"></span> {{ __('title_dashboard') }}</h2>
+<h2 class="page-header"><span class="bi bi-home"></span> {{ __('title_dashboard') }}</h2>
 
 {% if pass('can', 'delete', 'article') %}
-	<div class="row">
-		{% if noreviews|length > 0 %}
-			{{ lib.counter('align-left', 'text-danger', noreviews|length, __('title_no_reviews'), req.base~'/articles?filter=noreviews') }}
-		{% endif %}
-		{% if miapeers|length > 0 %}
-			{{ lib.counter('eye-close', 'text-warning', miapeers|length, __('title_mia_peers'), req.base~'/articles?filter=miapeers') }}
-		{% endif %}
-		{% if latereviews|length > 0 %}
-			{{ lib.counter('eye-open', 'text-warning', latereviews|length, __('title_late_reviews'), req.base~'/articles?filter=latereviews') }}
-		{% endif %}
-	</div>
+<div class="row">
+    {% if noreviews|length > 0 %}
+        {{ lib.counter('layout-wtf', 'danger', noreviews|length, __('title_no_reviews'), req.base~'/articles?filter=noreviews') }}
+    {% endif %}
+    {% if miapeers|length > 0 %}
+        {{ lib.counter('eye-slash', 'warning', miapeers|length, __('title_mia_peers'), req.base~'/articles?filter=miapeers') }}
+    {% endif %}
+    {% if latereviews|length > 0 %}
+        {{ lib.counter('eye', 'warning', latereviews|length, __('title_late_reviews'), req.base~'/articles?filter=latereviews') }}
+    {% endif %}
+</div>
 {% endif %}
 
 <div class="row">

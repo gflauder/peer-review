@@ -1,338 +1,385 @@
 {% macro alert(good, body) %}
-	<div class="alert alert-{% if good %}success{% else %}danger{% endif %} alert-dismissible" role="alert">
-		<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="{{ __('label_close') }}"></button>
-		<span class="bi bi-exclamation-triangle" aria-hidden="true"></span>
-		{{ body }}
-	</div>
+    <div class="alert alert-{% if good %}success{% else %}danger{% endif %} alert-dismissible" role="alert">
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="{{ __('label_close') }}"></button>
+        <span class="bi bi-exclamation-triangle" aria-hidden="true"></span>
+        {{ body }}
+    </div>
 {% endmacro %}
 
 {% macro warning(level, code, args) %}
-	{% if level == 0 %}
-		{% set context = 'danger' %}
-	{% elseif level == 2 %}
-		{% set context = 'info' %}
-	{% elseif level == 3 %}
-		{% set context = 'success' %}
-	{% else %}
-		{% set context = 'warning' %}
-	{% endif %}
-	<div class="alert alert-{{ context }} alert-dismissible" role="alert">
-		<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="{{ __('label_close') }}"></button>
-		<span class="bi bi-exclamation-triangle" aria-hidden="true"></span>
-		{{ __('warning_'~code) }}
-		{% for arg in args %}
-			{% if arg starts with 'http://' or arg starts with 'https://' %}
-				<a href="{{ arg }}">{{ arg }}</a>
-			{% else %}
-				{{ __(arg) }}
-			{% endif %}
-		{% endfor %}
-	</div>
+    {% if level == 0 %}
+        {% set context = 'danger' %}
+    {% elseif level == 2 %}
+        {% set context = 'info' %}
+    {% elseif level == 3 %}
+        {% set context = 'success' %}
+    {% else %}
+        {% set context = 'warning' %}
+    {% endif %}
+    <div class="alert alert-{{ context }} alert-dismissible" role="alert">
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="{{ __('label_close') }}"></button>
+        <span class="bi bi-exclamation-triangle" aria-hidden="true"></span>
+        {{ __('warning_'~code) }}
+        {% for arg in args %}
+            {% if arg starts with 'http://' or arg starts with 'https://' %}
+                <a href="{{ arg }}">{{ arg }}</a>
+            {% else %}
+                {{ __(arg) }}
+            {% endif %}
+        {% endfor %}
+    </div>
 {% endmacro %}
 
 {% macro flashbox(context, text, target, target_label) %}
-	<div class="col-lg-3 col-md-6">
-		<div class="card text-white bg-{{ context }} mb-3">
-			<div class="card-header">
-				<div class="row">
-					{{ text |raw }}
-				</div>
-			</div>
-			<a href="{{ target }}" class="stretched-link">
-				<div class="card-footer">
-					<span class="float-start">{{ target_label }}</span>
-					<span class="float-end"><span class="bi bi-arrow-right-circle"></span></span>
-					<div class="clearfix"></div>
-				</div>
-			</a>
-		</div>
-	</div>
+    <div class="col-lg-3 col-md-6">
+        <div class="card text-white bg-{{ context }} mb-3">
+            <div class="card-header">
+                <div class="row">
+                    {{ text |raw }}
+                </div>
+            </div>
+            <a href="{{ target }}" class="stretched-link">
+                <div class="card-footer">
+                    <span class="float-start">{{ target_label }}</span>
+                    <span class="float-end"><span class="bi bi-arrow-right-circle"></span></span>
+                    <div class="clearfix"></div>
+                </div>
+            </a>
+        </div>
+    </div>
 {% endmacro %}
 
 {% macro counter(bi, context, count, text, target) %}
-	{% import _self as lib %}
-	{% set inside %}
-		<div class="col-3">
-			<span class="bi bi-{{ bi }} grow-5x"></span>
-		</div>
-		<div class="col-9 text-end">
-			<div class="grow-3x">{{ count }}</div>
-			<div>{{ text }}</div>
-		</div>
-	{% endset %}
-	{{ lib.flashbox(context, inside, target, __('label_view_details')) }}
+    {% import _self as lib %}
+    {% set inside %}
+        <div class="col-3">
+            <span class="bi bi-{{ bi }} display-5"></span>
+        </div>
+        <div class="col-9 text-end">
+            <div class="fs-3">{{ count }}</div>
+            <div>{{ text }}</div>
+        </div>
+    {% endset %}
+    {{ lib.flashbox(context, inside, target, __('label_view_details')) }}
 {% endmacro %}
 
+{% macro title_with_icon(icon, title, icon_size='5rem', line_height='1.5px', line_color='black', margin='mx-4') %}
+    <div class="d-flex align-items-center justify-content-center mb-5">
+        <span class="text-info bi bi-{{ icon }}" style="font-size: {{ icon_size }};"></span>
+        <div class="h2 {{ margin }} text-truncate"
+             style="font-family: 'Cambria', serif; max-width: 70%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"
+             title="{{ title }}">{{ title }}</div>
+        <div style="flex-grow: 1; height: {{ line_height }}; background-color: {{ line_color }};"></div>
+    </div>
+{% endmacro %}
+
+
+
+{# Potential new design #}
+{% macro kpi_card(context, icon, count, percentage, percentage_text, title, subtitle) %}
+    <div class="card text-white bg-{{ context }} mb-3">
+        <div class="card-body">
+            <h5 class="card-title">{{ title }} <span>| {{ subtitle }}</span></h5>
+            <div class="d-flex align-items-center">
+                <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                    <i class="bi bi-{{ icon }}"></i>
+                </div>
+                <div class="ps-3">
+                    <h6>{{ count }}</h6>
+                    <span class="text-success small pt-1 fw-bold">{{ percentage }}%</span> <span
+                            class="text-muted small pt-2 ps-1">{{ percentage_text }}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endmacro %}
+
+
+
 {% macro format_timestamp(timestamp, raw_timestamps) %}
-	{%- if timestamp -%}
-		{%- if raw_timestamps -%}
-			<span>{{ timestamp }}</span>
-		{%- else -%}
-			<span class="timeago" title="{{ timestamp }}" datetime="{{ timestamp }}">{{ timestamp }}</span>
-		{%- endif -%}
-	{%- else -%}
-		{{ __('label_never') }}
-	{%- endif -%}
+    {%- if timestamp -%}
+        {%- if raw_timestamps -%}
+            <span>{{ timestamp }}</span>
+        {%- else -%}
+            <span class="timeago" title="{{ timestamp }}" datetime="{{ timestamp }}">{{ timestamp }}</span>
+        {%- endif -%}
+    {%- else -%}
+        {{ __('label_never') }}
+    {%- endif -%}
 {% endmacro %}
 
 {% macro format_ip(ip) -%}
-	<a href="http://www.ip-adress.com/ip_tracer/{{ ip }}">{{ ip }}</a>
+    <a href="http://www.ip-adress.com/ip_tracer/{{ ip }}">{{ ip }}</a>
 {%- endmacro %}
 
 {% macro format_email(email) -%}
-	<a href="mailto:{{ email }}"><span class="bi bi-envelope"></span>{{ email }}</a>
+    <a href="mailto:{{ email }}"><span class="bi bi-envelope"></span>{{ email }}</a>
 {%- endmacro %}
 
 {% macro format_bytes(bytes) -%}
-	{%- if bytes >= 1048576 -%}
-		{{ (bytes/1048576) |round(1) }} {{ __('MB') }}
-	{%- elseif bytes >= 10240 -%}
-		{{ (bytes/1024) |round }} {{ __('KB') }}
-	{%- else -%}
-		{{ bytes }} {{ __('bytes') }}
-	{%- endif -%}
+    {%- if bytes >= 1048576 -%}
+        {{ (bytes/1048576) |round(1) }} {{ __('MB') }}
+    {%- elseif bytes >= 10240 -%}
+        {{ (bytes/1024) |round }} {{ __('KB') }}
+    {%- else -%}
+        {{ bytes }} {{ __('bytes') }}
+    {%- endif -%}
 {%- endmacro %}
 
 {% macro format_status(status, act, nohtml) -%}
-	{%- if act -%}
-		{% set label = __('status_change_'~status) %}
-	{%- else -%}
-		{% set label = __('status_'~status) %}
-	{%- endif -%}
-	{%- if not nohtml -%}<span class="status">{%- endif -%}
-	{%- if status == 'created' -%}
-		{%- if not nohtml %}<span class="bi bi-star fg-new"></span> {% endif %}{{ label }}
+    {%- if act -%}
+        {% set label = __('status_change_'~status) %}
+    {%- else -%}
+        {% set label = __('status_'~status) %}
+    {%- endif -%}
+    {%- if not nohtml -%}<span class="status">{%- endif -%}
+    {%- if status == 'created' -%}
+        {%- if not nohtml %}<span class="bi bi-star fg-new"></span> {% endif %}{{ label }}
 		{%- elseif status == 'reviewing' -%}
-		{%- if not nohtml %}<span class="bi bi-clock fg-pending"></span> {% endif %}{{ label }}
+        {%- if not nohtml %}<span class="bi bi-clock fg-pending"></span> {% endif %}{{ label }}
 		{%- elseif status == 'revision' -%}
-		{%- if not nohtml %}<span class="bi bi-flag fg-stalled"></span> {% endif %}{{ label }}
+        {%- if not nohtml %}<span class="bi bi-flag fg-stalled"></span> {% endif %}{{ label }}
 		{%- elseif status == 'approved' -%}
-		{%- if not nohtml %}<span class="bi bi-check fg-ok"></span> {% endif %}{{ label }}
+        {%- if not nohtml %}<span class="bi bi-check fg-ok"></span> {% endif %}{{ label }}
 		{%- elseif status == 'printing' -%}
-		{%- if not nohtml %}<span class="bi bi-flag fg-stalled"></span> {% endif %}{{ label }}
+        {%- if not nohtml %}<span class="bi bi-flag fg-stalled"></span> {% endif %}{{ label }}
 		{%- elseif status == 'published' -%}
-		{%- if not nohtml %}<span class="bi bi-lock fg-ok"></span> {% endif %}{{ label }}
+        {%- if not nohtml %}<span class="bi bi-lock fg-ok"></span> {% endif %}{{ label }}
 		{%- elseif status == 'rejected' -%}
-		{%- if not nohtml %}<span class="bi bi-x fg-err"></span> {% endif %}{{ label }}
+        {%- if not nohtml %}<span class="bi bi-x fg-err"></span> {% endif %}{{ label }}
 		{%- elseif status == 'deleted' -%}
-		{%- if not nohtml %}<span class="bi bi-trash fg-err"></span> {% endif %}{{ label }}
+        {%- if not nohtml %}<span class="bi bi-trash fg-err"></span> {% endif %}{{ label }}
 		{%- else -%}
-		{%- if not nohtml %}<span class="bi bi-question-circle fg-err"></span> {% endif %}{{ __('status_unknown') }}
-	{%- endif -%}
-	{%- if not nohtml -%}</span>{%- endif -%}
+        {%- if not nohtml %}<span class="bi bi-question-circle fg-err"></span> {% endif %}{{ __('status_unknown') }}
+    {%- endif -%}
+    {%- if not nohtml -%}</span>{%- endif -%}
 {%- endmacro %}
 
 {% macro format_user(user, flat, nohtml, withmail) -%}
-	{%- set req = grab('request') -%}
-	{%- if not user.id -%}
-		{%- if user == 0 -%}
-			{%- set user = {id: 0} -%}
-		{%- else -%}
-			{%- set user = grab('user_resolve', user) -%}
-		{%- endif -%}
-	{%- endif -%}
-	{%- if user and user.id == 0 -%}
-		<span class="bi bi-person"></span>{{ __('user_zero') }}
-	{%- else -%}
-		{%- if user != false -%}
-			{%- if pass('can', 'view', 'user', id) and not flat -%}
-				<a href="{{ req.base }}/admin/users/edit?id={{ user.id }}">{% if not user.active %}<s>{% endif %}<span class="bi bi-person"></span>{{ user.name|default(__('user_new')) }}{% if not user.active %}</s>{% endif %}</a>
-			{%- elseif nohtml -%}
-				{{ user.name|default(__('user_new')) }}{% if withmail %} &lt;{{ pass('can', 'view', 'user', id) ? user.email : filter('protect_email', user.email) }}&gt;{% endif %}
-			{%- else -%}
-				{% if not user.active %}<s>{% endif %}<span class="bi bi-person"></span>{{ user.name|default(__('user_new')) }}{% if withmail %} &lt;<a href="mailto:{{ user.email }}">{{ user.email }}</a>&gt;{% endif %}{% if not user.active %}</s>{% endif %}
-			{%- endif -%}
-		{%- else -%}
-			<span class="bi bi-person"></span>{{ __('user_unknown') }}
-		{%- endif -%}
-	{%- endif -%}
+    {%- set req = grab('request') -%}
+    {%- if not user.id -%}
+        {%- if user == 0 -%}
+            {%- set user = {id: 0} -%}
+        {%- else -%}
+            {%- set user = grab('user_resolve', user) -%}
+        {%- endif -%}
+    {%- endif -%}
+    {%- if user and user.id == 0 -%}
+        <span class="bi bi-person"></span>{{ __('user_zero') }}
+    {%- else -%}
+        {%- if user != false -%}
+            {%- if pass('can', 'view', 'user', id) and not flat -%}
+                <a href="{{ req.base }}/admin/users/edit?id={{ user.id }}">{% if not user.active %}<s>{% endif %}<span
+                                class="bi bi-person"></span>{{ user.name|default(__('user_new')) }}{% if not user.active %}
+                    </s>{% endif %}</a>
+            {%- elseif nohtml -%}
+                {{ user.name|default(__('user_new')) }}{% if withmail %} &lt;{{ pass('can', 'view', 'user', id) ? user.email : filter('protect_email', user.email) }}&gt;{% endif %}
+            {%- else -%}
+                {% if not user.active %}<s>{% endif %}<span
+                    class="bi bi-person"></span>{{ user.name|default(__('user_new')) }}{% if withmail %} &lt;<a
+                    href="mailto:{{ user.email }}">{{ user.email }}</a>&gt;{% endif %}{% if not user.active %}</s>{% endif %}
+            {%- endif -%}
+        {%- else -%}
+            <span class="bi bi-person"></span>{{ __('user_unknown') }}
+        {%- endif -%}
+    {%- endif -%}
 {%- endmacro %}
 {% macro format_users(users, flat, nohtml, withmail) %}
-	{% import _self as lib %}
-	{% for user in users %}
-		{{ lib.format_user(user, flat, nohtml, withmail) }}
-	{% endfor %}
+    {% import _self as lib %}
+    {% for user in users %}
+        {{ lib.format_user(user, flat, nohtml, withmail) }}
+    {% endfor %}
 {% endmacro %}
 
 {% macro format_role(role, flat) -%}
-	{%- set name = __('role_'~role) -%}
-	{%- set req = grab('request') -%}
-	{%- if pass('can', 'view', 'role', role) and not flat -%}
-		<a href="{{ req.base }}/admin/roles/{{ role }}"><span class="bi bi-mortarboard"></span>{{ name }}</a>
-	{%- else -%}
-		<span class="bi bi-mortarboard"></span>{{ name }}
-	{%- endif -%}
+    {%- set name = __('role_'~role) -%}
+    {%- set req = grab('request') -%}
+    {%- if pass('can', 'view', 'role', role) and not flat -%}
+        <a href="{{ req.base }}/admin/roles/{{ role }}"><span class="bi bi-mortarboard"></span>{{ name }}</a>
+    {%- else -%}
+        <span class="bi bi-mortarboard"></span>{{ name }}
+    {%- endif -%}
 {%- endmacro %}
 
 {% macro label_role(role, flat) -%}
-	{%- import _self as lib -%}
-	{%- if role == 'member' %}{% set v = 'info' -%}
-	{%- elseif role == 'editor' or role == 'editor-in-chief' %}{% set v = 'success' -%}
-	{%- elseif role == 'admin' %}{% set v = 'danger' -%}
-	{%- elseif role == 'author' %}{% set v = 'primary' -%}
-	{%- elseif role == 'peer' %}{% set v = 'warning' -%}
-	{%- else %}{% set v = 'secondary' -%}
-	{%- endif -%}
-	<span class="badge bg-{{ v }}">{{ lib.format_role(role, flat) }}</span>
+    {%- import _self as lib -%}
+    {%- if role == 'member' %}{% set v = 'info' -%}
+    {%- elseif role == 'editor' or role == 'editor-in-chief' %}{% set v = 'success' -%}
+    {%- elseif role == 'admin' %}{% set v = 'danger' -%}
+    {%- elseif role == 'author' %}{% set v = 'primary' -%}
+    {%- elseif role == 'peer' %}{% set v = 'warning' -%}
+    {%- else %}{% set v = 'secondary' -%}
+    {%- endif -%}
+    <span class="badge bg-{{ v }}">{{ lib.format_role(role, flat) }}</span>
 {%- endmacro %}
 {% macro label_roles(roles, flat) %}
-	{% import _self as lib %}
-	{% for role in roles %}
-		{{ lib.label_role(role, flat) }}
-	{% endfor %}
+    {% import _self as lib %}
+    {% for role in roles %}
+        {{ lib.label_role(role, flat) }}
+    {% endfor %}
 {% endmacro %}
 
 {% macro label_field(field) -%}
-	{{ __('label_'~field) }}
+    {{ __('label_'~field) }}
 {%- endmacro %}
 
 {% macro format_issue(issue, flat, nohtml, withdate) -%}
-	{%- set req = grab('request') -%}
-	{%- if not issue.id -%}
-		{%- set issue = grab('issue', issue) -%}
-	{%- endif -%}
-	{%- if issue != false -%}
-		{%- if pass('can', 'view', 'issue', issue.id) and not flat -%}
-			<a href="{{ req.base }}/issues/{{ issue.id }}/{{ issue.permalink }}"><span class="bi bi-book"></span>{{ issue.volume ? issue.volume~'.' : '' }}{{ issue.number }} {{ issue.title }}</a>
-		{%- else -%}
-			{% if not nohtml %}<span class="bi bi-book"></span>{% endif %}{{ issue.volume ? issue.volume~'.' : '' }}{{ issue.number }} {{ issue.title }}
-		{%- endif -%}
-		{%- if withdate -%}
-			&nbsp; <small>{{ issue.publication }}</small>
-		{%- endif -%}
-	{%- else -%}
-		{%- if pass('can', 'view', 'issue', 0) and not flat -%}
-			<a href="{{ req.base }}/issues/0"><span class="bi bi-book"></span>{{ __('issue_zero') }}</a>
-		{%- else -%}
-			{%- if not nohtml %}<span class="bi bi-book"></span>{% endif %}{{ __('issue_zero') }}
-		{%- endif -%}
-	{%- endif -%}
+    {%- set req = grab('request') -%}
+    {%- if not issue.id -%}
+        {%- set issue = grab('issue', issue) -%}
+    {%- endif -%}
+    {%- if issue != false -%}
+        {%- if pass('can', 'view', 'issue', issue.id) and not flat -%}
+            <a href="{{ req.base }}/issues/{{ issue.id }}/{{ issue.permalink }}"><span
+                        class="bi bi-book"></span>{{ issue.volume ? issue.volume~'.' : '' }}{{ issue.number }} {{ issue.title }}
+            </a>
+        {%- else -%}
+            {% if not nohtml %}<span
+                    class="bi bi-book"></span>{% endif %}{{ issue.volume ? issue.volume~'.' : '' }}{{ issue.number }} {{ issue.title }}
+        {%- endif -%}
+        {%- if withdate -%}
+            &nbsp; <small>{{ issue.publication }}</small>
+        {%- endif -%}
+    {%- else -%}
+        {%- if pass('can', 'view', 'issue', 0) and not flat -%}
+            <a href="{{ req.base }}/issues/0"><span class="bi bi-book"></span>{{ __('issue_zero') }}</a>
+        {%- else -%}
+            {%- if not nohtml %}<span class="bi bi-book"></span>{% endif %}{{ __('issue_zero') }}
+        {%- endif -%}
+    {%- endif -%}
 {%- endmacro %}
 
 {% macro format_article(article, flat, nohtml) -%}
-	{%- set req = grab('request') -%}
-	{%- if not article.id -%}
-		{%- set article = grab('article', article) -%}
-	{%- endif -%}
-	{%- if article != false -%}
-		{%- if (
-			pass('can', 'view', 'article', article.id)
-			or pass('can', 'edit', 'article', article.id)
-			or pass('can', 'view', 'issue', article.issueId)
-			or article.versions|last.isPeer
-			) and not flat -%}
-			<a href="{{ req.base }}/articles/{{ article.id }}/{{ article.permalink }}"><span class="bi bi-align-left"></span>{{ article.title }}</a>
-		{%- else -%}
-			{%- if not nohtml %}<span class="bi bi-align-left"></span>{% endif %}{{ article.title }}
-		{%- endif -%}
-	{%- else -%}
-		{%- if not nohtml %}<span class="bi bi-align-left"></span>{% endif %}{{ __('article_unknown') }}
-	{%- endif -%}
+    {%- set req = grab('request') -%}
+    {%- if not article.id -%}
+        {%- set article = grab('article', article) -%}
+    {%- endif -%}
+    {%- if article != false -%}
+        {%- if (
+            pass('can', 'view', 'article', article.id)
+            or pass('can', 'edit', 'article', article.id)
+            or pass('can', 'view', 'issue', article.issueId)
+            or article.versions|last.isPeer
+            ) and not flat -%}
+            <a href="{{ req.base }}/articles/{{ article.id }}/{{ article.permalink }}"><span
+                        class="bi bi-align-left"></span>{{ article.title }}</a>
+        {%- else -%}
+            {%- if not nohtml %}<span class="bi bi-align-left"></span>{% endif %}{{ article.title }}
+        {%- endif -%}
+    {%- else -%}
+        {%- if not nohtml %}<span class="bi bi-align-left"></span>{% endif %}{{ __('article_unknown') }}
+    {%- endif -%}
 {%- endmacro %}
 
 {% macro format(type, value) -%}
-	{%- import _self as lib -%}
-	{%- if type == 'ip' -%}
-		{{ lib.format_ip(value) }}
-	{%- elseif type == 'email' -%}
-		{{ lib.format_email(value) }}
-	{%- elseif type == 'status' -%}
-		{{ lib.format_status(value) }}
-	{%- elseif type == 'user' -%}
-		{{ lib.format_user(value) }}
-	{%- elseif type == 'role' -%}
-		{{ lib.format_role(value) }}
-	{%- elseif type == 'issue' -%}
-		{{ lib.format_issue(value) }}
-	{%- elseif type == 'article' -%}
-		{{ lib.format_article(value) }}
-	{%- else -%}
-		{{ value }}
-	{%- endif -%}
+    {%- import _self as lib -%}
+    {%- if type == 'ip' -%}
+        {{ lib.format_ip(value) }}
+    {%- elseif type == 'email' -%}
+        {{ lib.format_email(value) }}
+    {%- elseif type == 'status' -%}
+        {{ lib.format_status(value) }}
+    {%- elseif type == 'user' -%}
+        {{ lib.format_user(value) }}
+    {%- elseif type == 'role' -%}
+        {{ lib.format_role(value) }}
+    {%- elseif type == 'issue' -%}
+        {{ lib.format_issue(value) }}
+    {%- elseif type == 'article' -%}
+        {{ lib.format_article(value) }}
+    {%- else -%}
+        {{ value }}
+    {%- endif -%}
 {%- endmacro %}
 
 {% macro format_authors(authors) -%}
-	{%- import _self as lib -%}
-	{%- set users = authors |split(',') -%}
-	{%- for user in users -%}
-		{{ lib.format_user(user, true, true) }}{% if not loop.last %},{% endif %}
-	{% endfor -%}
+    {%- import _self as lib -%}
+    {%- set users = authors |split(',') -%}
+    {%- for user in users -%}
+        {{ lib.format_user(user, true, true) }}{% if not loop.last %},{% endif %}
+    {% endfor -%}
 {%- endmacro %}
 
 {% macro select_users(label, role, selected, maxcount, nocreate) %}
-	{% import _self as lib %}
-	<input type="hidden" name="__arrays[]" value="{{ role }}s">
-	<input type="hidden" name="_{{ role }}s" value="1">
-	<select data-label="{{ label }}" {% if maxcount %}data-maxcount="{{ maxcount }}"{% endif %} placeholder="{{ __('hint_selectusers') }}" id="{{ role }}s[]" class="users{% if not nocreate and pass('can', 'create', 'user') %}-create{% endif %} feedback-user" multiple>
-		{% for user in selected %}
-		<option value="{{ user }}" selected>{{ lib.format_user(user, true, true, true) }}
-			{% endfor %}
-			{% if role %}
-			{% for user in grab('all_users') %}
-			{% if user not in selected %}
-			{% set times = grab('peer_last_choices', user) %}
-		<option value="{{ user }}"
-				{% if role == 'peer' -%}
-					data-label-lastaccepted="{{ __('label_last_accepted') }}"
-					data-val-lastaccepted="{{ times.accepted |default(__('label_never')) }}"
-					data-label-lastrefused="{{ __('label_last_refused') }}"
-					data-val-lastrefused="{{ times.refused |default(__('label_never')) }}"
-				{%- endif -%}
-		>{{ lib.format_user(user, true, true, true) }}
-			{% endif %}
-			{% endfor %}
-			{% endif %}
-	</select>
+    {% import _self as lib %}
+    <input type="hidden" name="__arrays[]" value="{{ role }}s">
+    <input type="hidden" name="_{{ role }}s" value="1">
+    <select data-label="{{ label }}" {% if maxcount %}
+        	data-maxcount="{{ maxcount }}"{% endif %}
+            placeholder="{{ __('hint_selectusers') }}" id="{{ role }}s[]"
+            class="users{% if not nocreate and pass('can', 'create', 'user') %}-create{% endif %} feedback-user"
+            multiple>
+        {% for user in selected %}
+        <option value="{{ user }}" selected>{{ lib.format_user(user, true, true, true) }}
+            {% endfor %}
+            {% if role %}
+            {% for user in grab('all_users') %}
+            {% if user not in selected %}
+            {% set times = grab('peer_last_choices', user) %}
+        <option value="{{ user }}"
+                {% if role == 'peer' -%}
+                    data-label-lastaccepted="{{ __('label_last_accepted') }}"
+                    data-val-lastaccepted="{{ times.accepted |default(__('label_never')) }}"
+                    data-label-lastrefused="{{ __('label_last_refused') }}"
+                    data-val-lastrefused="{{ times.refused |default(__('label_never')) }}"
+                {%- endif -%}
+        >{{ lib.format_user(user, true, true, true) }}
+            {% endif %}
+            {% endfor %}
+            {% endif %}
+    </select>
 {% endmacro %}
 
 {% macro input_file(id, size, required) %}
-	<div class="fileupload-single btn-group{% if size %} btn-group-{{ size }}{% endif %}" role="group">
-		<label for="{{ id }}" class="btn btn-outline-secondary btn-file{% if size %} btn-{{ size }}{% endif %}">
-			<span class="bi bi-plus"></span> {{ __('label_new_file') }}...
-			<input type="file" name="{{ id }}" id="{{ id }}" class="d-none"{{ required ? ' required' : '' }}>
-		</label>
-		<span class="file-name btn btn-outline-secondary{% if size %} btn-{{ size }}{% endif %} disabled"></span>
-		<button type="submit" class="btn btn-outline-secondary{% if size %} btn-{{ size }}{% endif %} disabled" disabled><span class="fg-ok"><span class="bi bi-upload"></span></span> {{ __('label_upload') }}</button>
-	</div>
+    <div class="fileupload-single btn-group{% if size %} btn-group-{{ size }}{% endif %}" role="group">
+        <label for="{{ id }}" class="btn btn-outline-secondary btn-file{% if size %} btn-{{ size }}{% endif %}">
+            <span class="bi bi-plus"></span> {{ __('label_new_file') }}...
+            <input type="file" name="{{ id }}" id="{{ id }}" class="d-none"{{ required ? ' required' : '' }}>
+        </label>
+        <span class="file-name btn btn-outline-secondary{% if size %} btn-{{ size }}{% endif %} disabled"></span>
+        <button type="submit" class="btn btn-outline-secondary{% if size %} btn-{{ size }}{% endif %} disabled"
+                disabled><span class="fg-ok"><span class="bi bi-upload"></span></span> {{ __('label_upload') }}</button>
+    </div>
 {% endmacro %}
 
 {% macro input_files(id, size, required) %}
-	<div class="fileupload-multiple btn-group{% if size %} btn-group-{{ size }}{% endif %}" data-basename="{{ id }}" data-i="0" role="group">
-		<label class="btn btn-outline-secondary btn-file{% if size %} btn-{{ size }}{% endif %}">
-			<span class="filelabel-add"><span class="bi bi-plus fg-ok"></span> {{ __('label_new_file') }}...</span>
-			<span class="filelabel-change"><span class="bi bi-file"></span> {{ __('label_file') }}:</span>
-			<input type="file" class="d-none"{{ required ? ' required' : '' }}>
-		</label>
-		<span class="file-name btn btn-outline-secondary{% if size %} btn-{{ size }}{% endif %} disabled"></span>
-	</div>
+    <div class="fileupload-multiple btn-group{% if size %} btn-group-{{ size }}{% endif %}" data-basename="{{ id }}"
+         data-i="0" role="group">
+        <label class="btn btn-outline-secondary btn-file{% if size %} btn-{{ size }}{% endif %}">
+            <span class="filelabel-add"><span class="bi bi-plus fg-ok"></span> {{ __('label_new_file') }}...</span>
+            <span class="filelabel-change"><span class="bi bi-file"></span> {{ __('label_file') }}:</span>
+            <input type="file" class="d-none"{{ required ? ' required' : '' }} multiple>
+        </label>
+        <span class="file-name btn btn-outline-secondary{% if size %} btn-{{ size }}{% endif %} disabled"></span>
+    </div>
 {% endmacro %}
 
 {% macro leftright_submit(mode, log) %}
 	{% if mode == 'change_and_send' %}
-		{% set icon = 'envelope' %}
-		{% set label = __('label_change_and_send') %}
-	{% else %}
-		{% set icon = 'check' %}
-		{% set label = __('label_save') %}
-	{% endif %}
-{% if log %}
-    <div data-label="" class="input-group input-like">
-        <span class="input-group-btn">
-            <button type="submit" class="btn btn-outline-secondary">
-{% else %}
-    <button type="submit">
-{% endif %}
+        {% set icon = 'envelope' %}
+        {% set label = __('label_change_and_send') %}
+    {% else %}
+        {% set icon = 'check' %}
+        {% set label = __('label_save') %}
+    {% endif %}
+    {% if log %}
+        <div data-label="" class="input-group input-like">
+            <span class="input-group-btn">
+        <button type="submit" class="btn btn-outline-secondary">
+    {% else %}
+        <button type="submit">
+    {% endif %}
     <span class="fg-ok"><span class="bi bi-{{ icon }}"></span></span> {{ label }}</button>
-{% if log %}
+    {% if log %}
     <div data-label="" class="input-group input-like">
-    <input type="text" name="log" class="form-control" placeholder="{{ __('label_comments') }}...">
-</div>
-{% endif %}
-{% endmacro %}
+        <input type="text" name="log" class="form-control" placeholder="{{ __('label_comments') }}...">
+    </div>
+    {% endif %}
+ {% endmacro %}
 
 {% macro modal() %}
-    <div class="modal" id="user-modal" data-append-base="userdata" data-append-key="email" tabindex="-1" aria-labelledby="user-modal-label">
-        <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal fade" id="user-modal" data-append-base="userdata" data-append-key="email" tabindex="-1" aria-labelledby="user-modal-label">
+        <div class="modal-dialog modal-dialog-centered role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h4 class="modal-title" id="user-modal-label"><span class="bi bi-person"></span> <span class="text"></span></h4>
