@@ -1,86 +1,102 @@
-<div class="card mb-3">
+div class="card mb-3">
 
-    <div class="card-body">
+<div class="card-body">
 
-        <form id="user_prefs" method="post" class="form-group">
-            {% if modal %}
-                <input type="hidden" name="email" value="">
-            {% else %}
-            {% endif %}
-            {% if not modal and user.id != session.user.id and pass('can', 'edit', 'user', user.id) %}
-            {% endif %}
-                <input type="hidden" name="id" value="{{ user.id }}">
-                <div class="mb-3 row">
-                    <label for="email" class="col-sm-2 col-form-label text-end">{{ __('label_email') }}</label>
-                    <div class="col-sm-10">
-                        <input type="email" id="email" value="{{ user.email }}" required maxlength="100" class="form-control"{% if not modal and not user.active %} disabled{% endif %}>
-                    </div>
-                </div>
-                {{ filter('form_begin', 'user_prefs') |raw }}
-            <div class="mb-3 row">
-                <label for="name" class="col-sm-2 col-form-label text-end">{{ __('label_name') }}</label>
-                <div class="col-sm-7">
-                    <input type="text" id="name" value="{{ user.name }}" required minlength="2" maxlength="100" class="form-control"{% if not modal and not user.active %} disabled{% endif %}>
-                </div>
-                <div class="col-sm-3">
-                    <select name="gender" required class="form-select"{% if not modal and not user.active %} disabled{% endif %}>
-                        <option disabled{% if not user.id %} selected{% endif %}>{{ __('label_gender') }}...</option>
-                        <option {% if user.id and user.gender == 'X' %}selected {% endif %}value="X">{{ __('label_nogender') }}</option>
-                        <option {% if user.id and user.gender == 'F' %}selected {% endif %}value="F">{{ __('label_female') }}</option>
-                        <option {% if user.id and user.gender == 'M' %}selected {% endif %}value="M">{{ __('label_male') }}</option>
-                        <option {% if user.id and user.gender == 'O' %}selected {% endif %}value="O">{{ __('label_othergender') }}</option>
-                    </select>
-                </div>
-            </div>
-            <div class="mb-3 row">
-                <label for="profession" class="col-sm-2 col-form-label text-end">{{ __('label_profession') }}</label>
-                <div class="col-sm-10">
-                    <input type="text" id="profession" value="{{ user.profession }}" minlength="3" maxlength="100" required class="form-control"{% if not modal and not user.active %} disabled{% endif %}>
-                </div>
-            </div>
-            <div class="mb-3 row">
-                <label for="employer" class="col-sm-2 col-form-label text-end">{{ __('label_employer') }}</label>
-                <div class="col-sm-10">
-                    <input type="text" id="employer" value="{{ user.employer }}" minlength="3" maxlength="100" class="form-control"{% if not modal and not user.active %} disabled{% endif %}>
-                </div>
-            </div>
-            {% if not modal and user.id != session.user.id and pass('can', 'edit', 'user', user.id) %}
-            {% endif %}
-                <div class="mb-3 row">
-                    <label for="newpassword1" class="col-sm-2 col-form-label text-end">{{ __('label_new_password') }}</label>
-                    <div class="col-sm-10">
-                        <input type="password" id="newpassword1" minlength="8" maxlength="72" placeholder="{{ __('hint_new_password') }}" class="form-control">
-                    </div>
-                </div>
-                <div class="mb-3 row">
-                    <label for="newpassword2" class="col-sm-2 col-form-label text-end">{{ __('label_again_password') }}</label>
-                    <div class="col-sm-10">
-                        <input type="password" id="newpassword2" maxlength="72" placeholder="{{ __('hint_again_password') }}" data-parsley-equalto="#newpassword1" data-parsley-validate-if-empty class="form-control">
-                    </div>
-                </div>
-               <div class="row mb-3">
-    <div class="col-sm-10 offset-sm-2">
-        {% if not modal and pass('can', 'delete', 'user', user.id) %}
-                {% if user.active %}
-                    <button type="submit" form="admin_user_ban" class="btn btn-outline-danger" name="ban" value="1">
-                    <i class="bi bi-x-circle"></i> {{ __('label_deactivate') }}
-                {% else %}
-                        <button type="submit" form="admin_user_ban" class="btn btn-outline-success" name="ban" value="1">
-                    <i class="bi bi-check-circle"></i> {{ __('label_activate') }}
-                {% endif %}
-            </button>
+    <form id="user_prefs" method="post" class="form-group">
+        {% if modal %}
+            <input type="hidden" name="email" value="">
+        {% else %}
         {% endif %}
-        <button type="submit" class="btn btn-primary"{% if not user.active %} disabled{% endif %}>
-            <span class="fg-ok"><span class="bi bi-check"></span></span> {{ __('label_save') }}
-        </button>
-    </div>
-</div>
+        {% if not modal and user.id != session.user.id and pass('can', 'edit', 'user', user.id) %}
+        {% endif %}
+        <input type="hidden" name="id" value="{{ user.id }}">
+        <div class="mb-3 row">
+            <label for="email" class="col-sm-2 col-form-label text-end">{{ __('label_email') }}</label>
+            <div class="col-sm-10">
+                <input type="email" id="email" value="{{ user.email }}" required maxlength="100"
+                       class="form-control"{% if not modal and not user.active %} disabled{% endif %}>
+            </div>
+        </div>
+        {{ filter('form_begin', 'user_prefs') |raw }}
+        <div class="mb-3 row">
+            <label for="name" class="col-sm-2 col-form-label text-end">{{ __('label_name') }}</label>
+            <div class="col-sm-7">
+                <input type="text" id="name" value="{{ user.name }}" required minlength="2" maxlength="100"
+                       class="form-control"{% if not modal and not user.active %} disabled{% endif %}>
+            </div>
+            <div class="col-sm-3">
+                <select name="gender" required
+                        class="form-select"{% if not modal and not user.active %} disabled{% endif %}>
+                    <option disabled{% if not user.id %} selected{% endif %}>{{ __('label_gender') }}...</option>
+                    <option {% if user.id and user.gender == 'X' %}selected
+                            {% endif %}value="X">{{ __('label_nogender') }}</option>
+                    <option {% if user.id and user.gender == 'F' %}selected
+                            {% endif %}value="F">{{ __('label_female') }}</option>
+                    <option {% if user.id and user.gender == 'M' %}selected
+                            {% endif %}value="M">{{ __('label_male') }}</option>
+                    <option {% if user.id and user.gender == 'O' %}selected
+                            {% endif %}value="O">{{ __('label_othergender') }}</option>
+                </select>
+            </div>
+        </div>
+        <div class="mb-3 row">
+            <label for="profession" class="col-sm-2 col-form-label text-end">{{ __('label_profession') }}</label>
+            <div class="col-sm-10">
+                <input type="text" id="profession" value="{{ user.profession }}" minlength="3" maxlength="100"
+                       required class="form-control"{% if not modal and not user.active %} disabled{% endif %}>
+            </div>
+        </div>
+        <div class="mb-3 row">
+            <label for="employer" class="col-sm-2 col-form-label text-end">{{ __('label_employer') }}</label>
+            <div class="col-sm-10">
+                <input type="text" id="employer" value="{{ user.employer }}" minlength="3" maxlength="100"
+                       class="form-control"{% if not modal and not user.active %} disabled{% endif %}>
+            </div>
+        </div>
+        {% if not modal and user.id != session.user.id and pass('can', 'edit', 'user', user.id) %}
+        {% endif %}
+        <div class="mb-3 row">
+            <label for="newpassword1"
+                   class="col-sm-2 col-form-label text-end">{{ __('label_new_password') }}</label>
+            <div class="col-sm-10">
+                <input type="password" id="newpassword1" minlength="8" maxlength="72"
+                       placeholder="{{ __('hint_new_password') }}" class="form-control">
+            </div>
+        </div>
+        <div class="mb-3 row">
+            <label for="newpassword2"
+                   class="col-sm-2 col-form-label text-end">{{ __('label_again_password') }}</label>
+            <div class="col-sm-10">
+                <input type="password" id="newpassword2" maxlength="72"
+                       placeholder="{{ __('hint_again_password') }}" data-parsley-equalto="#newpassword1"
+                       data-parsley-validate-if-empty class="form-control">
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-sm-10 offset-sm-2">
+                {% if not modal and pass('can', 'delete', 'user', user.id) %}
+                    {% if user.active %}
+                        <button type="submit" form="admin_user_ban" class="btn btn-outline-danger" name="ban" value="1">
+                        <i class="bi bi-x-circle"></i> {{ __('label_deactivate') }}
+                    {% else %}
+                        <button type="submit" form="admin_user_ban" class="btn btn-outline-success" name="ban"
+                                value="1">
+                            <i class="bi bi-check-circle"></i> {{ __('label_activate') }}
+                    {% endif %}
+                    </button>
+                {% endif %}
 
-{% if not modal and pass('can', 'delete', 'user', user.id) %}
-    <form id="admin_user_ban" method="post" class="form-tight">
-        {{ filter('form_begin', 'admin_user_ban') |raw }}
+                    <button type="submit" class="btn btn-primary"{% if not user.active %} disabled{% endif %}>
+                        <span class="fg-ok"><span class="bi bi-check"></span></span> {{ __('label_save') }}
+                    </button>
+            </div>
+        </div>
+
+        {% if not modal and pass('can', 'delete', 'user', user.id) %}
+            <form id="admin_user_ban" method="post" class="form-tight">
+                {{ filter('form_begin', 'admin_user_ban') |raw }}
+            </form>
+        {% endif %}
     </form>
-{% endif %}
-        </form>
-    </div>
+</div>
 </div>
