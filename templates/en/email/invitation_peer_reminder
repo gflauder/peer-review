@@ -1,10 +1,10 @@
 {% block subject %}
-{% import 'lib' as lib %}
+{% import 'lib.twig' as lib %}
 Reminder to review: {{ lib.format_article(article, true, true) |truncate(64, true) }}
 {% endblock %}
 
 {% block html %}
-{% import 'lib' as lib %}
+{% import 'lib.twig' as lib %}
 <p>Hello,</p>
 <p>
 This is a simple reminder that we need your review of the article

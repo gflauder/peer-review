@@ -3,11 +3,11 @@ Article créé ou modifié: {{ article.title |truncate(64, true) }}
 {% endblock %}
 
 {% block html %}
-{% import 'lib' as lib %}
+{% import 'lib.twig' as lib %}
 <p>Bonjour,</p>
 <p>
 Ce message est pour vous informer que l'article
-<a href="{{ req.protocol }}://{{ req.host }}{{ req.base }}/article/{{ article.id }}/{{ article.permalink }}">{{ article.title |truncate(64, true) }}</a>
+<a href="{{ req.protocol }}://{{ req.host }}{{ req.base }}/articles/{{ article.id }}/{{ article.permalink }}">{{ article.title |truncate(64, true) }}</a>
 a été créé ou modifié par {{ lib.format_user(session.user, true, true) }}.
 </p>
 {% if log %}

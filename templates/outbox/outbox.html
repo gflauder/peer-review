@@ -1,5 +1,10 @@
 {% import 'lib.twig' as lib %}
-{% use 'blocks.html' %}
+{% if req.lang == 'fr' %}
+    {% use 'fr/blocks.html' %}
+{% else %}
+    {% use 'en/blocks.html' %}
+{% endif %}
+
 {{ title(__('title_outbox')) }}
 {% if sent %}
     {% if success %}
@@ -14,165 +19,176 @@
         {{ lib.alert(success, __('delete_failure')) }}
     {% endif %}
 {% endif %}
+<div class="card">
+    <div class="card-body">
 
-<h2 class="page-header">
-    <span class="glyphicon glyphicon-envelope"></span> {{ __('title_outbox') }}
-    {% if pass('has_role', 'admin') and not email %}
-        <div class="pull-right">
-            {% if all %}
-                <a href="{{ req.base }}/outbox" class="btn btn-outline-secondary btn-xs"><span
-                            class="glyphicon glyphicon-sunglasses fg-ok"></span> {{ __('label_not_all_users') }}</a>
-            {% else %}
-                <a href="{{ req.base }}/outbox/all" class="btn btn-outline-secondary btn-xs"><span
-                            class="glyphicon glyphicon-sunglasses fg-err"></span> {{ __('label_all_users') }}</a>
+        <h2 class="page-header">
+            {{ lib.title_with_icon('envelope',__('title_outbox')) }}
+
+            {% if pass('has_role', 'admin') and not email %}
+                <div class="pull-right">
+                    {% if all %}
+                        <a href="{{ req.base }}/outbox" class="btn btn-outline-secondary btn-xs"><span
+                                    class="bi bi-sunglasses fg-ok"></span> {{ __('label_not_all_users') }}
+                        </a>
+                    {% else %}
+                        <a href="{{ req.base }}/outbox/all" class="btn btn-outline-secondary btn-xs"><span
+                                    class="bi bi-sunglasses fg-err"></span> {{ __('label_all_users') }}
+                        </a>
+                    {% endif %}
+                </div>
             {% endif %}
-        </div>
-    {% endif %}
-</h2>
+        </h2>
 
-{% if not pass('can', 'edit', 'email') %}
-    {% exit %}
-{% endif %}
 
-{% if not email %}
-    {{ block('hint_outbox') }}
-    {% include 'outbox_list.html' %}
-{% endif %}
 
-{% if email %}
-    {% if email.isSent %}
-        <form class="form-tight">
-            <div class="form-group">
-                <div class="input-block col-sm-12">
-                    <label>{{ __('email_from') }}</label>
-                    <div class="form-control input-like">
-                        {{ lib.format_user(email.mailfrom, true, false, true) }}
-                    </div>
-                </div>
-            </div>
-            <div class="form-group">
-                <div class="input-block col-sm-12">
-                    <label>{{ __('email_to') }}</label>
-                    <div class="form-control input-like">
-                        {{ lib.format_users(email.recipients, true, false, true) }}
-                        {{ lib.format_users(email.ccs, true, false, true) }}
-                    </div>
-                </div>
-            </div>
-            <div class="form-group">
-                <div class="input-block col-sm-12">
-                    <label>{{ __('label_subject') }}</label>
-                    <div class="form-control input-like">
-                        {{ email.subject }}
-                    </div>
-                </div>
-            </div>
-            <div class="form-group">
-                <div class="input-block col-sm-12">
-                    <label>{{ __('label_sent') }}</label>
-                    <div class="form-control input-like">
-                        {{ email.localmodified }}
-                    </div>
-                </div>
-            </div>
-            <div class="form-group">
-                <div class="input-block col-sm-12">
-                    <div class="form-control input-like">
-                        {{ email.html |raw }}
-                    </div>
-                </div>
-            </div>
-        </form> <!-- Closing form tag added here -->
-    {% else %}
-        <form id="outbox_edit" method="post" class="form-tight">
-        {{ filter('form_begin', 'outbox_edit') |raw }}
-        {% if email.id %}
-    <input type="hidden" name="id" value="{{ email.id }}">
-    {% endif %}
-        <div class="form-group">
-            <select data-label="{{ __('email_from') }}" class="feedback-user" name="mailfrom">
-                <option value="0" {{ email.mailfrom == 0 ? 'selected' : '' }}>{{ lib.format_user(0, true, true, true) }}
-                <option value="{{ session.user.id }}" {{ email.mailfrom == session.user.id ? 'selected' : '' }}>{{ lib.format_user(session.user.id, true, true, true) }}
-            </select>
-        </div>
-        <div class="form-group">
-            {{ lib.select_users(__('email_to'), 'recipient', email.recipients, false, true) }}
-        </div>
-        {% if email.ccs|length > 0 %}
-        <div class="form-group">
-            {{ lib.select_users(__('email_cc'), 'cc', email.ccs, false, true) }}
-        </div>
-    {% endif %}
-        {% if email.bccs|length > 0 %}
-        <div class="form-group">
-            {{ lib.select_users(__('email_bcc'), 'bcc', email.bccs, false, true) }}
-        </div>
-    {% endif %}
-        <div class="form-group">
-            <input data-colsize="12" data-label="{{ __('label_subject') }}" type="text" id="subject"
-                   value="{{ email.subject }}" required>
-        </div>
-        <script src='//cdn.ckeditor.com/4.7.3/full/ckeditor.js'></script>
-        <script type="text/javascript">
-            // Toolbar edited with https://ckeditor.com/latest/samples/toolbarconfigurator/
-            var ckConfig = {
-                versionCheck: false,
-                customConfig: '',
-                language: 'fr',
-                stylesSet: 'my_styles',
-                format_tags: 'p;h1;h2;h3;h4;div',
-                toolbarGroups: [
-                    {name: 'clipboard', groups: ['clipboard', 'undo']},
-                    {name: 'editing', groups: ['find', 'selection', 'spellchecker', 'editing']},
-                    {name: 'basicstyles', groups: ['cleanup', 'basicstyles']},
-                    {name: 'paragraph', groups: ['list', 'indent', 'align', 'paragraph']},
-                    {name: 'links', groups: ['links']},
-                    {name: 'styles', groups: ['styles']},
-                    {name: 'colors', groups: ['colors']},
-                    {name: 'tools', groups: ['tools']},
-                    {name: 'others', groups: ['others']},
-                    {name: 'document', groups: ['mode']},
-                    {name: 'about', groups: ['about']}
-                ],
-                removeButtons: 'Save,NewPage,Preview,Print,Templates,Cut,Copy,Paste,Undo,Redo,Scayt,Form,Checkbox,Radio,TextField,Textarea,Select,Button,ImageButton,HiddenField,Language,Anchor,Image,Flash,Table,Smiley,PageBreak,Iframe,Styles,Format,Font,FontSize,CopyFormatting',
-                entities_latin: false,
-                entities_additional: '',
-                sourceAreaTabSize: 4,
-                dataIndentationChars: '    '
-            };
-            window.onload = function () {
-                CKEDITOR.replace('rich-edit-html', ckConfig);
-            };
-        </script>
-        <div class="form-group">
-            <div class="input-block col-sm-12">
-                <textarea name="html" id="rich-edit-html" class="rich-edit">{{ email.html }}</textarea>
-            </div>
-        </div>
-    {% endif %}
-    <div class="form-group">
-        <div class="col-sm-12">
-            {% for file in email.files %}
-                {% if email.contextType and email.contextId %}
-                    <a href="/=bin/{{ email.contextType }}s/{{ email.contextId }}/{{ file.name }}" target="_blank"><span
-                                class="glyphicon glyphicon-file"></span>{{ file.name }}
-                    </a> ({{ lib.format_bytes(file.bytes) }})<br>
-                {% else %}
-                    <span class="glyphicon glyphicon-file"></span>{{ file.name }} ({{ lib.format_bytes(file.bytes) }})
-                    <br>
+                {% if not pass('can', 'edit', 'email') %}
+                    {% exit %}
                 {% endif %}
-            {% endfor %}
-        </div>
-    </div>
-    {% if not email.isSent %}
-        <div class="form-group">
-            <div class="col-sm-offset-2 col-sm-10">
-                <button type="submit" class="btn btn-outline-secondary"><span
-                            class="glyphicon glyphicon-send fg-ok"></span> {{ __('label_send') }}</button>
-                <button type="submit" class="btn btn-outline-secondary" name="delete" value="1"><span
-                            class="glyphicon glyphicon-trash fg-err"></span> {{ __('label_delete') }}</button>
+
+                {% if not email %}
+
+                    {{ block('hint_outbox') }}
+                    {% include 'outbox_list.html' %}
+                {% endif %}
+
+                {% if email %}
+                    {% if email.isSent %}
+                        <form class="form-tight">
+                            <div class="form-group">
+                                <div class="input-block col-sm-12 mb-3">
+                                    <label>{{ __('email_from') }}</label>
+                                    <div class="form-control input-like">
+                                        {{ lib.format_user(email.mailfrom, true, false, true) }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-block col-sm-12  mb-3">
+                                    <label>{{ __('email_to') }}</label>
+                                    <div class="form-control input-like">
+                                        {{ lib.format_users(email.recipients, true, false, true) }}
+                                        {{ lib.format_users(email.ccs, true, false, true) }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-block col-sm-12 mb-3">
+                                    <label>{{ __('label_subject') }}</label>
+                                    <div class="form-control input-like">
+                                        {{ email.subject }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-block col-sm-12  mb-3">
+                                    <label>{{ __('label_sent') }}</label>
+                                    <div class="form-control input-like">
+                                        {{ email.localmodified }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-block col-sm-12">
+                                    <div class="form-control input-like">
+                                        {{ email.html |raw }}
+                                    </div>
+                                </div>
+                            </div>
+                        </form> <!-- Closing form tag added here -->
+                    {% else %}
+                        <form id="outbox_edit" method="post" class="form-tight">
+                        {{ filter('form_begin', 'outbox_edit') |raw }}
+                    {% if email.id %}
+                    <input type="hidden" name="id" value="{{ email.id }}">
+                    {% endif %}
+                        <div class="form-group  mb-3">
+                            <select data-label="{{ __('email_from') }}" class="feedback-user" name="mailfrom">
+                                <option value="0" {{ email.mailfrom == 0 ? 'selected' : '' }}>{{ lib.format_user(0, true, true, true) }}
+                                <option value="{{ session.user.id }}" {{ email.mailfrom == session.user.id ? 'selected' : '' }}>{{ lib.format_user(session.user.id, true, true, true) }}
+                            </select>
+                        </div>
+                        <div class="form-group  mb-3">
+                            {{ lib.select_users(__('email_to'), 'recipient', email.recipients, false, true) }}
+                        </div>
+                    {% if email.ccs|length > 0 %}
+                        <div class="form-group  mb-3">
+                            {{ lib.select_users(__('email_cc'), 'cc', email.ccs, false, true) }}
+                        </div>
+                    {% endif %}
+                    {% if email.bccs|length > 0 %}
+                        <div class="form-group mb-3 ">
+                            {{ lib.select_users(__('email_bcc'), 'bcc', email.bccs, false, true) }}
+                        </div>
+                    {% endif %}
+                        <div class="form-group  mb-3">
+                            <input data-colsize="12" data-label="{{ __('label_subject') }}" type="text" id="subject"
+                                   value="{{ email.subject }}" required>
+                        </div>
+                        <script src='//cdn.ckeditor.com/4.7.3/full/ckeditor.js'></script>
+                        <script type="text/javascript">
+                            // Toolbar edited with https://ckeditor.com/latest/samples/toolbarconfigurator/
+                            var ckConfig = {
+                                versionCheck: false,
+                                customConfig: '',
+                                language: 'fr',
+                                stylesSet: 'my_styles',
+                                format_tags: 'p;h1;h2;h3;h4;div',
+                                toolbarGroups: [
+                                    {name: 'clipboard', groups: ['clipboard', 'undo']},
+                                    {name: 'editing', groups: ['find', 'selection', 'spellchecker', 'editing']},
+                                    {name: 'basicstyles', groups: ['cleanup', 'basicstyles']},
+                                    {name: 'paragraph', groups: ['list', 'indent', 'align', 'paragraph']},
+                                    {name: 'links', groups: ['links']},
+                                    {name: 'styles', groups: ['styles']},
+                                    {name: 'colors', groups: ['colors']},
+                                    {name: 'tools', groups: ['tools']},
+                                    {name: 'others', groups: ['others']},
+                                    {name: 'document', groups: ['mode']},
+                                    {name: 'about', groups: ['about']}
+                                ],
+                                removeButtons: 'Save,NewPage,Preview,Print,Templates,Cut,Copy,Paste,Undo,Redo,Scayt,Form,Checkbox,Radio,TextField,Textarea,Select,Button,ImageButton,HiddenField,Language,Anchor,Image,Flash,Table,Smiley,PageBreak,Iframe,Styles,Format,Font,FontSize,CopyFormatting',
+                                entities_latin: false,
+                                entities_additional: '',
+                                sourceAreaTabSize: 4,
+                                dataIndentationChars: '    '
+                            };
+                            window.onload = function () {
+                                CKEDITOR.replace('rich-edit-html', ckConfig);
+                            };
+                        </script>
+                        <div class="form-group">
+                            <div class="input-block col-sm-12">
+                                <textarea name="html" id="rich-edit-html" class="rich-edit">{{ email.html }}</textarea>
+                            </div>
+                        </div>
+                    {% endif %}
+                    <div class="form-group">
+                        <div class="col-sm-12">
+                            {% for file in email.files %}
+                                {% if email.contextType and email.contextId %}
+                                    <a href="/=bin/{{ email.contextType }}s/{{ email.contextId }}/{{ file.name }}"
+                                       target="_blank"><span
+                                                class="bi bi-file"></span>{{ file.name }}
+                                    </a> ({{ lib.format_bytes(file.bytes) }})<br>
+                                {% else %}
+                                    <span class="bi bi-file"></span>{{ file.name }} ({{ lib.format_bytes(file.bytes) }})
+                                    <br>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% if not email.isSent %}
+                        <div class="form-group mt-3">
+                            <div class="col-sm-offset-2 col-sm-10">
+                                <button type="submit" class="btn btn-outline-secondary"><span
+                                            class="bi bi-send fg-ok"></span> {{ __('label_send') }}</button>
+                                <button type="submit" class="btn btn-outline-secondary" name="delete" value="1"><span
+                                            class="bi bi-trash fg-err"></span> {{ __('label_delete') }}</button>
+                            </div>
+                        </div>
+                    {% endif %}
+                    </form>
+                {% endif %}
             </div>
         </div>
-    {% endif %}
-    </form>
-{% endif %}

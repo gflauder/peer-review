@@ -58,11 +58,32 @@ h6 {
     display: flex;
     flex-direction: column;
 }
-
+.no-padding {
+    padding: 0 !important;
+}
+.footer {
+    background-color: #f8f9fa;
+    padding: 20px;
+    text-align: center;
+}
 @media (max-width: 1199px) {
     #main {
         padding: 20px;
     }
+}
+
+.title-underline {
+    position: relative;
+}
+
+.title-underline::after {
+    content: '';
+    position: absolute;
+    left: 12px;
+    bottom: -10px; /* Adjust the distance below the title */
+    width: 150px;
+    height: 5px; /* Adjust the thickness of the underline */
+    background-color: #002f8c;
 }
 
 /*--------------------------------------------------------------
@@ -284,7 +305,7 @@ h6 {
 }
 
 /* Accordion */
-.accordion-item {
+/*.accordion-item {
     border: 1px solid #ebeef4;
 }
 
@@ -313,7 +334,7 @@ h6 {
     padding: 0 0 15px 0;
     color: #3e4f6f;
     font-size: 15px;
-}
+}*/
 
 /* Breadcrumbs */
 .breadcrumb {
@@ -393,7 +414,7 @@ h6 {
     z-index: 997;
     height: 60px;
     box-shadow: 0 2px 20px rgba(1, 41, 112, 0.1);
-    background-color: #162ab0;
+    background-color: #002F8E;
     padding-left: 20px;
     /* Toggle Sidebar Button */
     /* Search Bar */
@@ -700,7 +721,7 @@ h6 {
         font-weight: 600;
         color: #4154f1;
         transition: all 0.3s ease-in-out;
-        background: #f6f9ff;
+
         padding: 10px 15px;
         border-radius: 4px;
     }
@@ -721,13 +742,22 @@ h6 {
     }
 
     .sidebar-nav .nav-link:hover {
-        color: #4154f1;
-        background: #f6f9ff;
+        color: #ffffff;
+        background-color: #abafda;
     }
 
     .sidebar-nav .nav-link:hover i {
-        color: #4154f1;
+        background-color: #abafda;
     }
+
+.nav-link.active {
+    background-color: #abafda;
+    color: #ffffff;
+}
+.sidebar-nav .nav-content .nav-link.active a:hover{
+    background-color: #abafda;
+    color: #ffffff;
+}
 
     .sidebar-nav .nav-link .bi-chevron-down {
         margin-right: 0;
@@ -754,11 +784,12 @@ h6 {
     }
 
     .sidebar-nav .nav-content a i {
-        font-size: 6px;
+        font-size: 14px;
         margin-right: 8px;
         line-height: 0;
         border-radius: 50%;
     }
+
 
     .sidebar-nav .nav-content a:hover,
     .sidebar-nav .nav-content a.active {

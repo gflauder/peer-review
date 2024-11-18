@@ -1,87 +1,139 @@
 {% block head %}
-	{% use 'blocks.html' %}
-{% import 'lib.twig' as lib %}
-<!DOCTYPE html>
+    <!DOCTYPE html>
+
 <html lang="{{ req.lang }}">
 <!-- test1 -->
 <!-- test2 --><!-- Default head content -->
 {% endblock %}
 
+{% block body %}
+    <!-- Default body content -->
+{% endblock %}
+{% block styles %}
+    <!-- Default styles content#-->
+{% endblock %}
+{% block scripts %}
+    <!--Default scripts content-->
+{% endblock %}
+
+{% block welcome %}
+    <p>
+        To use this application, you must sign into your account here. If you
+        do not have an account, you should register.
+    </p>
+    <form class="login-form" method="post" action="{{ req.base }}/login" id="login-form"
+          onsubmit="return checkPassword()">
+        {{ filter('form_begin', 'login-form') |raw }}
+        <div class="form-group">
+            <input type="email" name="email" placeholder="{{ __('label_email') }}" value="{{ post.email }}"
+                   class="form-control" required autocomplete="true">
+        </div>
+        <div class="form-group">
+            <input type="password" name="password" id="password" placeholder="{{ __('label_password_opt') }}"
+                   class="form-control hideaway hideaway-focus" autocomplete="off">
+        </div>
+        <button type="submit" class="btn btn-success">{{ __('label_login') }}</button>
+    </form>
+    <h5><a href="{{ req.base }}/register">{{ __('title_register') }} &raquo;</a></h5>
+    <p>
+        If your account does not have a password, or you would prefer not to use
+        it, simply enter your e-mail address above.
+    </p>
+    <p>
+        If you already have an account and a password, but forgot your password,
+        <a href="{{ req.base }}/password_reset">click here</a>.
+    </p>
+{% endblock %}
+
+
 {% block hint_role_creation %}
-	<div class="hint">
-		<p>
-		Note: roles are declared in your <code>config.ini</code>
-		file in section <code>acl</code>.
-		</p>
-	</div>
+    <div class="hint">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-circle"
+             viewBox="0 0 16 16">
+            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+            <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0"/>
+        </svg>
+        <span>
+            Note: roles are declared in your <code>config.ini</code>
+            file in section <code>acl</code>.
+        </span>
+    </div>
 {% endblock %}
 
 
 {% block hint_user_mailpass_change %}
-	<p>
-	For your protection, to modify your e-mail address or your password you
-	must enter your current password first.  A reminder will also be
-	e-mailed to you (at both the current and new address, if applicable).
-	</p>
+    <p>
+        For your protection, to modify your e-mail address or your password you
+        must enter your current password first. A reminder will also be
+        e-mailed to you (at both the current and new address, if applicable).
+    </p>
 {% endblock %}
 
-
 {% block hint_password_creation %}
-	<p>
-	(Optional.)  If you do not want to confirm your e-mail address at each
-	visit, define a password below.  This will allow you to sign in without
-	extra confirmation in the future.
-	</p>
+    <p>
+        (Optional.) If you do not want to confirm your e-mail address at each
+        visit, define a password below. This will allow you to sign in without
+        extra confirmation in the future.
+    </p>
 {% endblock %}
 
 
 {% block hint_login_link %}
-	<p>
-	Clicking this button will invalidate any previous link and create a new
-	one which you can copy as you'd like.
-	</p>
+    <p>
+        Clicking this button will invalidate any previous link and create a new
+        one which you can copy as you'd like.
+    </p>
 {% endblock %}
 
 
 {% block login_link_url %}
-	<p>
-	You may copy and paste this authentication link to give it to the user or
-	use it yourself.  Don't forget that a login URL is only valid for a single
-	use.
-	</p>
-	<p>
-	<a href="{{ req.protocol }}://{{ req.host }}/en/{{ login_link }}">{{ req.protocol }}://{{ req.host }}/en/{{ login_link }}</a>
-	</p>
+    <p>
+        You may copy and paste this authentication link to give it to the user or
+        use it yourself. Don't forget that a login URL is only valid for a single
+        use.
+    </p>
+    <p>
+        <a href="{{ req.protocol }}://{{ req.host }}/en/{{ login_link }}">{{ req.protocol }}://{{ req.host }}
+            /en/{{ login_link }}</a>
+    </p>
 {% endblock %}
 
 
 {% block hint_outbox %}
-	<div class="hint">
-		<p>
-		As a privileged user, here you have the opportunity to review and
-		manually send the e-mails which have been created by your recent
-		operations.
-		</p>
-	</div>
+    <div class="hint">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-circle"
+             viewBox="0 0 16 16">
+            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+            <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0"/>
+        </svg>
+        <span>
+			As a privileged user, here you have the opportunity to review and
+			manually send the e-mails which have been created by your recent
+			operations.
+		</span>
+    </div>
 {% endblock %}
 
 
 {% block hint_review %}
-	<div class="hint">
-		<p>
-		After having read the files above, please download
-		<a href="/questions.docx"><span class="glyphicon glyphicon-file"></span>these questions</a>,
-		answer them and attach it below with your verdict.
-		</p>
-	</div>
+    <div class="hint">
+        <p>
+            After having read the files above, please download
+            <a href="/questions.docx"><span class="glyphicon glyphicon-file"></span>these questions</a>,
+            answer them and attach it below with your verdict.
+        </p>
+    </div>
 {% endblock %}
 
 
 {% block hint_article_change_status %}
-	<div class="hint">
-		<p>
-		Involved users will be notified via e-mail.  You can attach files to
-		this status change, in which case they'll be added to this e-mail.
-		</p>
-	</div>
+<div class="hint">
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-circle"
+         viewBox="0 0 16 16">
+        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+        <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0"/>
+    </svg>
+    <span class="ml-1"> Users involved in this status change will be notified via e-mail. You can attach files to this status change which will be added to this e-mail.
+	</span>
+</div>
 {% endblock %}

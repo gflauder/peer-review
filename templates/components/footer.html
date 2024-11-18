@@ -1,5 +1,5 @@
-{% if session.identified %}
-<footer class="d-flex justify-content-center footer" style="margin-left: 300px;">
+
+<footer class="d-flex footer justify-content-center">
     <ul class="nav m-0">
         <li class="nav-item">
             <a class="nav-link text-secondary" aria-current="page" href="#">Privacy Policy</a>
@@ -12,18 +12,33 @@
         </li>
     </ul>
 </footer>
+<a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+<style>
+  {% if not session.identified %}
+@media (max-width: 1200px) { /* Adjusted breakpoint to match sidebar collapse */
+    footer.footer {
+        margin-left: 0;
+    }
+}
 {% else %}
-<footer class="d-flex justify-content-end footer" style="margin-left: 0;">
-    <ul class="nav m-0">
-        <li class="nav-item">
-            <a class="nav-link text-secondary" aria-current="page" href="#">Privacy Policy</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link text-secondary" href="#">Terms and conditions</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link text-secondary" href="#">Contact</a>
-        </li>
-    </ul>
-</footer>
+  /* Default footer margin when sidebar is expanded */
+  footer.footer {
+      margin-left: 300px;
+  }
+
+  /* Footer margin when sidebar is collapsed */
+  body.toggle-sidebar footer.footer {
+      margin-left: 0;
+  }
+
+  /* Footer margin for smaller screens */
+  @media (max-width: 1200px) {
+      footer.footer {
+          margin-left: 0;
+      }
+  }
+}
 {% endif %}
+</style>
+

@@ -18,7 +18,15 @@
 <div class="card mb-3">
     <div class="card mb-3">
         <div class="card-body">
-            {{ lib.title_with_icon('journal', (issue.volume ? issue.volume~'.' : '') ~ issue.number ~ ' ' ~ (issue.title|default(__('issue_zero'))) ~ ' <small>' ~ issue.publication ~ '</small>') }}
+            {{ lib.title_with_icon(
+                'book',
+                issue.title | default(__('issue_zero')),
+                issue.publication,
+                issue.volume,
+                issue.number
+            ) }}
+
+
 
             {% if (issue and issue.id > 0 and pass('can', 'edit', 'issue', issue.id)) or (not issue and pass('can', 'create', 'issue')) %}
 
@@ -91,7 +99,7 @@
                 {{ issue.description |raw }}
             {% endif %}
             <h3>{{ __('title_articles') }}
-                {% if pass('can_create_article') %}
+                {% if pass('can','create','article') %}
                     <form action="{{ req.base }}/articles/new" id="article_create" method="get"
                           class="form-inline inline">
                         <input type="hidden" name="issueId" value="{{ issue.id }}">

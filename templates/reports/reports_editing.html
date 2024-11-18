@@ -1,145 +1,171 @@
 {% import 'lib.twig' as lib %}
 {% import _self as self %}
 {{ title(__('title_editing_report')) }}
-<h2 class="page-header"><span class="glyphicon glyphicon-stats"></span> {{ __('title_editing_report') }}</h2>
 
-{% if not (pass('can', 'edit', 'issue') or pass('has_role', 'editor')) %}
-	{% exit %}
-{% endif %}
+<div class="card mb-3">
+    <div class="card-body">
+        {{ lib.title_with_icon('graph-down',article.title|default(__('title_editing_report'))) }}
 
-<p>
-	<form id="editing_report" method="post" class="form-leftright hidden-print">
-		{{ filter('form_begin', 'editing_report') |raw }}
-		<input data-label="{{ __('label_begin') }}" type="text" id="begin" name="begin" value="{{ req.post.begin |default(date_earlier) }}" minlength="10" maxlength="10" required>
-		<input data-label="{{ __('label_end') }}" type="text" id="end" name="end" value="{{ req.post.end |default(date_now) }}" minlength="10" maxlength="10" required>
+        {% if not (pass('can', 'edit', 'issue') or pass('has_role', 'editor')) %}
+            {% exit %}
+        {% endif %}
 
-		<select data-label="{{ __('label_issueId') }}" id="issueId" name="issueId" class="feedback-book" required>
-			<option value="*"{% if req.post.issueId == '*' %} selected{% endif %}>{{ __('label_all') }}
-			<option value="0"{% if 'issueId' in req.post|keys and req.post.issueId == '0' %} selected{% endif %}>{{ __('issue_zero') }}
-			{% for issue in all_issues if issue.id > 0 %}
-				<option value="{{ issue.id }}"{% if issue.id == req.post.issueId %} selected{% endif %}>{{ issue.volume ? issue.volume~'.' : '' }}{{ issue.number }} {{ issue.title }}
-			{% endfor %}
-		</select>
 
-		<div data-label="{{ __('title_history') }}" class="input-like">
-			<label for="show_states">
-				<input type="checkbox" id="show_states" name="show_states" value="1" {{ req.post.show_states ? 'checked' : '' }}>
-				{{ __('label_statuses') }}
-			</label>
-			<label for="show_versions">
-				<input type="checkbox" id="show_versions" name="show_versions" value="1" {{ req.post.show_versions ? 'checked' : '' }}>
-				{{ __('label_versions') }}
-			</label>
-		</div>
+        <form id="editing_report" method="post" class="form-leftright hidden-print">
+            {{ filter('form_begin', 'editing_report') |raw }}
+            <div class="row mb-3">
+                <div class="col-md-2">
+                    <label for="begin" class="form-label">{{ __('label_begin') }}</label>
+                    <input data-label="{{ __('label_begin') }}" type="date" id="begin" name="begin"
+                           value="{{ req.post.begin |default(date_earlier) }}" class="form-control" minlength="10"
+                           maxlength="10" required>
+                </div>
+            </div>
 
-		<div data-label="{{ __('title_reviews') }}" class="input-like">
-			<label for="show_peers_2">
-				<input type="radio" id="show_peers_2" name="show_peers" value="2" {{ req.post.show_peers == 2 ? 'checked' : '' }}>
-				{{ __('label_all') }}
-			</label>
-			<label for="show_peers_1">
-				<input type="radio" id="show_peers_1" name="show_peers" value="1" {{ req.post.show_peers == 1 ? 'checked' : '' }}>
-				{{ __('label_accepteds') }}
-			</label>
-			<label for="show_peers_0">
-				<input type="radio" id="show_peers_0" name="show_peers" value="0" {{ not req.post.show_peers ? 'checked' : '' }}>
-				{{ __('no_reviews') }}
-			</label>
-		</div>
+            <div class="row mb-3">
+                <div class="col-md-2">
+                    <label for="end" class="form-label">{{ __('label_end') }}</label>
+                    <input data-label="{{ __('label_end') }}" type="date" id="end" name="end"
+                           value="{{ req.post.end |default(date_now) }}" class="form-control" minlength="10"
+                           maxlength="10" required>
+                </div>
+            </div>
 
-		<button type="submit" class="hidden-print"><span class="glyphicon glyphicon-search"></span> {{ __('label_generate') }}</button>
-	</form>
-	<span class="visible-print-inline">
-		{{ __('label_begin') }} {{ req.post.begin |default(date_earlier) }} {{ __('label_end') }} {{ req.post.end |default(date_now) }}
-	</span>
-</p>
+            <select data-label="{{ __('label_issueId') }}" id="issueId" name="issueId" class="feedback-book mb-3"
+                    required>
+                <option value="*"{% if req.post.issueId == '*' %} selected{% endif %}>{{ __('label_all') }}
+                <option value="0"{% if 'issueId' in req.post|keys and req.post.issueId == '0' %} selected{% endif %}>{{ __('issue_zero') }}
+                    {% for issue in all_issues if issue.id > 0 %}
+                <option value="{{ issue.id }}"{% if issue.id == req.post.issueId %} selected{% endif %}>{{ issue.volume ? issue.volume~'.' : '' }}{{ issue.number }} {{ issue.title }}
+                    {% endfor %}
+            </select>
 
-<div class="report">
-	{% for issue in all_issues if issue.articles %}
-		<h3>{{ lib.format_issue(issue.id, true, true, true) }}</h3>
-		{% for article in issue.articles %}
-			<table class="table">
-				<thead>
-					<tr class="panel-default"><th colspan="5" class="panel-heading">{{ article.title }}</th></tr>
-				</thead>
-				<tbody>
-					{% if article.authors|length > 0 %}
-						<tr>
-							<td colspan="5">
-								{% for author in article.authors %}
-									<span class="user-identity">{{ self.format_user_full(author) }}</span>
-								{% endfor %}
-							</td>
-						</tr>
-					{% endif %}
-					{% if article.versions|length > 0 and req.post.show_versions %}
-						<tr>
-							<td colspan="5">
-								{{ __('label_versions') }}:
-								{% set ver = 1 %}
-								{% for version in article.versions %}
-									<span class="version">{{ ver }}. {{ version.created|slice(0,10) }}</span>
-									{% set ver = ver + 1 %}
-								{% endfor %}
-							</td>
-						</tr>
-					{% endif %}
-					{% if article.statusChanges|length > 0 and req.post.show_states %}
-						<tr>
-							<td colspan="5">
-								{% for tx in article.statusChanges %}
-									<span class="status-change">{{ lib.format_status(tx.newValue) }} {{ __('label_on') }} {{ tx.timestamp|slice(0,10) }}</span>
-								{% endfor %}
-							</td>
-						</tr>
-					{% endif %}
-					{% if (article.hasReviews and req.post.show_peers == 2) or (article.hasAcceptedReviews and req.post.show_peers) %}
-						<tr>
-							<th style="width: 4em;">{{ __('label_version') }}</th>
-							<th>{{ __('label_peer') }}</th>
-							<th style="width: 8em;">{{ __('label_invited') }}</th>
-							<th style="width: 8em;" class="text-title">{{ __('label_accepted') }}</th>
-							<th style="width: 20em;">{{ __('label_verdict') }}</th>
-						</tr>
-						{% set ver = 1 %}
-						{% for version in article.versions %}
-							{% for review in version.reviews if req.post.show_peers == 2 or (review.agreed and review.status != 'deleted') %}
-								<tr>
-									<td>{{ ver }}</td>
-									<td>{{ self.format_user_full(session.user.id in article.authors ? -1 : review.peerId) }}</td>
-									<td class="text-nowrap">{{ review.created|slice(0,10) }}</td>
-									<td class="text-nowrap">
-										{% if review.status == 'deleted' %}
-											{{ __('label_declined') }}
-										{% else %}
-											{{ review.agreed|slice(0,10) }}
-										{% endif %}
-									</td>
-									<td class="text-nowrap">
-										{% if review.status in config.reviews.states_final and review.status != 'deleted' %}
-											{{ lib.format_status(review.status) }}
-											{{ __('label_on') }}
-											{{ review.completed|slice(0,10) }}
-										{% endif %}
-									</td>
-								</tr>
-							{% endfor %}
-							{% set ver = ver + 1 %}
-						{% endfor %}
-					{% endif %}
-				</tbody>
-			</table>
-		{% endfor %}
-	{% endfor %}
+            <div data-label="{{ __('title_history') }}" class="input-like mb-3">
+                <label for="show_states">
+                    <input type="checkbox" id="show_states" name="show_states"
+                           value="1" {{ req.post.show_states ? 'checked' : '' }}>
+                    {{ __('label_statuses') }}
+                </label>
+                <label for="show_versions">
+                    <input type="checkbox" id="show_versions" name="show_versions"
+                           value="1" {{ req.post.show_versions ? 'checked' : '' }}>
+                    {{ __('label_versions') }}
+                </label>
+            </div>
+
+            <div data-label="{{ __('title_reviews') }}" class="input-like mb-3">
+                <label for="show_peers_2">
+                    <input type="radio" id="show_peers_2" name="show_peers"
+                           value="2" {{ req.post.show_peers == 2 ? 'checked' : '' }}>
+                    {{ __('label_all') }}
+                </label>
+                <label for="show_peers_1">
+                    <input type="radio" id="show_peers_1" name="show_peers"
+                           value="1" {{ req.post.show_peers == 1 ? 'checked' : '' }}>
+                    {{ __('label_accepteds') }}
+                </label>
+                <label for="show_peers_0">
+                    <input type="radio" id="show_peers_0" name="show_peers"
+                           value="0" {{ not req.post.show_peers ? 'checked' : '' }}>
+                    {{ __('no_reviews') }}
+                </label>
+            </div>
+
+            <button type="submit" class="btn btn-primary mb-3 hidden-print"><span
+                        class="bi bi-search"></span> {{ __('label_generate') }}</button>
+        </form>
+        <span class="visible-print-inline">
+		    {{ __('label_begin') }} {{ req.post.begin |default(date_earlier) }} {{ __('label_end') }} {{ req.post.end |default(date_now) }}
+	    </span>
+        <div class="report">
+            {% for issue in all_issues if issue.articles %}
+                <h3>{{ lib.format_issue(issue.id, true, true, true) }}</h3>
+                {% for article in issue.articles %}
+                    <table class="table">
+                        <thead>
+                        <tr class="panel-default">
+                            <th colspan="5" class="panel-heading">{{ article.title }}</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% if article.authors|length > 0 %}
+                            <tr>
+                                <td colspan="5">
+                                    {% for author in article.authors %}
+                                        <span class="user-identity">{{ self.format_user_full(author) }}</span>
+                                    {% endfor %}
+                                </td>
+                            </tr>
+                        {% endif %}
+                        {% if article.versions|length > 0 and req.post.show_versions %}
+                            <tr>
+                                <td colspan="5">
+                                    {{ __('label_versions') }}:
+                                    {% set ver = 1 %}
+                                    {% for version in article.versions %}
+                                        <span class="version">{{ ver }}. {{ version.created|slice(0,10) }}</span>
+                                        {% set ver = ver + 1 %}
+                                    {% endfor %}
+                                </td>
+                            </tr>
+                        {% endif %}
+                        {% if article.statusChanges|length > 0 and req.post.show_states %}
+                            <tr>
+                                <td colspan="5">
+                                    {% for tx in article.statusChanges %}
+                                        <span class="status-change">{{ lib.format_status(tx.newValue) }} {{ __('label_on') }} {{ tx.timestamp|slice(0,10) }}</span>
+                                    {% endfor %}
+                                </td>
+                            </tr>
+                        {% endif %}
+                        {% if (article.hasReviews and req.post.show_peers == 2) or (article.hasAcceptedReviews and req.post.show_peers) %}
+                            <tr>
+                                <th style="width: 4em;">{{ __('label_version') }}</th>
+                                <th>{{ __('label_peer') }}</th>
+                                <th style="width: 8em;">{{ __('label_invited') }}</th>
+                                <th style="width: 8em;" class="text-title">{{ __('label_accepted') }}</th>
+                                <th style="width: 20em;">{{ __('label_verdict') }}</th>
+                            </tr>
+                            {% set ver = 1 %}
+                            {% for version in article.versions %}
+                                {% for review in version.reviews if req.post.show_peers == 2 or (review.agreed and review.status != 'deleted') %}
+                                    <tr>
+                                        <td>{{ ver }}</td>
+                                        <td>{{ self.format_user_full(session.user.id in article.authors ? -1 : review.peerId) }}</td>
+                                        <td class="text-nowrap">{{ review.created|slice(0,10) }}</td>
+                                        <td class="text-nowrap">
+                                            {% if review.status == 'deleted' %}
+                                                {{ __('label_declined') }}
+                                            {% else %}
+                                                {{ review.agreed|slice(0,10) }}
+                                            {% endif %}
+                                        </td>
+                                        <td class="text-nowrap">
+                                            {% if review.status in config.reviews.states_final and review.status != 'deleted' %}
+                                                {{ lib.format_status(review.status) }}
+                                                {{ __('label_on') }}
+                                                {{ review.completed|slice(0,10) }}
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                {% set ver = ver + 1 %}
+                            {% endfor %}
+                        {% endif %}
+                        </tbody>
+                    </table>
+                {% endfor %}
+            {% endfor %}
+        </div>
+    </div>
 </div>
-
 {% macro format_user_full(id) -%}
-	{%- set user = grab('user_resolve', id) -%}
-	{%- if user != false -%}
-		<u>{{ user.name }}</u> ({{ user.profession }}
-		{%- if user.employer -%}, <em>{{ user.employer }}</em>{%- endif -%}
-		)
-	{%- else -%}
-		{{ __('user_unknown') }}
-	{%- endif -%}
+    {%- set user = grab('user_resolve', id) -%}
+    {%- if user != false -%}
+        <u>{{ user.name }}</u> ({{ user.profession }}
+        {%- if user.employer -%}, <em>{{ user.employer }}</em>{%- endif -%}
+        )
+    {%- else -%}
+        {{ __('user_unknown') }}
+    {%- endif -%}
 {%- endmacro %}

@@ -1,5 +1,10 @@
 {% import 'lib.twig' as lib %}
-{% use 'blocks.html' %}
+{% if req.lang == 'fr' %}
+    {% use 'fr/blocks.html' %}
+{% else %}
+    {% use 'en/blocks.html' %}
+{% endif %}
+
 {{ title(__('title_users')) }}
 
 <h3>{{ __('title_login_link') }}</h3>

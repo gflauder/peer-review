@@ -1,35 +1,120 @@
+<style>
+    .alert {
+        position: fixed;
+        top: 60px; /* Distance from the top */
+        left: 50%; /* Center horizontally */
+        transform: translateX(-50%); /* Center horizontally */
+        z-index: 1050;
+        width: auto;
+        max-width: 500px;
+        min-width: 300px;
+        opacity: 1;
+        transition: opacity 0.5s ease-in-out;
+    }
+    .alert.show {
+        opacity: 1;
+    }
+    .alert.fade {
+        opacity: 0;
+    }
+    .alert .btn-close {
+        position: absolute;
+        top: 0.25rem;
+        right: 0.25rem;
+        font-size: 0.75rem; /* Smaller size for the close button */
+    }
+    .alert .alert-message {
+        margin-right: 1rem; /* Space between the message and the close button */
+    }
+    .alert-danger svg {
+        fill: #8B0000; /* Dark red color */
+    }
+
+    .alert-success svg {
+        fill: #006400; /* Dark green color */
+    }
+    .alert-warning svg {
+        fill: #FF8C00; /* Dark orange color */
+    }
+    .alert-primary svg {
+        fill: #004085; /* Dark primary color */
+    }
+</style>
+
 {% if alert_type == 'info' %}
+    <symbol id="info-fill" viewBox="0 0 16 16">
+        <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zM8.93 4.58a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0zM8 6a.5.5 0 0 1 .5.5v5a.5.5 0 0 1-1 0v-5A.5.5 0 0 1 8 6z"/>
+    </symbol>
 <div class="alert alert-primary d-flex align-items-center" role="alert">
     <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Info:"><use xlink:href="#info-fill"/></svg>
-    <div>
+    <div class="alert-message">
         <strong>{{ alert_title }}</strong> {{ alert_message }}
     </div>
+    <button type="button" class="btn-close" aria-label="Close"></button>
 </div>
 {% endif %}
 
 {% if alert_type == 'success' %}
+    <symbol id="check-circle-fill" viewBox="0 0 16 16">
+        <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM6.97 11.03a.75.75 0 0 0 1.08 0l3.992-3.992a.75.75 0 1 0-1.08-1.08L7.5 9.439 5.53 7.47a.75.75 0 0 0-1.08 1.08l2.52 2.52z"/>
+    </symbol>
 <div class="alert alert-success d-flex align-items-center" role="alert">
     <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill"/></svg>
-    <div>
+    <div class="alert-message">
         <strong>{{ alert_title }}</strong> {{ alert_message }}
     </div>
+    <button type="button" class="btn-close" aria-label="Close"></button>
 </div>
 {% endif %}
 
 {% if alert_type == 'warning' %}
+    <symbol id="exclamation-triangle-fill" viewBox="0 0 16 16">
+        <path d="M8.982 1.566a1.13 1.13 0 0 0-1.964 0L.165 13.233c-.457.778.091 1.767.982 1.767h13.707c.89 0 1.438-.99.982-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
+    </symbol>
 <div class="alert alert-warning d-flex align-items-center" role="alert">
     <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Warning:"><use xlink:href="#exclamation-triangle-fill"/></svg>
-    <div>
+    <div class="alert-message">
         <strong>{{ alert_title }}</strong> {{ alert_message }}
     </div>
+    <button type="button" class="btn-close" aria-label="Close"></button>
 </div>
 {% endif %}
 
 {% if alert_type == 'danger' %}
+    <svg style="display: none;">
+        <symbol id="exclamation-triangle-fill" viewBox="0 0 16 16">
+            <path d="M8.982 1.566a1.13 1.13 0 0 0-1.964 0L.165 13.233c-.457.778.091 1.767.982 1.767h13.707c.89 0 1.438-.99.982-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
+        </symbol>
+    </svg>
 <div class="alert alert-danger d-flex align-items-center" role="alert">
     <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
-    <div>echo $_session[];
+    <div class="alert-message">
         <strong>{{ alert_title }}</strong> {{ alert_message }}
     </div>
+    <button type="button" class="btn-close" aria-label="Close"></button>
 </div>
 {% endif %}
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        setTimeout(function() {
+            var alerts = document.querySelectorAll('.alert');
+            alerts.forEach(function(alert) {
+                alert.classList.add('fade');
+                setTimeout(function() {
+                    alert.remove();
+                }, 500);
+            });
+        }, 5000);
+
+        document.querySelectorAll('.btn-close').forEach(function(button) {
+            button.addEventListener('click', function() {
+                var alert = button.parentElement;
+                alert.classList.add('fade');
+                setTimeout(function() {
+                    alert.remove();
+                }, 300);
+            });
+        });
+    });
+</script>

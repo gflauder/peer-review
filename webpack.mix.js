@@ -12,6 +12,7 @@ mix.webpackConfig({
             jQuery: 'jquery',
             'window.jQuery': 'jquery'
         }),
+
         new CleanWebpackPlugin({
             cleanOnceBeforeBuildPatterns: ['**/*'], // This will clean all files in the dist folder
         }),
@@ -36,15 +37,15 @@ mix.styles([
     'src/print.css',
     'src/pyritephp.css',
     'src/style.css',
- /*   'src/sbadmin2.css',*/
 ], 'dist/css/main.css')
     .sourceMaps()
     .version();
 
-mix.js('node_modules/bootstrap/dist/js/bootstrap.bundle.js', 'dist/js/bootstrap.js')
-    .sass('node_modules/bootstrap/scss/bootstrap.scss', 'dist/css/bootstrap.css')
+mix.sass('node_modules/bootstrap/scss/bootstrap.scss', 'dist/css/bootstrap.css')
     .sourceMaps()
     .version();
+
+mix.copyDirectory('src/images', 'dist/images');
 
 mix.then(() => {
     const manifestPath = path.join(__dirname, 'dist', 'mix-manifest.json');

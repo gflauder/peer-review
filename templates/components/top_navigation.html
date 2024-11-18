@@ -1,37 +1,45 @@
+
+
 <header class="header fixed-top d-flex align-items-center custom-bg">
-
-    {# <a class="navbar-brand float-start" href="{{ req.base }}/">{{ __('title_program') }}</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar"
-                aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>`
-        </button> #}
-
     <div class="d-flex align-items-center justify-content-between">
-        <a href="{{ req.base }}/" class="logo d-flex align-items-center">
-            <img src="/assets/img/logo.png" alt="">
-            <span class="d-none d-lg-block text-white">{{ __('title_program') }}</span>
+        <a href="{{ req.base }}/" class="logo d-flex align-items-center" style="text-decoration: none;">
+            <svg viewBox="0 0 100 93.46494286304981" preserveAspectRatio="xMidYMid meet" class="p-2 mb-3" width="50"
+                 height="50">
+                <defs id="SvgjsDefs1636"></defs>
+                <g id="SvgjsG1637" featurekey="tpnldm-0"
+                   transform="matrix(4.4883270263671875,0,0,4.4883270263671875,-5.386002399593533,3.3393365975681313)"
+                   fill="#fff">
+                    <path d="M3.6706 8.382 l8.4094 9.758 c0.1 0.14 0.1 0.34 -0.04 0.44 c-0.028204 0.028204 -0.060606 0.047402 -0.093398 0.06 c-1.1652 0.9412 -2.5576 1.44 -4.0266 1.44 c-3.72 0 -6.72 -3.18 -6.72 -7.08 s3 -7.06 6.72 -7.06 c1.5 0 2.92 0.5 4.1 1.46 c0.14 0.12 0.16 0.32 0.06 0.46 c-0.12 0.14 -0.32 0.16 -0.44 0.04 c-1.08 -0.88 -2.36 -1.34 -3.72 -1.34 c-1.6496 0 -3.1496 0.6942 -4.2494 1.822 z M11.376 18.2998 l-8.123 -9.4448 c-0.2528 0.3168 -0.4774 0.6598 -0.6694 1.0244 l7.937 8.9388 c0.2954 -0.1482 0.5812 -0.3214 0.8554 -0.5184 l-0.000019531 0 z M1.8198 13 c0 3.54 2.74 6.44 6.1 6.44 c0.6826 0 1.3452 -0.1208 1.9724 -0.35 l-7.5886 -8.6056 c-0.3114 0.7726 -0.4838 1.6228 -0.4838 2.5156 l0 0 z M20.9084 15.500399999999999 l2.3516 3.8796 c0.1 0.16 0.04 0.36 -0.1 0.46 c-0.06 0.02 -0.12 0.04 -0.18 0.04 c-0.12 0 -0.22 -0.06 -0.28 -0.16 l-2.3788 -3.9246 c-0.3782 0.16221 -0.7796 0.2834 -1.1978 0.358 l2.0366 3.2666 c0.1 0.16 0.06 0.36 -0.1 0.46 c-0.04 0.02 -0.1 0.04 -0.16 0.04 c-0.12 0 -0.22 -0.06 -0.28 -0.16 l-2.206 -3.5266 l-0.274 0.0066016 c-0.027794 0 -0.05459 -0.0032032 -0.07998 -0.0096094 l-0.08 0.0096094 l-2.76 0 l0 3.44 c0 0.18 -0.14 0.32 -0.32 0.32 s-0.34 -0.14 -0.34 -0.32 l0 -13.18 c0 -0.0408 0.0082032 -0.079394 0.023008 -0.115 l-0.0030078 -0.045 c0 -0.18 0.14 -0.34 0.32 -0.34 l3.08 0 c0.0408 0 0.079394 0.0082032 0.115 0.023008 l0.045 -0.0030078 c2.94 0 5.34 2.28 5.34 5.12 c0 1.8492 -1.032 3.4662 -2.5716 4.3604 l0 0 z M22.82 11.14 c0 -2.46 -2.1 -4.46 -4.68 -4.46 c-0.0408 0 -0.079394 -0.0082032 -0.115 -0.023008 l-0.045 0.0030078 l-2.4302 0 l5.024 8.2884 c1.3458 -0.784 2.2462 -2.1976 2.2462 -3.8084 z M15.219999999999999 9.892 l3.5346 5.6696 c0.4308 -0.054004 0.8434 -0.1642 1.2294 -0.3226 l-4.764 -7.8592 l0 2.5122 l0 0.000019531 z M15.219999999999999 15.5802 l2.76 0.000039062 l0.025996 0.0009961 l-2.786 -4.4538 l0 4.4528 l0 -0.000019531 z"></path>
+                </g>
+            </svg>
+            <span class="d-none d-lg-block text-white text-emphasis">{{ __('title_program') }}</span>
         </a>
         <i class="bi bi-list toggle-sidebar-btn text-white"></i>
     </div><!-- End Logo -->
 
-    <nav class="header-nav ms-auto">
+    <nav class="header-nav ms-auto me-4">
         <ul class="d-flex align-items-end">
-            <li class="h5 text-white nav-item m-2{% if req.path_args[0] == 'instructions' %}active{% endif %}">
-                <a class="nav-link" href="{{ req.base }}/page/instructions">{{ __('title_instructions') }}</a>
-            </li>
-            <li class="h5 text-white nav-item m-2{% if req.path_args[0] == 'contacts' %} active{% endif %}">
-                <a class="nav-link" href="{{ req.base }}/page/contacts">{{ __('title_contacts') }}</a>
-            </li>
-            <li class="h5 text-white nav-item m-2 {% if req.path_args[0] == 'about' %}active{% endif %}">
-                <a class="nav-link"
-                   href="{{ req.base }}/articles/new">{{ __('title_submit_article') }}</a>
-            </li>
-            <li class="h5 text-white nav-item m-2{% if req.path_args[0] == 'about' %} active{% endif %}">
-                <a class="nav-link" href="{{ req.base }}/page/about">{{ __('title_about') }}</a>
+
+            <li class="h6 font-weight-bold text-white nav-item m-2 {% if req.path_args[0] == 'about' %} active{% endif %}">
+                <a class="nav-link" href="{{ req.base }}/articles/new">{{ __('title_submit_article')|raw }}</a>
             </li>
 
+            <div class="vertical-border text-white"></div>
+
+            <li class="h6 font-weight-bold text-white nav-item m-2 {% if req.path_args[0] == 'instructions' %}active{% endif %}">
+                <a class="nav-link" href="{{ req.base }}/page/instructions">{{ __('title_instructions')|raw }}</a>
+            </li>
+            <div class="vertical-border text-white"></div>
+            <li class="h6 font-weight-bold text-white nav-item m-2{% if req.path_args[0] == 'contacts' %} active{% endif %}">
+                <a class="nav-link" href="{{ req.base }}/page/contacts">{{ __('title_contacts') |raw }}</a>
+            </li>
+            <div class="vertical-border text-white"></div>
+            <li class="h6 font-weight-bold text-white nav-item m-2{% if req.path_args[0] == 'about' %} active{% endif %}">
+                <a class="nav-link" href="{{ req.base }}/page/about">{{ __('title_about') |raw }}</a>
+            </li>
+            <div class="vertical-border text-white"></div>
             <li class="text-white nav-item m-2">
-            {% include 'components/messages_inbox.html' %}
+                {% include 'components/messages_inbox.html' %}
             </li>
 
             <li class="nav-item dropdown m-2">
@@ -57,3 +65,4 @@
     </nav>
 
 </header>
+

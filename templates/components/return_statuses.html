@@ -19,14 +19,8 @@
                 {% elseif req.post.email %}
                     {% include 'components/flash_messages.html' with {'alert_type': 'danger', 'alert_title': __('error_login_title'), 'alert_message': __('error_login_body')} %}
                 {% else %}
-                    <div class="container main">
-                        <div class="content-wrapper">
-                            <div class="new-content">
-                                <h1>{{ __('title_welcome_to') }} {{ __('title_program') }}</h1>
-                            </div>
+                    {#Login Form#}
                          {% include 'authorizations/login.html' %}
-                        </div>
-                    </div>
                 {% endif %}
             {% endif %}
         {% elseif req.status == 440 %}

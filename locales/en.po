@@ -5,7 +5,7 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: PyriteView v1.0\n"
+"Project-Id-Version: PyriteView v2.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-11-01 18:13-0400\n"
 "PO-Revision-Date: 2018-11-07 11:15-0500\n"
@@ -212,6 +212,9 @@ msgstr "changed"
 
 msgid "label_changepassword"
 msgstr "Change password"
+
+msgid "label_clickhere"
+msgstr "click here"
 
 msgid "label_close"
 msgstr "Close"
@@ -522,13 +525,20 @@ msgstr "No special permission"
 msgid "no_reviews"
 msgstr "No reviews"
 
+msgid "password_requirement"
+msgstr "For your protection, to create a password you must enter a password that is at least 8 characters long."
+
 msgid "password_changed"
 msgstr "Thank you. Your password was updated."
 
 msgid "password_emailed"
-msgstr ""
-"Thank you. If you have an account, you will receive an instruction e-mail "
-"shortly."
+msgstr "Thank you. If you have an account, you will receive an instruction e-mail shortly."
+
+msgid "password_invalid_entry"
+msgstr "Please provide a valid password."
+
+msgid "password_mismatch"
+msgstr " Passwords must match."
 
 msgid "password_invalid"
 msgstr "Sorry, this password reset link has expired or is invalid."
@@ -671,7 +681,7 @@ msgid "title_history"
 msgstr "History"
 
 msgid "title_instructions"
-msgstr "Instructions for authors"
+msgstr "Instructions <br>for authors"
 
 msgid "title_issues"
 msgstr "Issues"
@@ -731,13 +741,25 @@ msgid "title_roles"
 msgstr "Roles"
 
 msgid "title_submit_article"
-msgstr "Submit an Article"
+msgstr "Submit <br>an Article"
 
 msgid "title_users"
 msgstr "Users"
 
 msgid "title_welcome_to"
-msgstr "Welcome to"
+msgstr "Welcome to the"
+
+msgid "title_welcome_1"
+msgstr "To use this application, you must sign into your account here. If you do not have an account, register below."
+
+msgid "title_welcome_2"
+msgstr "If your account does not have a password, or you would prefer not to use it, simply enter your e-mail address above."
+
+msgid "title_welcome_3"
+msgstr " If you already have an account and a password, but forgot your password,"
+
+msgid "title_welcome_4"
+msgstr "The journal Criminology was founded by Denis Szabo in 1968. It mainly presents research results and is aimed at both scientists and professionals. It is a thematic journal that responds to the current concerns and interests of criminologists in Quebec and abroad.<br><br> The topics covered are generally multidisciplinary and the journal calls on researchers from different fields. It is the only criminology journal published in French in America. This online article management system allows you to submit scientific articles to us and to follow the progress of the peer review of your articles.<br><br> We invite you to read the  <a class='btn btn-outline-primary' href='/en/page/instructions'>Instructions For Authors</a>  before proceeding with your submission. "
 
 msgid "user_new"
 msgstr "New User"

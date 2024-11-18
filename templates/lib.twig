@@ -63,15 +63,35 @@
     {{ lib.flashbox(context, inside, target, __('label_view_details')) }}
 {% endmacro %}
 
-{% macro title_with_icon(icon, title, icon_size='5rem', line_height='1.5px', line_color='black', margin='mx-4') %}
+{% macro title_with_icon(icon, title, publication = '', volume = '', number = '', icon_size='5rem', line_height='1.5px', line_color='black', margin='mx-4') %}
     <div class="d-flex align-items-center justify-content-center mb-5">
+        <!-- Icon -->
         <span class="text-info bi bi-{{ icon }}" style="font-size: {{ icon_size }};"></span>
+
+        <!-- Title with volume and number -->
         <div class="h2 {{ margin }} text-truncate"
              style="font-family: 'Cambria', serif; max-width: 70%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"
-             title="{{ title }}">{{ title }}</div>
+             title="{{ title }}">
+            <!-- Volume and Number -->
+            {{ volume ? volume ~ '.' : '' }}{{ number }}
+
+            {% if title %}
+                {{ title }}
+            {% else %}
+                {{ __('label_new_issue') }}
+            {% endif %}
+            <!-- Publication under the title -->
+            {% if publication %}
+                <small> {{ publication }}</small>
+            {% endif %}
+        </div>
+
+        <!-- Horizontal line -->
         <div style="flex-grow: 1; height: {{ line_height }}; background-color: {{ line_color }};"></div>
     </div>
 {% endmacro %}
+
+
 
 
 
@@ -113,7 +133,7 @@
 {%- endmacro %}
 
 {% macro format_email(email) -%}
-    <a href="mailto:{{ email }}"><span class="bi bi-envelope"></span>{{ email }}</a>
+    <a href="mailto:{{ email }}"><span class=""></span>{{ email }}</a>
 {%- endmacro %}
 
 {% macro format_bytes(bytes) -%}
@@ -170,20 +190,21 @@
         {%- if user != false -%}
             {%- if pass('can', 'view', 'user', id) and not flat -%}
                 <a href="{{ req.base }}/admin/users/edit?id={{ user.id }}">{% if not user.active %}<s>{% endif %}<span
-                                class="bi bi-person"></span>{{ user.name|default(__('user_new')) }}{% if not user.active %}
+                                class=""></span>{{ user.name|default(__('user_new')) }}{% if not user.active %}
                     </s>{% endif %}</a>
             {%- elseif nohtml -%}
                 {{ user.name|default(__('user_new')) }}{% if withmail %} &lt;{{ pass('can', 'view', 'user', id) ? user.email : filter('protect_email', user.email) }}&gt;{% endif %}
             {%- else -%}
                 {% if not user.active %}<s>{% endif %}<span
-                    class="bi bi-person"></span>{{ user.name|default(__('user_new')) }}{% if withmail %} &lt;<a
+                    class=""></span>{{ user.name|default(__('user_new')) }}{% if withmail %} &lt;<a
                     href="mailto:{{ user.email }}">{{ user.email }}</a>&gt;{% endif %}{% if not user.active %}</s>{% endif %}
             {%- endif -%}
         {%- else -%}
-            <span class="bi bi-person"></span>{{ __('user_unknown') }}
+            <span class=""></span>{{ __('user_unknown') }}
         {%- endif -%}
     {%- endif -%}
 {%- endmacro %}
+
 {% macro format_users(users, flat, nohtml, withmail) %}
     {% import _self as lib %}
     {% for user in users %}
@@ -195,9 +216,9 @@
     {%- set name = __('role_'~role) -%}
     {%- set req = grab('request') -%}
     {%- if pass('can', 'view', 'role', role) and not flat -%}
-        <a href="{{ req.base }}/admin/roles/{{ role }}"><span class="bi bi-mortarboard"></span>{{ name }}</a>
+        <a class="text-white" href="{{ req.base }}/admin/roles/{{ role }}"><span class=""></span>{{ name }}</a>
     {%- else -%}
-        <span class="bi bi-mortarboard"></span>{{ name }}
+        <span class=""></span>{{ name }}
     {%- endif -%}
 {%- endmacro %}
 
@@ -210,8 +231,9 @@
     {%- elseif role == 'peer' %}{% set v = 'warning' -%}
     {%- else %}{% set v = 'secondary' -%}
     {%- endif -%}
-    <span class="badge bg-{{ v }}">{{ lib.format_role(role, flat) }}</span>
+    <span class="badge text-bg-{{ v }}">{{ lib.format_role(role, flat) }}</span>
 {%- endmacro %}
+
 {% macro label_roles(roles, flat) %}
     {% import _self as lib %}
     {% for role in roles %}
@@ -244,7 +266,14 @@
         {%- if pass('can', 'view', 'issue', 0) and not flat -%}
             <a href="{{ req.base }}/issues/0"><span class="bi bi-book"></span>{{ __('issue_zero') }}</a>
         {%- else -%}
-            {%- if not nohtml %}<span class="bi bi-book"></span>{% endif %}{{ __('issue_zero') }}
+            {%- if not nohtml %}
+                <div class="row mb-3">
+                    <label for="issueId" class="col-sm-2 col-form-label text-end">{{ __('label_issueId') }}</label>
+                    <div class="col-md-9">
+                    <input type="text" class="form-control" id="issueId" name="issueId" value="{{ __('issue_zero') }}" disabled>
+                    </div>
+                </div>
+            {% endif %}
         {%- endif -%}
     {%- endif -%}
 {%- endmacro %}
@@ -303,30 +332,31 @@
 {% macro select_users(label, role, selected, maxcount, nocreate) %}
     {% import _self as lib %}
     <input type="hidden" name="__arrays[]" value="{{ role }}s">
-    <input type="hidden" name="_{{ role }}s" value="1">
-    <select data-label="{{ label }}" {% if maxcount %}
-        	data-maxcount="{{ maxcount }}"{% endif %}
-            placeholder="{{ __('hint_selectusers') }}" id="{{ role }}s[]"
-            class="users{% if not nocreate and pass('can', 'create', 'user') %}-create{% endif %} feedback-user"
+    <input type="hidden" name="_{{ role }}s" value="{{ selected|join(',') }}">
+    <select data-label="{{ label }}"
+            {% if maxcount %} data-maxcount="{{ maxcount }}"{% endif %}
+            placeholder="{{ __('hint_selectusers') }}"
+            name="{{ role }}s[]"
+            class="users{% if not nocreate and pass('can', 'create', 'user') %}-create{% endif %}"
             multiple>
         {% for user in selected %}
-        <option value="{{ user }}" selected>{{ lib.format_user(user, true, true, true) }}
-            {% endfor %}
-            {% if role %}
+            <option value="{{ user }}" selected>{{ lib.format_user(user, true, true, true) }}</option>
+        {% endfor %}
+        {% if role %}
             {% for user in grab('all_users') %}
-            {% if user not in selected %}
-            {% set times = grab('peer_last_choices', user) %}
-        <option value="{{ user }}"
-                {% if role == 'peer' -%}
-                    data-label-lastaccepted="{{ __('label_last_accepted') }}"
-                    data-val-lastaccepted="{{ times.accepted |default(__('label_never')) }}"
-                    data-label-lastrefused="{{ __('label_last_refused') }}"
-                    data-val-lastrefused="{{ times.refused |default(__('label_never')) }}"
-                {%- endif -%}
-        >{{ lib.format_user(user, true, true, true) }}
-            {% endif %}
+                {% if user not in selected %}
+                    {% set times = grab('peer_last_choices', user) %}
+                    <option value="{{ user }}"
+                            {% if role == 'peer' -%}
+                                data-label-lastaccepted="{{ __('label_last_accepted') }}"
+                                data-val-lastaccepted="{{ times.accepted |default(__('label_never')) }}"
+                                data-label-lastrefused="{{ __('label_last_refused') }}"
+                                data-val-lastrefused="{{ times.refused |default(__('label_never')) }}"
+                            {%- endif -%}
+                    >{{ lib.format_user(user, true, true, true) }}</option>
+                {% endif %}
             {% endfor %}
-            {% endif %}
+        {% endif %}
     </select>
 {% endmacro %}
 
@@ -342,56 +372,82 @@
     </div>
 {% endmacro %}
 
+
+
+
 {% macro input_files(id, size, required) %}
-    <div class="fileupload-multiple btn-group{% if size %} btn-group-{{ size }}{% endif %}" data-basename="{{ id }}"
-         data-i="0" role="group">
-        <label class="btn btn-outline-secondary btn-file{% if size %} btn-{{ size }}{% endif %}">
-            <span class="filelabel-add"><span class="bi bi-plus fg-ok"></span> {{ __('label_new_file') }}...</span>
-            <span class="filelabel-change"><span class="bi bi-file"></span> {{ __('label_file') }}:</span>
-            <input type="file" class="d-none"{{ required ? ' required' : '' }} multiple>
-        </label>
-        <span class="file-name btn btn-outline-secondary{% if size %} btn-{{ size }}{% endif %} disabled"></span>
-    </div>
+
+    <ul id="fileList"></ul>
+
+    <label for="fileInput">Select files to upload:</label>
+    <input type="file" id="fileInput" name="files[]" multiple>
+
+    <script>
+        document.getElementById('fileInput').addEventListener('change', function (event) {
+            const fileListElement = document.getElementById('fileList');
+            fileListElement.innerHTML = '';  // Clear the current list
+
+            const files = event.target.files;
+            for (const file of files) {
+                const listItem = document.createElement('li');
+                const fileSize = (file.size / 1024).toFixed(2); // Convert size to KB and format to 2 decimal places
+                listItem.textContent = `${file.name} - ${fileSize} `; // Display the name and size of the selected file
+                fileListElement.appendChild(listItem);
+            }
+        });
+    </script>
 {% endmacro %}
 
+
+
 {% macro leftright_submit(mode, log) %}
-	{% if mode == 'change_and_send' %}
+    {% if mode == 'change_and_send' %}
         {% set icon = 'envelope' %}
         {% set label = __('label_change_and_send') %}
     {% else %}
         {% set icon = 'check' %}
         {% set label = __('label_save') %}
     {% endif %}
+
     {% if log %}
-        <div data-label="" class="input-group input-like">
-            <span class="input-group-btn">
-        <button type="submit" class="btn btn-outline-secondary">
+        <div class="input-group mb-3">
+            <button type="submit" class="btn btn-outline-primary">
+                <span class="bi bi-{{ icon }}"></span> {{ label }}
+            </button>
+        </div>
     {% else %}
-        <button type="submit">
+        <button type="submit" class="btn btn-outline-primary">
+            <span class="bi bi-{{ icon }}"></span> {{ label }}
+        </button>
     {% endif %}
-    <span class="fg-ok"><span class="bi bi-{{ icon }}"></span></span> {{ label }}</button>
+
     {% if log %}
-    <div data-label="" class="input-group input-like">
-        <input type="text" name="log" class="form-control" placeholder="{{ __('label_comments') }}...">
-    </div>
+        <div class="input-group mb-3">
+            <input type="text" name="log" class="form-control" placeholder="{{ __('label_comments') }}...">
+        </div>
     {% endif %}
- {% endmacro %}
+{% endmacro %}
 
 {% macro modal() %}
-    <div class="modal fade" id="user-modal" data-append-base="userdata" data-append-key="email" tabindex="-1" aria-labelledby="user-modal-label">
-        <div class="modal-dialog modal-dialog-centered role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title" id="user-modal-label"><span class="bi bi-person"></span> <span class="text"></span></h4>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="{{ __('label_close') }}"></button>
-                </div>
-                <div class="modal-body">
-                    {% include 'users/user_edit.html' with {'modal': true} %}
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-outline-secondary"><span class="fg-ok"><span class="bi bi-plus"></span></span> {{ __('label_add') }}</button>
-                </div>
+    <div class="modal fade" id="user-modal" data-append-base="userdata" data-append-key="email" tabindex="-1"
+         aria-labelledby="user-modal-label">
+        <div class="modal-dialog modal-dialog-centered role=" document
+        ">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="user-modal-label"><span class="bi bi-person"></span> <span
+                            class="text"></span></h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                        aria-label="{{ __('label_close') }}"></button>
+            </div>
+            <div class="modal-body">
+                {% include 'users/user_edit.html' with {'modal': true} %}
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary"><span class="fg-ok"><span
+                                class="bi bi-plus"></span></span> {{ __('label_add') }}</button>
             </div>
         </div>
+    </div>
     </div>
 {% endmacro %}

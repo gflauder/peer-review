@@ -1,10 +1,10 @@
 {% block subject %}
-{% import 'lib' as lib %}
+{% import 'lib.twig' as lib %}
 Peer review role refused by {{ lib.format_user(peerId, true, true) }}
 {% endblock %}
 
 {% block html %}
-{% import 'lib' as lib %}
+{% import 'lib.twig' as lib %}
 <p>Hello,</p>
 <p>
 {{ lib.format_user(peerId, true, true) }} who was recruited to review

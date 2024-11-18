@@ -18,6 +18,10 @@
                     <button class="btn btn-outline-secondary" type="submit"><span class="bi bi-search"></span></button>
                 </div>
             </form>
+
+
+
+
             {% if pass('can', 'create', 'article') %}
                 <form action="{{ req.base }}/articles/new" id="article_create" method="post" class="col-md-6">
                     <button class="btn btn-outline-secondary" type="submit"><span

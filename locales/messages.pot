@@ -206,6 +206,9 @@ msgstr ""
 msgid "label_changepassword"
 msgstr ""
 
+msgid "label_clickhere"
+msgstr ""
+
 msgid "label_close"
 msgstr ""
 
@@ -518,7 +521,16 @@ msgstr ""
 msgid "password_changed"
 msgstr ""
 
+msgid "password_requirement"
+msgstr ""
+
 msgid "password_emailed"
+msgstr ""
+
+msgid "password_invalid_entry"
+msgstr ""
+
+msgid "password_mismatch"
 msgstr ""
 
 msgid "password_invalid"
@@ -726,6 +738,18 @@ msgid "title_users"
 msgstr ""
 
 msgid "title_welcome_to"
+msgstr ""
+
+msgid "title_welcome_1"
+msgstr ""
+
+msgid "title_welcome_2"
+msgstr ""
+
+msgid "title_welcome_3"
+msgstr ""
+
+msgid "title_welcome_4"
 msgstr ""
 
 msgid "user_new"

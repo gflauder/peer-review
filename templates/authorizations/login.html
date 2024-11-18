@@ -1,59 +1,109 @@
 <!--Login Container-->
-<div class="container mt-5">
-    <div class="row justify-content-center">
-        <div class="col-md-6">
-            <div class="card">
-                <div class="card-body">
-                    <div class="dropdown">
-                        <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">
-                            Dropdown button
-                        </button>
-                        <div class="dropdown-menu">
-                            <a class="dropdown-item" href="#">Action</a>
-                            <a class="dropdown-item" href="#">Another action</a>
-                            <a class="dropdown-item" href="#">Something else here</a>
+<div class="container-fluid vh-86 full-width-container">
+    <div class="row h-100">
+        <!-- Left Column -->
+        <div class="col-md-8 d-none d-md-block position-relative d-flex justify-content-center align-items-center text-justify">
+            <div class="bg-image"></div>
+            <div class="text-overlay p-3 me-1 mt-3 d-flex flex-column justify-content-center align-items-center">
+                <h1 class="display-3">{{ __('title_welcome_to') }} {{ __('title_program') }}</h1>
+                <div class="h4">{{ __('title_welcome_4')|raw }}</div>
+                <div class="row image-row">
+                    <div class="col-12 col-sm-6 col-md-4 col-lg-3 mt-5 d-flex justify-content-between align-content-center image-container d-none d-lg-flex">
+                        <img src="/dist/images/quebec.png" class="img-fluid" alt="Image">
+                        <img src="/dist/images/Canada.png" class="img-fluid" alt="Image">
+                        <img src="/dist/images/pum.jpg" class="img-fluid" alt="Image">
+                        <img src="/dist/images/eradut.png" class="img-fluid" alt="Image">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Right Column -->
+        <div class="col-md-4 bg-light">
+            <div class="login d-flex align-items-center py-5">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-xl-10 mx-auto">
+                            <h3 class="display-4">{{ __('label_login') }}</h3>
+                            <p class="text-muted mb-4">{{ __('title_welcome_1') }}</p>
+
+                            <form class="login-form" method="post" action="{{ req.base }}/login" id="login-form"
+                                  onsubmit="return checkPassword()">
+                                {{ filter('form_begin', 'login-form') |raw }}
+                                <div class="form-group">
+                                    <input type="email" name="email" placeholder="{{ __('label_email') }}"
+                                           value="{{ post.email }}"
+                                           class="form-control rounded-pill border-0 shadow-sm px-4" required
+                                           autocomplete="true">
+                                </div>
+                                <div class="form-group">
+                                    <input type="password" name="password" id="password"
+                                           placeholder="{{ __('label_password_opt') }}"
+                                           class="form-control hideaway hideaway-focus" autocomplete="off">
+                                </div>
+                                <button type="submit"
+                                        class="btn btn-primary btn-block text-uppercase mt-2 mb-2 rounded-pill shadow-sm">{{ __('label_login') }}</button>
+                            </form>
+                            <h5><a href="{{ req.base }}/register">{{ __('title_register') }} &raquo;</a></h5>
+                            <p>{{ __('title_welcome_2') }}</p>
+                            <p>{{ __('title_welcome_3') }} <a
+                                        href="{{ req.base }}/password_reset"> {{ __('label_clickhere') }}</a>.</p>
                         </div>
                     </div>
-                    <p>
-                        To use this application, you must sign into your account here. If you
-                        do not have an account, you should register.
-                    </p>
-                    <form class="login-form" method="post" action="{{ req.base }}/login" id="login-form" onsubmit="return checkPassword()">
-                        {{ filter('form_begin', 'login-form') |raw }}
-                        <div class="form-group">
-                            <input type="email" name="email" placeholder="{{ __('label_email') }}" value="{{ post.email }}" class="form-control" required autocomplete="true">
-                        </div>
-                        <div class="form-group">
-                            <input type="password" name="password" id="password" placeholder="{{ __('label_password_opt') }}" class="form-control hideaway hideaway-focus" autocomplete="off">
-                        </div>
-                        <button type="submit" class="btn btn-success">{{ __('label_login') }}</button>
-                    </form>
-                    <h5><a href="{{ req.base }}/register">{{ __('title_register') }} &raquo;</a></h5>
-                    <p>
-                        If your account does not have a password, or you would prefer not to use
-                        it, simply enter your e-mail address above.
-                    </p>
-                    <p>
-                        If you already have an account and a password, but forgot your password,
-                        <a href="{{ req.base }}/password_reset">click here</a>.
-                    </p>
                 </div>
             </div>
         </div>
     </div>
-</div>
-<script>
-    function checkPassword() {
-        var passwordField = document.getElementById('password');
-        if (passwordField.classList.contains('hideaway') || passwordField.value.trim() === '') {
-            passwordField.value = ''; // Clear the password field
-        }
-        return true; // Allow form submission
-    }
-</script>
-<style>
 
-    #main {
-        margin-left: 0;
-    }
-</style>
+
+    <script>
+        function checkPassword() {
+            var passwordField = document.getElementById('password');
+            if (passwordField.classList.contains('hideaway') || passwordField.value.trim() === '') {
+                passwordField.value = ''; // Clear the password field
+            }
+            return true; // Allow form submission
+        }
+    </script>
+
+    <style>
+        .bg-image {
+            background-image: url('/dist/images/bg.jpg');
+            background-size: cover;
+            background-position: center;
+            height: 100%;
+            background-color: rgba(126, 126, 229, 120%); /* Blue color with 50% opacity */
+            background-blend-mode: screen; /* Blend the background color with the image */
+        }
+
+        .text-overlay {
+            position: absolute;
+            top: 20px; /* Adjust as needed */
+            left: 20px; /* Adjust as needed */
+            right: 20px; /* Add padding to the right */
+            z-index: 1; /* Ensure it is in front of the background image */
+            color: #081d73; /* Adjust text color as needed */
+        }
+
+        .text-overlay a {
+            color: #044b1d; /* Change to your desired color */
+        }
+
+        .text-justify {
+            text-align: justify;
+        }
+
+        .full-width-container {
+            width: 100% !important;
+            max-width: 100% !important;
+        }
+
+        .image-container {
+            gap: 3rem; /* Adjust the gap value as needed */
+        }
+
+        .vh-86 {
+            height: 86vh !important;
+        }
+    </style>

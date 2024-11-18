@@ -1,4 +1,8 @@
-{% use 'blocks.html' %}
+{% if req.lang == 'fr' %}
+    {% use 'fr/blocks.html' %}
+{% else %}
+    {% use 'en/blocks.html' %}
+{% endif %}
 {% import 'lib.twig' as lib %}
 {% block head %}
 <!DOCTYPE html>
@@ -17,9 +21,10 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.5.0/css/flag-icon.min.css">
     <link rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css">
 
     <!-- Scripts -->
-    <script src="{{ mix('/dist/js/bootstrap.js') }}"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="{{ mix('/dist/js/main.js') }}"></script>
 
     <title>{{ title }}</title>
@@ -63,13 +68,18 @@
                 </div>
             {% endif %}
 
-            <main id="main" class="main"
-                  style="{% if not session.identified %}margin-left: 0;{% endif %}; animation: fadeIn 0.3s ease-in-out;">
+           <main id="main"
+                 class="main {% if not session.identified %}no-padding{% endif %}"
+                 style="{% if not session.identified %}margin-left: 0;{% endif %}; animation:
+                 fadeIn 0.3s ease-in-out;">
                 {#                {% if session.identified %}
                     {% include 'components/breadcrumb.html' %}
                 {% endif %} #}
 
+                {#LOGIN PAGE ETC.#}
                 {% include 'components/return_statuses.html' %}
+
+
                 {% if req.warnings|length > 0 %}
                     {% for warning in req.warnings %}
                         {{ lib.warning(warning[0], warning[1], warning[2]) }}

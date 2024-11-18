@@ -16,7 +16,7 @@
 /**
  * Articles class
  *
- * PHP version 5
+ * PHP version 7.4
  *
  * @category  Application
  * @package   PyriteView
@@ -25,7 +25,6 @@
  * @license   http://www.gnu.org/licenses/agpl-3.0.txt  GNU Affero GPL version 3
  * @link      https://github.com/vphantom/pyriteview
  */
-
 class Articles
 {
     /**
@@ -35,15 +34,15 @@ class Articles
      */
     public static function bootstrap()
     {
-        on('install',              'Articles::install');
-        on('articles',             'Articles::getList');
-        on('article',              'Articles::get');
-        on('article_save',         'Articles::save');
+        on('install', 'Articles::install');
+        on('articles', 'Articles::getList');
+        on('article', 'Articles::get');
+        on('article_save', 'Articles::save');
         on('article_version_save', 'Articles::saveVersion');
-        on('peer_reviews',         'Articles::getPeerReviews');
-        on('admin_reviews',        'Articles::adminReviews');
-        on('review_save',          'Articles::saveReview');
-        on('peer_last_choices',    'Articles::getPeerLastChoices');
+        on('peer_reviews', 'Articles::getPeerReviews');
+        on('admin_reviews', 'Articles::adminReviews');
+        on('review_save', 'Articles::saveReview');
+        on('peer_last_choices', 'Articles::getPeerLastChoices');
     }
 
     /**
@@ -240,9 +239,8 @@ class Articles
             };
         };
         $article['isPeer'] = count($article['versions']) > 0
-            ? $article['versions'][count($article['versions'])-1]['isPeer']
-            : false
-        ;
+            ? $article['versions'][count($article['versions']) - 1]['isPeer']
+            : false;
         if (pass('can', 'view', 'article', $id)
             || pass('can', 'view', 'issue', $article['issueId'])
             || pass('can', 'edit', 'article', $id)
@@ -256,7 +254,7 @@ class Articles
 
             // Consistency check!
             // Any author found in ACL but not in our column get added.
-           $article['authors'] = isset($article['authors']) && $article['authors'] !== null ? dejoin(';', $article['authors']) : [];
+            $article['authors'] = isset($article['authors']) && $article['authors'] !== null ? dejoin(';', $article['authors']) : [];
             $dirtyAuthors = false;
             foreach (
                 array_diff(
@@ -337,34 +335,34 @@ class Articles
 
         foreach ($args as $key => $val) {
             switch ($key) {
-            case 'keyword':
-                $keyword = $val;
-                break;
-            case 'issueId':
-                $issueId = $val;
-                break;
-            case 'states':
-                if (is_array($val)) {
-                    $states = $val;
-                } else {
-                    $states[] = $val;
-                };
-                break;
-            case 'noReviews':
-                $noReviews = true;
-                break;
-            case 'miaPeers':
-                $miaPeers = true;
-                break;
-            case 'lateReviews':
-                $lateReviews = true;
-                break;
-            case 'current':
-                $current = true;
-                break;
-            case 'byStatus':
-                $byStatus = $val;
-                break;
+                case 'keyword':
+                    $keyword = $val;
+                    break;
+                case 'issueId':
+                    $issueId = $val;
+                    break;
+                case 'states':
+                    if (is_array($val)) {
+                        $states = $val;
+                    } else {
+                        $states[] = $val;
+                    };
+                    break;
+                case 'noReviews':
+                    $noReviews = true;
+                    break;
+                case 'miaPeers':
+                    $miaPeers = true;
+                    break;
+                case 'lateReviews':
+                    $lateReviews = true;
+                    break;
+                case 'current':
+                    $current = true;
+                    break;
+                case 'byStatus':
+                    $byStatus = $val;
+                    break;
             };
         };
 
@@ -473,8 +471,8 @@ class Articles
      * throughout this file that we build a path from the article's current
      * issue and ID.
      *
-     * @param int   $articleId Article ID
-     * @param array $file      File upload, usually from grab('request')['files'][...]
+     * @param int $articleId Article ID
+     * @param array $file File upload, usually from grab('request')['files'][...]
      *
      * @return array|bool Associative with: path, name, bytes, type OR false on failure
      */
@@ -493,12 +491,12 @@ class Articles
             $base = "{$config['path']}/{$issue}/{$articleId}/{$filename}";
 
             if (!file_exists("{$config['path']}/{$issue}")) {
-                mkdir("{$config['path']}/{$issue}", 06770,true);
-            };
+                mkdir("{$config['path']}/{$issue}", 06770, true);
+            }
             $path = "{$config['path']}/{$issue}/{$articleId}";
             if (!file_exists($path)) {
-                mkdir($path, 06770,true);
-            };
+                mkdir($path, 06770, true);
+            }
 
             // Attempt to save the file, avoiding name collisions
             $i = 2;
@@ -506,19 +504,24 @@ class Articles
             while (file_exists($try) && $i < 100) {
                 $try = "{$base}_{$i}.{$ext}";
                 $i++;
-            };
-            if (move_uploaded_file($file['tmp_name'], $try)) {
-                $pi = pathinfo($try);
-                return array(
-                    'path'  => $path,
-                    'name'  => $pi['basename'],
-                    'bytes' => $file['size'],
-                    'type'  => $file['type']
-                );
-            };
-        };
-        trigger('warning', 'file_type', 1, "{$filename}.{$ext}");
-        return false;
+            }
+            if (is_writable($path)) {
+                if (move_uploaded_file($file['tmp_name'], $try)) {
+                    $pi = pathinfo($try);
+                    return array(
+                        'path' => $path,
+                        'name' => $pi['basename'],
+                        'bytes' => $file['size'],
+                        'type' => $file['type']
+                    );
+                } else {
+                    return false;
+                }
+            } else {
+                return false;
+            }
+        }
+        return true;
     }
 
     /**
@@ -527,7 +530,7 @@ class Articles
      * Additional key 'id' specifies that we're trying to update an existing
      * article.
      *
-     * @param array $cols  Article information
+     * @param array $cols Article information
      * @param array $files (Optional.) Files, usually from grab('request')['files']
      *
      * @return int|bool The Id (possibly created) on success, false on error
@@ -569,6 +572,8 @@ class Articles
                     // Move files directory if issue was reassigned
                     $issue = grab('issue', $cols['issueId']);
                     $issuePath = $config['articles']['path'] . '/' . $issue['issue'];
+
+                    //todo:review this code, seems to be a bug and not move files
                     if (!file_exists($issuePath)) {
                         mkdir($issuePath, 06770);
                     };
@@ -576,9 +581,10 @@ class Articles
                         "{$config['articles']['path']}/{$oldArticle['issue']}/{$id}",
                         "{$config['articles']['path']}/{$issue['issue']}/{$id}"
                     );
+
                 };
 
-                // Log each modified interesting column
+                // Log each modified  column
                 foreach (array('issueId', 'status', 'wordCount', 'title', 'keywords', 'abstract') as $col) {
                     if (isset($cols[$col]) && $oldArticle[$col] !== $cols[$col]) {
                         trigger(
@@ -665,6 +671,9 @@ class Articles
 
             // Handle file uploads
             $newFiles = array();
+            if (isset($files['files'])) {
+                $files = $files['files'];
+            }
             foreach ($files as $file) {
                 $newFile = self::_attach($res, $file);
                 if ($newFile !== false) {
@@ -681,6 +690,9 @@ class Articles
                         )
                     );
                     $log = null;
+                }else{
+                   $db->rollback();
+                    return false ;
                 };
             };
 
@@ -730,9 +742,9 @@ class Articles
      * If $ver is supplied, that specific version is updated and $articleId is
      * ignored.
      *
-     * @param int      $articleId The article
-     * @param array    $files     List of [name,bytes,type] associative arrays
-     * @param int|null $ver       (Optional) Version ID
+     * @param int $articleId The article
+     * @param array $files List of [name,bytes,type] associative arrays
+     * @param int|null $ver (Optional) Version ID
      *
      * @return int|bool New ID on success, false on failure
      */
@@ -756,7 +768,7 @@ class Articles
                 'articleVersions',
                 array(
                     'articleId' => $articleId,
-                    'files'     => $files
+                    'files' => $files
                 )
             );
         };
@@ -806,7 +818,7 @@ class Articles
      * age: Integer number of days since 'created'
      * daysLeft: Integer number of days until 'deadline'
      *
-     * @param array|null $reviewStates  Review states to restrict to
+     * @param array|null $reviewStates Review states to restrict to
      * @param array|null $articleStates Article states to restrict to
      *
      * @return array List of reviews
@@ -838,7 +850,7 @@ class Articles
     /**
      * Save/create review(s)
      *
-     * @param array      $cols  Columns to set
+     * @param array $cols Columns to set
      * @param array|null $files (Optional) List of [name,bytes,type] associative arrays
      *
      * @return bool Whether it succeeded
@@ -974,55 +986,55 @@ class Articles
                 if ($oldReview['peerId'] == $_SESSION['user']['id']) {
                     $article = grab('article', $oldReview['articleId']);
                     switch ($cols['status']) {
-                    case 'reviewing':
-                        // Peer accepted
-                        trigger(
-                            'sendmail',
-                            $article['editors'],
-                            null,
-                            null,
-                            'review_agreed',
-                            array(
-                                'peerId' => $oldReview['peerId'],
-                                'article' => $oldReview['articleId']
-                            )
-                        );
-                        break;
-                    case 'deleted':
-                        // Peer declined
-                        trigger(
-                            'sendmail',
-                            $article['editors'],
-                            null,
-                            null,
-                            'review_declined',
-                            array(
-                                'peerId' => $oldReview['peerId'],
-                                'article' => $oldReview['articleId'],
-                                'log' => $maillog
-                            )
-                        );
-                        break;
-                    case 'revision':
-                    case 'approved':
-                    case 'rejected':
-                        // Peer filed a review
-                        // Note that an article's editors excludes authors, so
-                        // revealing who the peer is here is OK.
-                        trigger(
-                            'sendmail',
-                            $article['editors'],
-                            $oldReview['peerId'],
-                            null,
-                            'review_complete',
-                            array(
-                                'peerId' => $oldReview['peerId'],
-                                'article' => $oldReview['articleId'],
-                                'status' => $cols['status']
-                            )
-                        );
-                        break;
-                    // No default
+                        case 'reviewing':
+                            // Peer accepted
+                            trigger(
+                                'sendmail',
+                                $article['editors'],
+                                null,
+                                null,
+                                'review_agreed',
+                                array(
+                                    'peerId' => $oldReview['peerId'],
+                                    'article' => $oldReview['articleId']
+                                )
+                            );
+                            break;
+                        case 'deleted':
+                            // Peer declined
+                            trigger(
+                                'sendmail',
+                                $article['editors'],
+                                null,
+                                null,
+                                'review_declined',
+                                array(
+                                    'peerId' => $oldReview['peerId'],
+                                    'article' => $oldReview['articleId'],
+                                    'log' => $maillog
+                                )
+                            );
+                            break;
+                        case 'revision':
+                        case 'approved':
+                        case 'rejected':
+                            // Peer filed a review
+                            // Note that an article's editors excludes authors, so
+                            // revealing who the peer is here is OK.
+                            trigger(
+                                'sendmail',
+                                $article['editors'],
+                                $oldReview['peerId'],
+                                null,
+                                'review_complete',
+                                array(
+                                    'peerId' => $oldReview['peerId'],
+                                    'article' => $oldReview['articleId'],
+                                    'status' => $cols['status']
+                                )
+                            );
+                            break;
+                        // No default
                     };
                 };
             };
@@ -1172,7 +1184,7 @@ on(
                 if (is_numeric($articleId)) {
                     if (!(pass('can', 'edit', 'article', $articleId) || pass('can', 'edit', 'issue', $article['issueId']))) return trigger('http_status', 403);
                 } else {
-                    if (!pass('can_create_article')) return trigger('http_status', 403);
+                    if (!pass('can','create','article')) return trigger('http_status', 403);
                 };
                 if (!isset($req['post']['userdata'])) {
                     $req['post']['userdata'] = array();
@@ -1182,10 +1194,12 @@ on(
                 } else {
                     unset($req['post']['authors']);
                 };
-                $saved = true;
+
                 $success = grab('article_save', $req['post'], $req['files']);
+                $saved = true;
 
                 if ($success !== false && !is_numeric($articleId)) {
+
                     $PPHP['contextId'] = ($articleId = $success);
                     $created = true;
                 }
@@ -1263,7 +1277,7 @@ on(
                         $req['post']['peers'] = grab('clean_userids', $req['post']['peers'], $req['post']['userdata']);
                     };
                     if (count($article['versions']) > 0) {
-                        $req['post']['versionId'] = $article['versions'][count($article['versions'])-1]['id'];
+                        $req['post']['versionId'] = $article['versions'][count($article['versions']) - 1]['id'];
                     };
                     $req['post']['articleId'] = $articleId;
                     // This handles create and update
@@ -1291,7 +1305,7 @@ on(
             } else {
                 // New article editor
                 $article['authors'] = array($_SESSION['user']['id']);
-                if (!pass('can_create_article')) return trigger('http_status', 403);
+                if (!pass('can','create','article')) return trigger('http_status', 403);
             };
             $deadline = (new DateTime())->modify($PPHP['config']['reviews']['deadline_modifier'])->format('Y-m-d');
             trigger(
@@ -1316,18 +1330,18 @@ on(
                 $search['keyword'] = $req['post']['keyword'];
             } elseif (isset($req['get']['filter'])) {
                 switch ($req['get']['filter']) {
-                case 'noreviews':
-                    $search['current'] = true;
-                    $search['noReviews'] = true;
-                    break;
-                case 'miapeers':
-                    $search['current'] = true;
-                    $search['miaPeers'] = true;
-                    break;
-                case 'latereviews':
-                    $search['current'] = true;
-                    $search['lateReviews'] = true;
-                    break;
+                    case 'noreviews':
+                        $search['current'] = true;
+                        $search['noReviews'] = true;
+                        break;
+                    case 'miapeers':
+                        $search['current'] = true;
+                        $search['miaPeers'] = true;
+                        break;
+                    case 'latereviews':
+                        $search['current'] = true;
+                        $search['lateReviews'] = true;
+                        break;
                 };
             } else {
                 $search['current'] = true;

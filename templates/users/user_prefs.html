@@ -1,5 +1,9 @@
 {% import 'lib.twig' as lib %}
-{% use 'blocks.html' %}
+{% if req.lang == 'fr' %}
+    {% use 'fr/blocks.html' %}
+{% else %}
+    {% use 'en/blocks.html' %}
+{% endif %}
 {{ title(__('title_prefs')) }}
 <h2 class="page-header"><span class="glyphicon glyphicon-cog"></span> {{ __('title_prefs') }}</h2>
 {% if saved %}

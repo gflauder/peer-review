@@ -9,6 +9,7 @@
             {{ filter('form_begin', 'issue_search') |raw }}
             <div class="input-group">
                 <input class="form-control" placeholder="{{ __('label_keyword') }}..." name="keyword" value="{{ req.post.keyword }}" minlength="3">
+
                 <button class="btn btn-outline-secondary" type="submit"><span class="bi bi-search"></span></button>
             </div>
         </form>

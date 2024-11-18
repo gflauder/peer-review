@@ -3,11 +3,10 @@
 var parsley = require('parsleyjs');
 require('parsleyjs/dist/i18n/fr'); // Import the French locale
 require('parsleyjs/dist/i18n/fr.extra'); // Import the extra French
+
 var timeago = global.__timeago = require('timeago.js');
 var selectizeRender = {};
 var bootstrap = require('bootstrap');
-
-
 
 // Polyfill for MSIE
 Number.isInteger = Number.isInteger || function(value) {
@@ -15,6 +14,7 @@ Number.isInteger = Number.isInteger || function(value) {
 };
 
 $().ready(function() {
+  console.log('jQuery and Bootstrap are loaded');
   var $articleEditor = $('form#articles_edit');
 
   function updateCopyright() {
@@ -80,6 +80,9 @@ $().ready(function() {
     });
   }
 
+  /**
+   * Navbar links active state on scroll
+   */
   let navbarlinks = select('#navbar .scrollto', true);
   const navbarlinksActive = () => {
     let position = window.scrollY + 200;
@@ -97,6 +100,9 @@ $().ready(function() {
   window.addEventListener('load', navbarlinksActive);
   onscroll(document, navbarlinksActive);
 
+  /**
+   * Header Bar links active state on scroll
+   */
   let selectHeader = select('#header');
   if (selectHeader) {
     const headerScrolled = () => {

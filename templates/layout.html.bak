@@ -1,5 +1,9 @@
-{% use 'blocks.html' %}
-{% import 'lib' as lib %}
+{% if req.lang == 'fr' %}
+    {% use 'fr/blocks.html' %}
+{% else %}
+    {% use 'en/blocks.html' %}
+{% endif %}
+{% import 'lib.twig' as lib %}
 
 {% block head %}
 <!DOCTYPE html>

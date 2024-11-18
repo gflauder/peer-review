@@ -9,34 +9,38 @@
 {% block body %}
 	<!-- Default body content -->
 {% endblock %}
-
 {% block welcome %}
 	<p>
-	Pour utiliser cette application, vous devez vous connecter à votre
-	compte ici.  Si vous n'avez pas encore de compte, vous devriez vous
-	inscrire.
+		Pour utiliser cette application, vous devez vous connecter à votre
+		compte ici.  Si vous n'avez pas encore de compte, vous devriez vous
+		inscrire.
 	</p>
 
 	<p><a class="btn btn-primary btn-lg" type="button" href="{{ req.base }}/register">{{ __('title_register') }} &raquo;</a></p>
 
 	<p>
-	Si votre compte n'a pas de mot de passe ou vous préférez ne pas
-	l'utiliser, entrez simplement votre courriel ci-dessus.
+		Si votre compte n'a pas de mot de passe ou vous préférez ne pas
+		l'utiliser, entrez simplement votre courriel ci-dessus.
 	</p>
 
 	<p>
-	Si vous avez déjà un compte mais avez oublié votre mot de passe,
-	<a href="{{ req.base }}/password_reset">cliquez ici</a>.
+		Si vous avez déjà un compte mais avez oublié votre mot de passe,
+		<a href="{{ req.base }}/password_reset">cliquez ici</a>.
 	</p>
 {% endblock %}
 
 
 {% block hint_role_creation %}
 	<div class="hint">
-		<p>
-		Note: l'existence des rôles est déclarée dans votre fichier
-		<code>config.ini</code> à la section <code>acl</code>.
-		</p>
+		<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-circle"
+			 viewBox="0 0 16 16">
+			<path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+			<path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0"/>
+		</svg>
+		<span>
+			Note: l'existence des rôles est déclarée dans votre fichier
+			<code>config.ini</code> à la section <code>acl</code>.
+		</span>
 		<p>
 	</div>
 {% endblock %}
@@ -44,71 +48,86 @@
 
 {% block hint_user_mailpass_change %}
 	<p>
-	Pour votre protection, pour modifier votre adresse de courriel ou votre
-	mot de passe, vous devez entrer votre mot de passe actuel à nouveau.  Un
-	rappel vous sera également transmis par courriel (aux nouvelle et
-	ancienne adresses, s'il y a lieu).
+		Pour votre protection, pour modifier votre adresse de courriel ou votre
+		mot de passe, vous devez entrer votre mot de passe actuel à nouveau.  Un
+		rappel vous sera également transmis par courriel (aux nouvelle et
+		ancienne adresses, s'il y a lieu).
 	</p>
 {% endblock %}
 
 
 {% block hint_password_creation %}
 	<p>
-	(Facultatif.)  Si vous ne voulez pas confirmer votre courriel à chaque
-	connexion, définissez un mot de passe ci-dessous.  Vous pourrez ensuite
-	l'utiliser pour vous connecter sans autre confirmation.
+		(Facultatif.)  Si vous ne voulez pas confirmer votre courriel à chaque
+		connexion, définissez un mot de passe ci-dessous.  Vous pourrez ensuite
+		l'utiliser pour vous connecter sans autre confirmation.
 	</p>
 {% endblock %}
 
 
 {% block hint_login_link %}
 	<p>
-	En cliquant ce bouton, vous invaliderez tout lien précédent pour en créer
-	un nouveau que vous pourrez copier à votre guise.
+		En cliquant ce bouton, vous invaliderez tout lien précédent pour en créer
+		un nouveau que vous pourrez copier à votre guise.
 	</p>
 {% endblock %}
 
 
 {% block login_link_url %}
 	<p>
-	Vous pouvez copier et coller ce lien d'authentification pour le communiquer
-	à l'usager ou vous connecter vous-même.  N'oubliez pas que les URL de connexion
-	ne sont valides que pour une seule utilisation.
+		Vous pouvez copier et coller ce lien d'authentification pour le communiquer
+		à l'usager ou vous connecter vous-même.  N'oubliez pas que les URL de connexion
+		ne sont valides que pour une seule utilisation.
 	</p>
 	<p>
-	<a href="{{ req.protocol }}://{{ req.host }}/{{ login_link }}">{{ req.protocol }}://{{ req.host }}/{{ login_link }}</a>
+		<a href="{{ req.protocol }}://{{ req.host }}/{{ login_link }}">{{ req.protocol }}://{{ req.host }}/{{ login_link }}</a>
 	</p>
 {% endblock %}
 
 
 {% block hint_outbox %}
 	<div class="hint">
-		<p>
-		En tant qu'usager privilégié, vous avez ici l'opportunité de passer en
-		revue et d'envoyer manuellement les courriels qui ont été créées lors
-		vos opérations récentes.
-		</p>
+		<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-circle"
+			 viewBox="0 0 16 16">
+			<path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+			<path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0"/>
+		</svg>
+		<span>
+			En tant qu'usager privilégié, vous avez ici l'opportunité de passer en
+			revue et d'envoyer manuellement les courriels qui ont été créées lors
+			vos opérations récentes.
+		</span>
 	</div>
 {% endblock %}
 
 
 {% block hint_review %}
 	<div class="hint">
-		<p>
-		Une fois votre lecture des fichiers ci-dessus terminée, veuillez
-		télécharger <a href="/questions.docx"><span class="glyphicon glyphicon-file"></span>ce questionnaire</a>,
-		y répondre et l'attacher ci-dessous avec votre verdict.
-		</p>
+		<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-circle"
+			 viewBox="0 0 16 16">
+			<path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+			<path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0"/>
+		</svg>
+		<span>
+			Une fois votre lecture des fichiers ci-dessus terminée, veuillez
+			télécharger <a href="/questions.docx"><span class="glyphicon glyphicon-file"></span>ce questionnaire</a>,
+			y répondre et l'attacher ci-dessous avec votre verdict.
+		</span>
 	</div>
 {% endblock %}
 
 
 {% block hint_article_change_status %}
-	<div class="hint">
-		<p>
+<div class="hint">
+	<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-circle"
+		 viewBox="0 0 16 16">
+		<path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+		<path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0"/>
+	</svg>
+	<span>
 		Les usagers concernés seront prévenus par courriel.  Vous pouvez
 		attacher des fichiers à ce changement d'état, lesquels seront alors
 		ajoutés à ce courriel.
-		</p>
-	</div>
+	</span>
+</div>
 {% endblock %}

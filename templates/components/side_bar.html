@@ -2,7 +2,7 @@
 <aside id="sidebar" class="sidebar">
     <ul class="sidebar-nav" id="sidebar-nav">
         <li class="nav-item">
-            <a href="{{ req.base }}/" class="nav-link {% if req.path == '' %} active{% endif %}">
+            <a href="{{ req.base }}/" class="nav-link collapsed{% if req.path == '' %} active{% endif %}">
                 <i class="bi bi-home"></i>
                 <span> {{ __('title_dashboard') }}</span>
             </a>
@@ -12,7 +12,7 @@
             <li class="nav-item">
                 <a href="{{ req.base }}/issues"
                    class="nav-link{% if req.path starts with 'issues' %} active{% endif %}">
-                    <i class="bi bi-card-checklist"></i>
+                    <i class="bi bi-menu-button-wide"></i>
                     <span> {{ __('title_issues') }}</span>
                 </a>
             </li>
@@ -21,53 +21,58 @@
         {% if pass('can_any', 'view', 'article') or pass('can_any', 'edit', 'article') or pass('has_role', 'peer') %}
             <li class="nav-item">
                 <a href="{{ req.base }}/articles"
-                   class="nav-link {% if req.path starts with 'articles' %}active{% endif %}">
-                    <i class="bi bi-align-left"></i>
+                   class="nav-link{% if req.path starts with 'articles' %} active{% endif %}">
+                    <i class="bi bi-file-text"></i>
                     <span>{{ __('title_articles') }}</span>
                 </a>
             </li>
         {% endif %}
 
         {% if pass('can', 'move', 'article') or pass('has_role', 'editor') %}
-        <li class="nav-item">
-            <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
-                <i class="bi bi-menu-button-wide"></i><span>{{ __('title_reports') }}</span>
-                <i class="bi bi-chevron-down ms-auto"></i>
-            </a>
-            <ul id="components-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-
-
-
+            <li class="nav-item">
+                <a class="nav-link {% if req.path starts with 'admin/reports' %} {% else %} collapsed{% endif %}"
+                   data-bs-target="#components-nav" data-bs-toggle="collapse" href="#"
+                   aria-expanded="{% if req.path starts with 'admin/reports' %}true{% else %}false{% endif %}">
+                    <i class="bi bi-file-earmark-richtext"></i><span>{{ __('title_reports') }}</span>
+                    <i class="bi bi-chevron-down ms-auto"></i>
+                </a>
+                <ul id="components-nav" class="nav-content collapse {% if req.path starts with 'admin/reports' %} show{% endif %}" data-bs-parent="#sidebar-nav">
                     <li>
-                        <a href="{{ req.base }}/admin/reports/activity" {% if req.path starts with 'admin/reports/activity' %} class="active"{% endif %}>
-                            <i class="bi bi-stats"></i>
-                            <span > {{ __('title_activity_report') }}</span>
+                        <a href="{{ req.base }}/admin/reports/activity" {% if req.path starts with 'admin/reports/activity' %}
+                            class="active"{% endif %}>
+                            <i class="bi bi-activity"></i>
+                            <span> {{ __('title_activity_report') }}</span>
                         </a>
                     </li>
                     <li>
-                        <a href="{{ req.base }}/admin/reports/editing" {% if req.path starts with 'admin/reports/editing' %} class="active"{% endif %}>
-                            <i class="bi bi-stats"></i>
-                            <span >{{ __('title_editing_report') }}</span>
+                        <a href="{{ req.base }}/admin/reports/editing" {% if req.path starts with 'admin/reports/editing' %}
+                            class="active"{% endif %}>
+                            <i class="bi bi-graph-down"></i>
+                            <span>{{ __('title_editing_report') }}</span>
                         </a>
                     </li>
                 </ul>
-                {% endif %}
+            </li>
+        {% endif %}
 
-                {% if pass('can', 'view', 'user') or pass('can', 'edit', 'user') %}
-                    <li>
-                        <a href="{{ req.base }}/admin/users" {% if req.path starts with 'admin/users' %} class="active"{% endif %}>
-                            <span class="bi bi-user"></span> {{ __('title_users') }}
-                        </a>
-                    </li>
-                {% endif %}
+        {% if pass('can', 'view', 'user') or pass('can', 'edit', 'user') %}
+            <li class="nav-item">
+                <a href="{{ req.base }}/admin/users"
+                   class="nav-link {% if req.path starts with 'admin/users' %} active{% endif %}">
+                    <i class="bi bi-people"></i>
+                    <span>{{ __('title_users') }}</span>
+                </a>
+            </li>
+        {% endif %}
 
-                {% if pass('can', 'view', 'role') %}
-                    <li>
-                        <a href="{{ req.base }}/admin/roles" {% if req.path starts with 'admin/roles' %} class="active"{% endif %}>
-                            <span class="bi bi-education"></span> {{ __('title_roles') }}
-                        </a>
-                    </li>
-                {% endif %}
-            </ul>
-
+        {% if pass('can', 'view', 'role') %}
+            <li class="nav-item">
+                <a href="{{ req.base }}/admin/roles"
+                   class="nav-link  {% if req.path starts with 'admin/roles' %} active{% endif %}">
+                    <i class="bi bi-key"></i>
+                    <span>{{ __('title_roles') }}</span>
+                </a>
+            </li>
+        {% endif %}
+    </ul>
 </aside><!-- End Sidebar-->

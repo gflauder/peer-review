@@ -1,6 +1,10 @@
 {% import 'lib.twig' as lib %}
-{% use 'blocks.html' %}
-{{ title(__('title_users')) }}
+{% if req.lang == 'fr' %}
+    {% use 'fr/blocks.html' %}
+{% else %}
+    {% use 'en/blocks.html' %}
+{% endif %}
+
 {% if saved or added or deleted %}
     {% if success %}
         {{ lib.alert(success, __('save_success')) }}
@@ -8,125 +12,133 @@
         {{ lib.alert(success, __('save_failure')) }}
     {% endif %}
 {% endif %}
+<div class="card">
+    <div class="card-body">
+        {{ lib.title_with_icon('person', user.name) }}
+        {% if pass('can', 'edit', 'user', user.id) %}
 
-<h2 class="page-header"><i class="bi bi-person"></i> {{ user.name }}
-    {% if not modal and pass('can', 'delete', 'user', user.id) %}
-        <div class="float-end col-sm-2">
-            <form id="admin_user_ban" method="post" class="form-tight">
-                {{ filter('form_begin', 'admin_user_ban') |raw }}
-                <div class="input-block">
-                    {% if user.active %}
-                    <label for="ban">{{ __('hint_ban') }}</label>
-                        <button id="ban" class="form-control btn btn-outline-secondary" name="ban" value="1"><i class="bi bi-x-circle"></i> {{ __('label_deactivate') }}</button>
-                    {% else %}
-                    <label for="unban">{{ __('hint_unban') }}</label>
-                        <button id="unban" class="form-control btn btn-outline-secondary" name="unban" value="1"><i class="bi bi-check-circle"></i> {{ __('label_activate') }}</button>
-                    {% endif %}
+            {% include 'users/user_edit.html' %}
+
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h3>{{ __('title_roles') }}</h3>
+                    <form id="admin_user_role" method="post" class="form-horizontal">
+                        {{ filter('form_begin', 'admin_user_role') |raw }}
+                        <div class="btn-group" role="group">
+                            {% for role in roles %}
+                                <button
+                                        type="submit"
+                                        name="{% if role in user_roles %}del{% else %}add{% endif %}role"
+                                        value="{{ role }}"
+                                        class="btn btn-{% if role in user_roles %}info active{% else %}secondary{% endif %}"
+                                >{{ lib.format_role(role, true) }}</button>
+                            {% endfor %}
+                        </div>
+                    </form>
                 </div>
-            </form>
-        </div>
-    {% endif %}
-</h2>
+            </div>
 
-{% if pass('can', 'edit', 'user', user.id) %}
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h3>{{ __('label_permissions') }}</h3>
+                    <p>
+                    <form id="admin_user_acl_add" method="post" class="form-compact">
+                        {{ filter('form_begin', 'admin_user_acl_add') |raw }}
+                        <input type="hidden" name="f" value="add">
+                        <strong>{{ __('label_new_permission') }}:</strong>
+                        <select data-label="Action" id="action" required class="form-select">
+                            <option selected disabled>{{ __('label_action') }}...</option>
+                            <option value="*">* {{ __('label_any_action') }}</option>
+                            {% for action in actions %}
+                                <option>{{ action }}</option>
+                            {% endfor %}
+                        </select>
+                        <select data-label="Object Type" id="objectType" required class="form-select">
+                            <option selected disabled>{{ __('label_type') }}...</option>
+                            <option value="*">* {{ __('label_any_type') }}</option>
+                            {% for objectType in objectTypes %}
+                                <option>{{ objectType }}</option>
+                            {% endfor %}
+                        </select>
+                        <input data-label="Object ID" placeholder="Object ID" id="objectId" class="form-control">
+                        <button type="submit" class="btn btn-primary"><i class="bi bi-plus"></i> {{ __('label_add') }}
+                        </button>
+                    </form>
+                    </p>
+                    <div class="table-responsive">
+                        <table class="table table-hover table-condensed">
+                            <thead>
+                            <tr>
+                                <th>&nbsp;</th>
+                                <th>{{ __('label_action') }}</th>
+                                <th>{{ __('label_type') }}</th>
+                                <th>objectId</th>
+                                <th>{{ __('label_link') }}</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% set aclDelNonce = filter('form_begin', 'admin_user_acl_del') %}
+                            {% for right in rights %}
+                                <tr>
+                                    <td class="fit">
+                                        {% if (role == 'admin' and right.action == '*') or (role == 'member' and right.action == 'login') %}
+                                            &nbsp;
+                                        {% else %}
+                                            <form id="admin_user_acl_del" class="form-toolbar" method="post">
+                                                {{ aclDelNonce |raw }}
+                                                <input type="hidden" name="f" value="del">
+                                                <input type="hidden" name="role" value="{{ role }}">
+                                                <input type="hidden" name="action" value="{{ right.action }}">
+                                                <input type="hidden" name="objectType" value="{{ right.objectType }}">
+                                                <input type="hidden" name="objectId" value="{{ right.objectId }}">
+                                                <button type="submit" class="btn btn-link text-danger"><i
+                                                            class="bi bi-dash"></i></button>
+                                            </form>
+                                        {% endif %}
+                                    </td>
+                                    <td class="fit">{% if right.action == '*' %}
+                                            <em>{{ __('label_any_action') }}</em>{% else %}{{ right.action }}{% endif %}
+                                    </td>
+                                    <td class="fit">{% if right.objectType == '*' %}
+                                            <em>{{ __('label_any_type') }}</em>{% else %}{{ right.objectType }}{% endif %}
+                                    </td>
+                                    <td class="fit">{% if right.objectId == 0 %}
+                                            <em>{{ __('label_all') }}</em>{% else %}{{ right.objectId }}{% endif %}</td>
+                                    <td>{{ lib.format(right.objectType, right.objectId) }}</td>
+                                </tr>
+                            {% endfor %}
+                            {% if rights|length == 0 %}
+                                <tr>
+                                    <td colspan="5"><em>{{ __('no_permission') }}</em></td>
+                                </tr>
+                            {% endif %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
 
-    {% include 'users/user_edit.html' %}
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h3>{{ __('title_login_link') }}</h3>
+                    {{ block('hint_login_link') }}
+                    <form id="admin_user_loginlink" method="post" class="form-horizontal">
+                        {{ filter('form_begin', 'admin_user_loginlink') |raw }}
+                        <button type="submit" name="user_loginlink" value="user_loginlink"
+                                class="btn btn-outline-secondary">{{ __('title_login_link') }}</button>
+                    </form>
+                </div>
+            </div>
 
-    <h3>{{ __('title_roles') }}</h3>
+        {% endif %}
 
-    <form id="admin_user_role" method="post" class="form-horizontal">
-        {{ filter('form_begin', 'admin_user_role') |raw }}
-        <div class="btn-group" role="group">
-            {% for role in roles %}
-                <button
-                    type="submit"
-                    name="{% if role in user_roles %}del{% else %}add{% endif %}role"
-                    value="{{ role }}"
-                    class="btn btn-{% if role in user_roles %}info active{% else %}secondary{% endif %}"
-                >{{ lib.format_role(role, true) }}</button>
-            {% endfor %}
-        </div>
-    </form>
-
-    <h3>{{ __('label_permissions') }}</h3>
-
-    <p>
-        <form id="admin_user_acl_add" method="post" class="form-compact">
-            {{ filter('form_begin', 'admin_user_acl_add') |raw }}
-            <input type="hidden" name="f" value="add">
-            <strong>{{ __('label_new_permission') }}:</strong>
-            <select data-label="Action" id="action" required class="form-select">
-                <option selected disabled>{{ __('label_action') }}...</option>
-                <option value="*">* {{ __('label_any_action') }}</option>
-                {% for action in actions %}
-                    <option>{{ action }}</option>
-                {% endfor %}
-            </select>
-            <select data-label="Object Type" id="objectType" required class="form-select">
-                <option selected disabled>{{ __('label_type') }}...</option>
-                <option value="*">* {{ __('label_any_type') }}</option>
-                {% for objectType in objectTypes %}
-                    <option>{{ objectType }}</option>
-                {% endfor %}
-            </select>
-            <input data-label="Object ID" placeholder="Object ID" id="objectId" class="form-control">
-            <button type="submit" class="btn btn-primary"><i class="bi bi-plus"></i> {{ __('label_add') }}</button>
-        </form>
-    </p>
-
-    <div class="table-responsive">
-        <table class="table table-hover table-condensed">
-            <thead>
-                <tr>
-                    <th>&nbsp;</th>
-                    <th>{{ __('label_action') }}</th>
-                    <th>{{ __('label_type') }}</th>
-                    <th>objectId</th>
-                    <th>{{ __('label_link') }}</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% set aclDelNonce = filter('form_begin', 'admin_user_acl_del') %}
-                {% for right in rights %}
-                <tr>
-                    <td class="fit">
-                        {% if (role == 'admin' and right.action == '*') or (role == 'member' and right.action == 'login') %}
-                            &nbsp;
-                        {% else %}
-                            <form id="admin_user_acl_del" class="form-toolbar" method="post">
-                                {{ aclDelNonce |raw }}
-                                <input type="hidden" name="f" value="del">
-                                <input type="hidden" name="role" value="{{ role }}">
-                                <input type="hidden" name="action" value="{{ right.action }}">
-                                <input type="hidden" name="objectType" value="{{ right.objectType }}">
-                                <input type="hidden" name="objectId" value="{{ right.objectId }}">
-                                <button type="submit" class="btn btn-link text-danger"><i class="bi bi-dash"></i></button>
-                            </form>
-                        {% endif %}
-                    </td>
-                    <td class="fit">{% if right.action == '*' %}<em>{{ __('label_any_action') }}</em>{% else %}{{ right.action }}{% endif %}</td>
-                    <td class="fit">{% if right.objectType == '*' %}<em>{{ __('label_any_type') }}</em>{% else %}{{ right.objectType }}{% endif %}</td>
-                    <td class="fit">{% if right.objectId == 0 %}<em>{{ __('label_all') }}</em>{% else %}{{ right.objectId }}{% endif %}</td>
-                    <td>{{ lib.format(right.objectType, right.objectId) }}</td>
-                </tr>
-                {% endfor %}
-                {% if rights|length == 0 %}
-                    <tr><td colspan="5"><em>{{ __('no_permission') }}</em></td></tr>
-                {% endif %}
-            </tbody>
-        </table>
+        {% if pass('can', 'view', 'user', user.id) %}
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h3>{{ __('title_recent_history') }}</h3>
+                    {% include 'history.html' %}
+                </div>
+            </div>
+        {% endif %}
     </div>
-
-    <h3>{{ __('title_login_link') }}</h3>
-    {{ block('hint_login_link') }}
-    <form id="admin_user_loginlink" method="post" class="form-horizontal">
-        {{ filter('form_begin', 'admin_user_loginlink') |raw }}
-        <button type="submit" name="user_loginlink" value="user_loginlink" class="btn btn-outline-secondary">{{ __('title_login_link') }}</button>
-    </form>
-
-{% endif %}
-
-{% if pass('can', 'view', 'user', user.id) %}
-<h3>{{ __('title_recent_history') }}</h3>
-    {% include 'history.html' %}
-{% endif %}
+</div>
