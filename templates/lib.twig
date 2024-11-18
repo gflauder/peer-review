@@ -231,7 +231,7 @@
     {%- elseif role == 'peer' %}{% set v = 'warning' -%}
     {%- else %}{% set v = 'secondary' -%}
     {%- endif -%}
-    <span class="badge text-bg-{{ v }}">{{ lib.format_role(role, flat) }}</span>
+    <span class="badge text-bg-{{ v }} me-2">{{ lib.format_role(role, flat) }}</span>
 {%- endmacro %}
 
 {% macro label_roles(roles, flat) %}
