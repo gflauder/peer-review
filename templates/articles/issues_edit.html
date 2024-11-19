@@ -33,57 +33,57 @@
 
             {{ lib.modal() }}
 
-            <form id="issues_edit" method="post" class="form-tight">
+            <form id="issues_edit" method="post" class="">
                 {{ filter('form_begin', 'issues_edit') |raw }}
                 {% if issue.id %}
                     <input type="hidden" name="id" value="{{ issue.id }}">
                 {% endif %}
                 <div class="row mb-3">
-                    <label for="volume" class="col-sm-2 col-form-label text-end">{{ __('label_volume') }}</label>
-                    <div class="col-sm-10">
+                    <label for="volume" class="col-sm-2 col-form-label text-sm-end text-start">{{ __('label_volume') }}</label>
+                    <div class="col-sm-2">
                         <input type="text" class="form-control" id="volume" name="volume" value="{{ issue.volume }}"
                                required maxlength="16"{% if issue.id %} disabled{% endif %}>
                     </div>
                 </div>
                 <div class="row mb-3">
-                    <label for="number" class="col-sm-2 col-form-label text-end">{{ __('label_issueId') }}</label>
-                    <div class="col-sm-10">
+                    <label for="number" class="col-sm-2 col-form-label text-sm-end text-start">{{ __('label_issueId') }}</label>
+                    <div class="col-sm-2">
                         <input type="text" class="form-control" id="number" name="number" value="{{ issue.number }}"
                                required maxlength="16"{% if issue.id %} disabled{% endif %}>
                     </div>
                 </div>
                 <div class="row mb-3">
-                    <label for="publication" class="col-sm-2 col-form-label text-end">{{ __('label_publication') }}
-                        ({{ __('hint_ymd') }})</label>
-                    <div class="col-sm-10">
-                        <input type="text" class="form-control" id="publication" name="publication"
+                    <label for="publication" class="col-sm-2 col-form-label text-sm-end text-start">{{ __('label_publication') }}</label>
+                    <div class="col-md-2 col-sm-3">
+                        <input type="date" placeholder="date" aria-label="{{ __('label_publication') }} ({{ __('hint_ymd') }})"
+                               class="form-control" id="publication" name="publication"
                                value="{{ issue.publication }}" maxlength="10" minlength="10">
                     </div>
                 </div>
                 <div class="row mb-3">
                     <label for="title"
-                           class="col-sm-2 col-form-label text-end">{{ __('label_title')|default('Title') }}</label>
+                           class="col-sm-2 col-form-label text-sm-end text-start">{{ __('label_title')|default('Title') }}</label>
                     <div class="col-sm-10">
                         <input type="text" class="form-control" id="title" name="title"
                                value="{{ article.title|default('') }}" required>
                     </div>
                 </div>
                 <div class="row mb-3">
-                    <label class="col-sm-2 col-form-label text-end">{{ __('label_editors') }}</label>
+                    <label class="col-sm-2 col-form-label text-sm-end text-start">{{ __('label_editors') }}</label>
                     <div class="col-sm-10">
                         {{ lib.select_users(__('label_editors'), 'editor', issue.editors) }}
                     </div>
                 </div>
                 <div class="row mb-3">
                     <label for="description"
-                           class="col-sm-2 col-form-label text-end">{{ __('label_description') }}</label>
+                           class="col-sm-2 col-form-label text-sm-end text-start">{{ __('label_description') }}</label>
                     <div class="col-sm-10">
                     <textarea name="description" class="form-control rich-edit"
                               id="description">{{ issue.description }}</textarea>
                     </div>
                 </div>
                 <div class="row mb-3">
-                    <div class="col-sm-10 offset-sm-2">
+                    <div class="offset-sm-2 col-sm-10 ">
                         {{ lib.leftright_submit('save', issue and issue.id > 0) }}
                     </div>
                 </div>
@@ -91,38 +91,39 @@
         </div>
     </div>
 
-{% endif %}
+    {% endif %}
 
-{% if issue %}
-    <div class="card mb-3">
-        <div class="card-body">
-            {% if not pass('can', 'edit', 'issue', issue.id) %}
-                {{ issue.description |raw }}
-            {% endif %}
-            <div class="mb-5">
-            <h3>{{ __('title_articles') }}
-                {% if pass('can','create','article') %}
-                    <form action="{{ req.base }}/articles/new" id="article_create" method="get"
-                          class="form-inline inline float-end">
-                        <input type="hidden" name="issueId" value="{{ issue.id }}">
-                        <button class="btn btn-outline-secondary btn-xs" type="submit"><span class="text-success"><span
-                                        class="glyphicon glyphicon-plus"></span></span> {{ __('label_create') }}
-                        </button>
-                    </form>
+    {% if issue %}
+        <div class="card mb-3">
+            <div class="card-body">
+                {% if not pass('can', 'edit', 'issue', issue.id) %}
+                    {{ issue.description |raw }}
                 {% endif %}
-            </h3>
+                <div class="mb-5">
+                    <h3>{{ __('title_articles') }}
+                        {% if pass('can','create','article') %}
+                            <form action="{{ req.base }}/articles/new" id="article_create" method="get"
+                                  class="form-inline inline float-end">
+                                <input type="hidden" name="issueId" value="{{ issue.id }}">
+                                <button class="btn btn-outline-secondary btn-xs" type="submit"><span
+                                            class="text-success"><span
+                                                class="bi bi-plus"></span></span> {{ __('label_create') }}
+                                </button>
+                            </form>
+                        {% endif %}
+                    </h3>
+                </div>
+                {% include 'articles/articles_list.html' %}
             </div>
-            {% include 'articles/articles_list.html' %}
         </div>
-    </div>
-{% endif %}
+    {% endif %}
 
-{% if issue and issue.id > 0 and pass('can', 'edit', 'issue', issue.id) %}
-    <div class="card mb-3">
-        <div class="card-body">
-            <h3>{{ __('title_history') }}</h3>
-            {% include 'articles/history.html' %}
+    {% if issue and issue.id > 0 and pass('can', 'edit', 'issue', issue.id) %}
+        <div class="card mb-3">
+            <div class="card-body">
+                <h3>{{ __('title_history') }}</h3>
+                {% include 'articles/history.html' %}
+            </div>
         </div>
-    </div>
-{% endif %}
+    {% endif %}
 </div>

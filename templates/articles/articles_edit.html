@@ -40,7 +40,7 @@
                 {% endif %}
 
                 <div class="row mb-3">
-                    <label for="status" class="col-sm-2 col-form-label text-end">{{ __('label_status') }}</label>
+                    <label for="status" class="col-sm-2 col-form-label text-sm-end text-start">{{ __('label_status') }}</label>
                     <div class="col-sm-5">
                         <span type="text" class="form-control"
                               name="status">{{ lib.format_status(article.status) }}</span>
@@ -49,7 +49,7 @@
 
 
                 <div class="row mb-3">
-                    <label for="title" class="col-sm-2 col-form-label text-end">{{ __('label_title') }}</label>
+                    <label for="title" class="col-sm-2 col-form-label text-sm-end text-start">{{ __('label_title') }}</label>
                     <div class="col-sm-10">
                         <input type="text" class="form-control" id="title" name="title" value="{{ article.title }}"
                                required>
@@ -58,7 +58,7 @@
 
                 {% if pass('can', 'move', 'article', article.id) or pass('can', 'move', 'issue', article.issueId) or not article.id %}
                     <div class="row mb-3">
-                        <label for="issueId" class="col-sm-2 col-form-label text-end">{{ __('label_issueId') }}</label>
+                        <label for="issueId" class="col-sm-2 col-form-label text-sm-end text-start">{{ __('label_issueId') }}</label>
                         <div class="col-sm-3">
                             <select data-label="{{ __('label_issueId') }}" id="issueId" class="select form-select "
                                     required>
@@ -80,7 +80,7 @@
                 {% endif %}
 
                 <div class="row mb-3">
-                    <label for="wordCount" class="col-sm-2 col-form-label text-end">{{ __('label_wordcount') }}</label>
+                    <label for="wordCount" class="col-sm-2 col-form-label text-sm-end text-start">{{ __('label_wordcount') }}</label>
                     <div class="col-sm-10">
                         <input type="number" class="form-control" id="wordCount" name="wordCount"
                                value="{{ article.wordCount }}" required>
@@ -88,7 +88,7 @@
                 </div>
 
                 <div class="row mb-3">
-                    <label for="keywords" class="col-sm-2 col-form-label text-end">{{ __('label_keywords') }}</label>
+                    <label for="keywords" class="col-sm-2 col-form-label text-sm-end text-start">{{ __('label_keywords') }}</label>
                     <div class="col-sm-10">
                         <input type="hidden" name="__arrays[]" value="keywords">
                         <select name="keywords[]" data-label="{{ __('label_keywords') }}"
@@ -102,7 +102,7 @@
                 </div>
 
                 <div class="row mb-3">
-                    <label for="abstract" class="col-sm-2 col-form-label text-end">{{ __('label_abstract') }}</label>
+                    <label for="abstract" class="col-sm-2 col-form-label text-sm-end text-start">{{ __('label_abstract') }}</label>
                     <div class="col-sm-10">
                         <textarea class="form-control" id="abstract" name="abstract">{{ article.abstract }}</textarea>
                     </div>
@@ -110,7 +110,7 @@
 
                 {% if pass('can', 'move', 'article', article.id) or pass('can', 'move', 'issue', article.issueId) or pass('has_role', 'author') %}
                     <div class="row mb-3">
-                        <label for="abstract" class="col-sm-2 col-form-label text-end">{{ __('label_authors') }}</label>
+                        <label for="abstract" class="col-sm-2 col-form-label text-sm-end text-start">{{ __('label_authors') }}</label>
                         <div class="col-sm-10">
                             {{ lib.select_users(__('label_authors'), 'author', article.authors, config.articles.max_authors) }}
                         </div>
@@ -132,7 +132,7 @@
 
 
                     <div class="row mb-3">
-                        <div id="file-list" class="col-sm-3 offset-sm-2">
+                        <div id="file-list" class="col-sm-4 offset-sm-2">
 
                             <div class="accordion" id="versionFiles">
                                 {% for version in article.versions %}
@@ -247,7 +247,7 @@
                         <input type="hidden" name="files_email_only" value="1">
 
                         <div class="row mb-3">
-                            <label class="col-sm-2 col-form-label text-end">{{ __('label_status') }}</label>
+                            <label class="col-sm-2 col-form-label text-sm-end text-start">{{ __('label_status') }}</label>
                             <div class="col-sm-10">
                                 <div class="btn-group" role="group" aria-label="{{ __('label_status') }}">
                                     <label class="btn btn-outline-secondary btn-sm active">
@@ -269,7 +269,7 @@
                         </div>
 
                         <div class="row mb-3">
-                            <label class="col-sm-2 col-form-label text-end">{{ __('label_files') }}</label>
+                            <label class="col-sm-2 col-form-label text-sm-end text-start">{{ __('label_files') }}</label>
                             <div class="col-sm-10">
                                 {{ lib.input_files('addfiletomail', 'xs') }}
                             </div>
@@ -308,7 +308,7 @@
                                            maxlength="10"
                                            minlength="10">
                                 </div>
-                                <div class="col-1">
+                                <div class="col-2">
                                     <button type="submit" name="submit" class="btn btn-outline-primary">
                                     <span class="text-success"><span
                                                 class="bi bi-plus-circle-fill"></span></span> {{ __('label_add') }}
