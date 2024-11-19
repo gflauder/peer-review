@@ -14,7 +14,9 @@
             </svg>
             <span class="d-none d-lg-block text-white text-emphasis">{{ __('title_program') }}</span>
         </a>
+        {% if session.identified %}
         <i class="bi bi-list toggle-sidebar-btn text-white"></i>
+        {% endif %}
     </div><!-- End Logo -->
 
     <nav class="header-nav ms-auto me-4">
