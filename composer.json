@@ -25,7 +25,6 @@
       "cd ../pyritephp && composer install --ignore-platform-reqs"
     ]
   },
-
   "repositories": [
     {
       "type": "vcs",
