@@ -4,8 +4,8 @@
   "license": "AGPL-3.0",
   "authors": [
     {
-      "name": "Stéphane Lavergne",
-      "email": "lis@imars.com"
+      "name": "Gary Flauder",
+      "email": "gflauder@hotmail.com"
     }
   ],
   "require": {
@@ -29,11 +29,8 @@
 
   "repositories": [
     {
-      "type": "path",
-      "url": "/home/gary/pyritephp",
-      "options": {
-        "symlink": true
-      }
+      "type": "vcs",
+      "url": "https://gitlab.ela.solutions:7443/GFlauder/pyritephp.git"
     }
   ]
 }
