@@ -46,21 +46,22 @@
                         {{ filter('form_begin', 'admin_user_acl_add') |raw }}
                         <input type="hidden" name="f" value="add">
                         <strong>{{ __('label_new_permission') }}:</strong>
-                        <select data-label="Action" id="action" required class="form-select">
+
+                        <select data-label="Action" id="action" required class="form-select mb-3">
                             <option selected disabled>{{ __('label_action') }}...</option>
                             <option value="*">* {{ __('label_any_action') }}</option>
                             {% for action in actions %}
                                 <option>{{ action }}</option>
                             {% endfor %}
                         </select>
-                        <select data-label="Object Type" id="objectType" required class="form-select">
+                        <select data-label="Object Type" id="objectType" required class="form-select mb-3">
                             <option selected disabled>{{ __('label_type') }}...</option>
                             <option value="*">* {{ __('label_any_type') }}</option>
                             {% for objectType in objectTypes %}
                                 <option>{{ objectType }}</option>
                             {% endfor %}
                         </select>
-                        <input data-label="Object ID" placeholder="Object ID" id="objectId" class="form-control">
+                        <input data-label="Object ID" placeholder="Object ID" id="objectId" class="form-control mb-3">
                         <button type="submit" class="btn btn-primary"><i class="bi bi-plus"></i> {{ __('label_add') }}
                         </button>
                     </form>

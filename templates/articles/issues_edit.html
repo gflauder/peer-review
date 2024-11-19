@@ -15,6 +15,7 @@
         {{ lib.alert(success, __('save_failure')) }}
     {% endif %}
 {% endif %}
+
 <div class="card mb-3">
     <div class="card mb-3">
         <div class="card-body">
@@ -89,7 +90,7 @@
             </form>
         </div>
     </div>
-</div>
+
 {% endif %}
 
 {% if issue %}
@@ -98,10 +99,11 @@
             {% if not pass('can', 'edit', 'issue', issue.id) %}
                 {{ issue.description |raw }}
             {% endif %}
+            <div class="mb-5">
             <h3>{{ __('title_articles') }}
                 {% if pass('can','create','article') %}
                     <form action="{{ req.base }}/articles/new" id="article_create" method="get"
-                          class="form-inline inline">
+                          class="form-inline inline float-end">
                         <input type="hidden" name="issueId" value="{{ issue.id }}">
                         <button class="btn btn-outline-secondary btn-xs" type="submit"><span class="text-success"><span
                                         class="glyphicon glyphicon-plus"></span></span> {{ __('label_create') }}
@@ -109,6 +111,7 @@
                     </form>
                 {% endif %}
             </h3>
+            </div>
             {% include 'articles/articles_list.html' %}
         </div>
     </div>
@@ -122,3 +125,4 @@
         </div>
     </div>
 {% endif %}
+</div>
