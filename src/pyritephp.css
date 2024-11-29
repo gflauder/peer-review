@@ -151,11 +151,7 @@ html[lang="en"] .text-title
 .grow-4x { font-size: 4em; }
 .grow-5x { font-size: 5em; }
 
-/* Hide-away boxes (brought back by JS) */
-.hideaway {
-	position: fixed;
-	left: -100%;
-}
+
 
 /* Selectize for users */
 .name_email_label {

@@ -16,9 +16,24 @@ $().ready(function () {
     var regexEMail = /^[^@ ]+@[^@ .]+\.[^@ ]+$/;
     var regexNameEMail = /^([^<]+)<([^@ ]+@[^@ .]+\.[^@ ]+)>$/;
 
+/*
     $('.hideaway-focus').on('focus', function () {
         $(this).closest('.hideaway').css({ position: 'relative', left: 0 });
     });
+*/
+    $('input[name="email"]').on('keydown', function(e) {
+        if (e.key === "Tab") {
+            $('.hideaway').show();
+        }
+    });
+
+    // Clear the password value on form submission if not revealed
+    $('#login-form').on('submit', function() {
+        if ($('.hideaway').is(':hidden')) {
+            $('#password').val('');
+        }
+    });
+
 
     setTimeout(function () {
         $('input.input-password').attr('type', 'password');

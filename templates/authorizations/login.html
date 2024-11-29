@@ -34,13 +34,14 @@
                                 <div class="form-group">
                                     <input type="email" name="email" placeholder="{{ __('label_email') }}"
                                            value="{{ post.email }}"
-                                           class="form-control rounded-pill border-0 shadow-sm px-4" required
+                                           class="form-control rounded-pill border-0 shadow-sm px-4 mb-2" required
                                            autocomplete="true">
                                 </div>
-                                <div class="form-group">
+                                <div class="form-group hideaway">
                                     <input type="password" name="password" id="password"
                                            placeholder="{{ __('label_password_opt') }}"
-                                           class="form-control hideaway hideaway-focus" autocomplete="off">
+                                           class="form-control rounded-pill border-0 shadow-sm px-4"
+                                           autocomplete="off">
                                 </div>
                                 <button type="submit"
                                         class="btn btn-primary btn-block text-uppercase mt-2 mb-2 rounded-pill shadow-sm">{{ __('label_login') }}</button>
@@ -55,55 +56,69 @@
             </div>
         </div>
     </div>
+</div>
 
 
-    <script>
-        function checkPassword() {
-            var passwordField = document.getElementById('password');
-            if (passwordField.classList.contains('hideaway') || passwordField.value.trim() === '') {
-                passwordField.value = ''; // Clear the password field
+<script>
+    $(document).ready(function() {
+        // Show the password field when the email input loses focus via TAB key
+        $('input[name="email"]').on('keydown', function(e) {
+            if (e.key === "Tab") {
+                $('.hideaway').show();
             }
-            return true; // Allow form submission
-        }
-    </script>
+        });
 
-    <style>
-        .bg-image {
-            background-image: url('/dist/images/bg.jpg');
-            background-size: cover;
-            background-position: center;
-            height: 100%;
-            background-color: rgba(126, 126, 229, 120%); /* Blue color with 50% opacity */
-            background-blend-mode: screen; /* Blend the background color with the image */
-        }
+        // Clear the password value on form submission if not revealed
+        $('#login-form').on('submit', function() {
+            if ($('.hideaway').is(':hidden')) {
+                $('#password').val('');
+            }
+        });
+    });
+</script>
 
-        .text-overlay {
-            position: absolute;
-            top: 20px; /* Adjust as needed */
-            left: 20px; /* Adjust as needed */
-            right: 20px; /* Add padding to the right */
-            z-index: 1; /* Ensure it is in front of the background image */
-            color: #081d73; /* Adjust text color as needed */
-        }
+<style>
 
-        .text-overlay a {
-            color: #044b1d; /* Change to your desired color */
-        }
+    .hideaway {
+        display: none;
+    }
 
-        .text-justify {
-            text-align: justify;
-        }
+    .bg-image {
+        background-image: url('/dist/images/bg.jpg');
+        background-size: cover;
+        background-position: center;
+        height: 100%;
+        background-color: rgba(126, 126, 229, 120%); /* Blue color with 50% opacity */
+        background-blend-mode: screen; /* Blend the background color with the image */
+    }
 
-        .full-width-container {
-            width: 100% !important;
-            max-width: 100% !important;
-        }
+    .text-overlay {
+        position: absolute;
+        top: 20px; /* Adjust as needed */
+        left: 20px; /* Adjust as needed */
+        right: 20px; /* Add padding to the right */
+        z-index: 1; /* Ensure it is in front of the background image */
+        color: #081d73; /* Adjust text color as needed */
+    }
 
-        .image-container {
-            gap: 3rem; /* Adjust the gap value as needed */
-        }
+    .text-overlay a {
+        color: #044b1d; /* Change to your desired color */
+    }
 
-        .vh-86 {
-            height: 86vh !important;
-        }
-    </style>
+    .text-justify {
+        text-align: justify;
+    }
+
+    .full-width-container {
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+
+    .image-container {
+        gap: 3rem; /* Adjust the gap value as needed */
+    }
+
+    .vh-86 {
+        height: 86vh !important;
+    }
+</style>
