@@ -128,13 +128,17 @@
         align-items: flex-end; /* Ensures images remain at the bottom */
         width: 100%; /* Ensures flex items span the column width */
         gap: 50px; /* Optional spacing between images */
+        max-width: 750px; /* Example max-width of the entire row */
+        margin: 0 auto; /* Centers the row within its container */
     }
 
     .image-row img {
         flex-shrink: 1; /* Allows images to shrink */
-        max-width: 35%; /* Sets a max width for control */
+        max-width: 35%; /* Maximum width for individual images */
+        max-height: 150px; /* Example maximum height for images */
         height: auto; /* Maintains aspect ratio */
     }
+
     .bg-image {
         background-image: url('/dist/images/bg.jpg');
         background-size: cover;
