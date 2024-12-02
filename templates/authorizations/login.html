@@ -7,7 +7,7 @@
             <div class="text-overlay p-3 me-1 mt-3 d-flex flex-column justify-content-center align-items-center">
                 <h1 class="display-3">{{ __('title_welcome_to') }} {{ __('title_program') }}</h1>
                 <div class="h4">{{ __('title_welcome_4')|raw }}</div>
-                <div class="row p-0 image-row">
+                <div class="row p-2 m-2 image-row">
                     <div class="col-12 col-sm-6 col-md-4 col-lg-3 mt-5 p-0 d-flex justify-content-between align-content-center image-container d-none d-lg-flex">
                         <img src="/dist/images/quebec.png" class="img-fluid" alt="Image">
                         <img src="/dist/images/Canada.png" class="img-fluid" alt="Image">
@@ -48,8 +48,22 @@
                             </form>
                             <h5><a href="{{ req.base }}/register">{{ __('title_register') }} &raquo;</a></h5>
                             <p>{{ __('title_welcome_2') }}</p>
-                            <p>{{ __('title_welcome_3') }} <a
-                                        href="{{ req.base }}/password_reset"> {{ __('label_clickhere') }}</a>.</p>
+                            <p>{{ __('title_welcome_3') }}
+                                <a href="{{ req.base }}/password_reset"> {{ __('label_clickhere') }}</a>.
+                            </p>
+
+
+
+                            {% if alert_type %}
+                            <div class="card border-{{ alert_type }} mb-3 animate__animated"  id="myCard">
+                                <div class="card-body text-{{ alert_type }}">
+                                    <h5 class="card-title">{{ alert_title }}</h5>
+                                    <p class="card-text">{{ alert_message }}</p>
+                                </div>
+                            </div>
+                            {% endif %}
+
+
                         </div>
                     </div>
                 </div>
@@ -75,9 +89,51 @@
             }
         });
     });
+
+    document.addEventListener('DOMContentLoaded', function() {
+        // Dynamically load Animate.css
+        var link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.href = 'https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css';
+        document.head.appendChild(link);
+
+
+            var cardElement = document.getElementById('myCard');
+            if (cardElement) {
+                cardElement.classList.add('animate__fadeInUp'); // Add fadeIn animation
+                cardElement.style.opacity = 1; // Ensure visibility if previously hidden
+            } else {
+                console.error('Card element not found!');
+            }
+
+    });
+
 </script>
 
 <style>
+
+
+    .display-3 {
+        font-size: calc(1.3rem + 2.7vw); /* Creates a responsive font based on viewport width */
+    }
+
+    @media (min-width: 768px) {
+        .display-3 {
+            font-size: 2rem; /* Larger font size for medium and above */
+        }
+    }
+
+    @media (min-width: 1200px) {
+        .display-3 {
+            font-size: 3rem; /* Even larger for larger viewports */
+        }
+    }
+    .alert {
+        /* Specific styles for alerts on the login page */
+        position: static !important;  /* Ensures it overrides the fixed positioning */
+        margin: 0 auto;               /* Centers the alert within its parent container if needed */
+        max-width: 100%;              /* Allows it to fill its container */
+    }
 
     .hideaway {
         display: none;
@@ -88,8 +144,8 @@
         background-size: cover;
         background-position: center;
         height: 100%;
-        background-color: rgba(126, 126, 229, 120%); /* Blue color with 50% opacity */
-        background-blend-mode: screen; /* Blend the background color with the image */
+        background-color: rgb(162, 162, 162);
+        background-blend-mode: screen;
     }
 
     .text-overlay {
@@ -98,11 +154,11 @@
         left: 20px; /* Adjust as needed */
         right: 20px; /* Add padding to the right */
         z-index: 1; /* Ensure it is in front of the background image */
-        color: #081d73; /* Adjust text color as needed */
+        color: #000000; /* Adjust text color as needed */
     }
 
     .text-overlay a {
-        color: #044b1d; /* Change to your desired color */
+        color: #002f8c; /* Change to your desired color */
     }
 
     .text-justify {

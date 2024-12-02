@@ -5,7 +5,7 @@
     {% use 'en/blocks.html' %}
 {% endif %}
 {{ title(__('title_prefs')) }}
-<h2 class="page-header"><span class="glyphicon glyphicon-cog"></span> {{ __('title_prefs') }}</h2>
+<h2 class="page-header"><span class="bi bi-gear"></span> {{ __('title_prefs') }}</h2>
 {% if saved %}
     {% if success %}
         {{ lib.alert(success, __('save_success')) }}
@@ -50,7 +50,7 @@
                 <label for="newpassword2">{{ __('label_again_password') }}</label>
                 <input type="password" class="form-control" name="newpassword2" id="newpassword2" maxlength="72" placeholder="{{ __('hint_again_password') }}" data-parsley-equalto="#newpassword1" data-parsley-validate-if-empty>
             </div>
-            <button type="submit" class="btn btn-primary"><span class="fg-ok"><span class="glyphicon glyphicon-ok"></span></span> {{ __('label_save') }}</button>
+            <button type="submit" class="btn btn-primary mt-2"><span class="fg-ok"><span class="bi bi-check"></span></span> {{ __('label_save') }}</button>
         </form>
     </div>
 </div>

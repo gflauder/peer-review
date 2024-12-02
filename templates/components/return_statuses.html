@@ -6,7 +6,7 @@
     {{ body |raw }}
 {% endif %}
 
-{% if req.status >= 400 %}
+{% if req.status >= 400 and not req.isLogin %}
     <div>
         {% if req.status == 404 %}
             {% include 'components/flash_messages.html' with {'alert_type': 'danger', 'alert_title': __('error_notfound_title'), 'alert_message': __('error_notfound_body')} %}
@@ -33,8 +33,40 @@
             {% include 'components/flash_messages.html' with {'alert_type': 'info', 'alert_title': __('label_login'), 'alert_message': __('info_mailclick')} %}
         {% endif %}
     </div>
+{% else %}
+    <div>
+    {% if req.status == 404 %}
+        {% include'authorizations/login.html' with {'alert_type': 'danger', 'alert_title': __('error_notfound_title'), 'alert_message': __('error_notfound_body')} %}
+    {% elseif req.status == 403 %}
+        {% if session.identified %}
+            {% include 'authorizations/login.html' with {'alert_type': 'danger', 'alert_title': __('error_denied_title'), 'alert_message': __('error_denied_body')} %}
+        {% else %}
+            {% if req.get.onetime %}
+                {% include 'authorizations/login.html' with {'alert_type': 'danger', 'alert_title': __('error_activation_title'), 'alert_message': __('error_activation_body')} %}
+            {% elseif req.post.email %}
+                {% include 'authorizations/login.html' with {'alert_type': 'danger', 'alert_title': __('error_login_title'), 'alert_message': __('error_login_body')} %}
+            {% else %}
+                {#Login Form#}
+                {% include 'authorizations/login.html' %}
+            {% endif %}
+        {% endif %}
+    {% elseif req.status == 440 %}
+        {% if session.identified %}
+            {% include 'authorizations/login.html' with {'alert_type': 'danger', 'alert_title': __('error_duplicate_title'), 'alert_message': __('error_duplicate_body')} %}
+        {% else %}
+            {% include 'authorizations/login.html' with {'alert_type': 'warning', 'alert_title': __('error_expired_title'), 'alert_message': __('error_expired_body')} %}
+        {% endif %}
+    {% elseif req.status == 449 %}
+        {% include 'authorizations/login.html' with {'alert_type': 'success', 'alert_title': __('label_login'), 'alert_message': __('info_mailclick')} %}
+    {% endif %}
+
+    </div>
 {% endif %}
 
+
+{#
+todo : This general error handling needs improvement
+#}
 {% if req.warnings|length > 0 %}
     {% for warning in req.warnings %}
         {{ lib.warning(warning[0], warning[1], warning[2]) }}
