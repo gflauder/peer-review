@@ -55,7 +55,7 @@
                             <div class="card border-{{ alert_type }} mb-3 animate__animated"  id="myCard">
                                 <div class="card-body text-{{ alert_type }}">
                                     <h5 class="card-title">{{ alert_title }}</h5>
-                                    <p class="card-text">{{ alert_message }}</p>
+                                    <p class="card-text">{{ alert_message |raw }}</p>
                                 </div>
                             </div>
                             {% endif %}

@@ -76,7 +76,7 @@ msgid "error_expired_title"
 msgstr "Session Expired"
 
 msgid "error_login_body"
-msgstr "The e-mail address and password supplied are incorrect."
+msgstr "The e-mail address and/or password supplied are incorrect."
 
 msgid "error_login_title"
 msgstr "Login Failure"
@@ -128,7 +128,10 @@ msgid "info_copyright"
 msgstr "I have read and I agree with the terms in:"
 
 msgid "info_mailclick"
-msgstr "Almost done!  Please click the link in your e-mail to complete."
+msgstr "Almost done! <br><br>"
+  "An email with your login link has been sent. Please click the link in the email to finish signing in. <br>"
+  "Remember to check your junk mail folder too!.<br>"
+  "If you do not receive an email in 5 minutes, please contact <a href=\"mailto:admin@criminologie.ca\">admin@criminologie.ca</a>"
 
 msgid "info_plagiarism"
 msgstr ""
@@ -402,6 +405,9 @@ msgstr "Other"
 msgid "label_password_opt"
 msgstr "Password (optional)"
 
+msgid "label_password_reset"
+msgstr "Restting Password"
+
 msgid "label_peer"
 msgstr "Peer"
 
@@ -532,7 +538,9 @@ msgid "password_changed"
 msgstr "Thank you. Your password was updated."
 
 msgid "password_emailed"
-msgstr "Thank you. If you have an account, you will receive an instruction e-mail shortly."
+msgstr "Thank you!<br>"
+"If you have an account, you will receive an instruction e-mail shortly. Please remember to check your junk mail folder too!<br>"
+"If you do not receive an email in 5 minutes, please contact <a href=\"mailto:admin@criminologie.ca\">admin@criminologie.ca</a>"
 
 msgid "password_invalid_entry"
 msgstr "Please provide a valid password."

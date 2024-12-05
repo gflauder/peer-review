@@ -76,7 +76,7 @@ msgid "error_expired_title"
 msgstr "Session expirée"
 
 msgid "error_login_body"
-msgstr "L'adresse de courriel et le mot de passe fournis sont incorrects."
+msgstr "L'adresse courriel et/ou le mot de passe fourni est incorrect."
 
 msgid "error_login_title"
 msgstr "Connexion impossible"
@@ -131,9 +131,10 @@ msgid "info_copyright"
 msgstr "J'ai lu et j'accepte les termes décrits dans:"
 
 msgid "info_mailclick"
-msgstr ""
-"Presque terminé!  Veuillez cliquer le lien dans votre courriel pour vous "
-"connecter."
+msgstr "Presque terminé! <br>"
+  "Un courriel contenant votre lien de connexion a été envoyé. Veuillez cliquer sur le lien dans le courriel pour terminer la connexion. <br>"
+  "N'oubliez pas de vérifier votre dossier de courriers indésirables!<br>"
+  "Si vous ne recevez pas de courriel dans les 5 minutes, veuillez contacter <a href=\"mailto:admin@criminologie.ca\">admin@criminologie.ca</a>"
 
 msgid "info_plagiarism"
 msgstr ""
@@ -407,6 +408,9 @@ msgstr "Autre"
 msgid "label_password_opt"
 msgstr "Mot de passe (facultatif)"
 
+msgid "label_password_reset"
+msgstr "Réinitialisation du mot de passe"
+
 msgid "label_peer"
 msgstr "Pair"
 
@@ -537,7 +541,9 @@ msgid "password_changed"
 msgstr "Merci.  Votre mot de passe a été mis à jour."
 
 msgid "password_emailed"
-msgstr "Merci.  Si vous avez un compte ici, vous recevrez des instructions par courriel sous peu."
+msgstr "Merci!<br>"
+"Si vous avez un compte, vous recevrez un courriel contenant des instructions sous peu. N'oubliez pas de vérifier votre dossier de courrier indésirable aussi!<br>"
+"Si vous ne recevez pas de courriel dans les 5 minutes, veuillez contacter <a href=\"mailto:admin@criminologie.ca\">admin@criminologie.ca</a>"
 
 msgid "password_invalid_entry"
 msgstr "Veuillez fournir un mot de passe valide."

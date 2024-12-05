@@ -1,24 +1,28 @@
-{% block subject %}
 {% import 'lib.twig' as lib %}
-Late review for: {{ lib.format_article(article, true, true) |truncate(64, true) }}
-{% endblock %}
 
-{% block html %}
-{% import 'lib.twig' as lib %}
-<p>Hello,</p>
-<p>
-Please note that we have not received your review of the article
-"{{ lib.format_article(article, true, true) }}"
-which was expected on {{ deadline}} at the latest.
-</p>
-<p>
-You may still complete it today at:
-</p>
-<p>
-<a href="{{ req.protocol }}://{{ req.host }}/">{{ req.protocol }}://{{ req.host }}/</a>
-</p>
-<p>
-Thank you,
-<br>{{ config.global.name }}
-</p>
-{% endblock %}
+   {% set truncatedTitle = lib.format_article(article, true, true) | truncate(64, true) %}
+   {% set fullTitle = lib.format_article(article, true, true) %}
+   {% set completionLink = req.protocol ~ '://' ~ req.host ~ '/' %}
+
+   {% block subject %}
+   Late review for: {{ truncatedTitle }}
+   {% endblock %}
+
+   {% block html %}
+   <p>Hello,</p>
+   <p>
+   Please note that we have not received your review of the article
+   "{{ fullTitle }}"
+   which was expected on {{ deadline }} at the latest.
+   </p>
+   <p>
+   You may still complete it today at:
+   </p>
+   <p>
+   <a href="{{ completionLink }}">{{ completionLink }}</a>
+   </p>
+   <p>
+   Thank you,
+   <br>{{ config.global.name }}
+   </p>
+   {% endblock %}
