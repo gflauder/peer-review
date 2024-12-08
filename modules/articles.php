@@ -83,8 +83,11 @@ class Articles
                 status      VARCHAR(64) NOT NULL DEFAULT 'created',
                 wordCount   INTEGER NOT NULL DEFAULT '0',
                 title       VARCHAR(255) NOT NULL DEFAULT '',
+                title_en    VARCHAR(255) NOT NULL DEFAULT '',
                 keywords    TEXT NOT NULL DEFAULT '',
+                keywords_en TEXT NOT NULL DEFAULT '',
                 abstract    TEXT NOT NULL DEFAULT '',
+                abstract_en TEXT NOT NULL DEFAULT '',
                 {$customs}
                 FOREIGN KEY(status) REFERENCES articleStatus(name)
             )
@@ -248,6 +251,7 @@ class Articles
             || $article['isPeer']
         ) {
             $article['keywords'] = dejoin(';', $article['keywords']);
+            $article['keywords_en'] = dejoin(';', $article['keywords_en']);
             $article['permalink'] = makePermalink($article['title']);
             $article['peers'] = array_keys($uniquePeers);
             $article['editors'] = grab('object_users', '*', 'issue', $article['issueId']);
@@ -417,6 +421,9 @@ class Articles
             $search[] = $db->query('articles.title LIKE ?', "%{$keyword}%");
             $search[] = $db->query('articles.keywords LIKE ?', "%{$keyword}%");
             $search[] = $db->query('articles.abstract LIKE ?', "%{$keyword}%");
+            $search[] = $db->query('articles.title_en LIKE ?', "%{$keyword}%");
+            $search[] = $db->query('articles.keywords_en LIKE ?', "%{$keyword}%");
+            $search[] = $db->query('articles.abstract_en LIKE ?', "%{$keyword}%");
             $q->and()->implodeClosed('OR', $search);
         };
         if ($noReviews) {
@@ -446,6 +453,7 @@ class Articles
         foreach ($list as $key => $article) {
             // Weird bug with PHP using $list => &$article
             $list[$key]['keywords'] = dejoin(';', $article['keywords']);
+            $list[$key]['keywords_en'] = dejoin(';', $article['keywords_en']);
             $list[$key]['permalink'] = makePermalink($article['title']);
             $list[$key]['issue'] = self::_getIssueName($article);
         };
@@ -555,6 +563,10 @@ class Articles
         if (isset($cols['keywords']) && is_array($cols['keywords'])) {
             $cols['keywords'] = implode(';', $cols['keywords']);
         };
+        if (isset($cols['keywords_en']) && is_array($cols['keywords_en'])) {
+            $cols['keywords_en'] = implode(';', $cols['keywords_en']);
+        };
+
         if (isset($cols['authors']) && is_array($cols['authors'])) {
             $newAuthors = $cols['authors'];
             $cols['authors'] = implode(';', $cols['authors']);
@@ -564,16 +576,17 @@ class Articles
             unset($cols['id']);
             $oldArticle = self::get($id);
             $oldArticle['keywords'] = implode(';', $oldArticle['keywords']);  // This is for comparison only
+            $oldArticle['keywords_en'] = implode(';', $oldArticle['keywords_en']);
             $res = $db->update('articles', $cols, 'WHERE id=?', array($id));
             if ($res !== false) {
                 $res = $id;
 
                 if (isset($cols['issueId']) && $oldArticle['issueId'] !== $cols['issueId'] && count($oldArticle['versions']) > 0) {
+
+                   //todo:review this code, seems to be a bug and not move files
                     // Move files directory if issue was reassigned
                     $issue = grab('issue', $cols['issueId']);
                     $issuePath = $config['articles']['path'] . '/' . $issue['issue'];
-
-                    //todo:review this code, seems to be a bug and not move files
                     if (!file_exists($issuePath)) {
                         mkdir($issuePath, 06770);
                     };
@@ -585,7 +598,7 @@ class Articles
                 };
 
                 // Log each modified  column
-                foreach (array('issueId', 'status', 'wordCount', 'title', 'keywords', 'abstract') as $col) {
+                foreach (array('issueId', 'status', 'wordCount', 'title','title_en', 'keywords', 'keywords_en', 'abstract','abstract_en') as $col) {
                     if (isset($cols[$col]) && $oldArticle[$col] !== $cols[$col]) {
                         trigger(
                             'log',
@@ -1230,12 +1243,18 @@ on(
                 // We need to display warnings so we can't redirect, but we
                 // need to redirect before displaying the article because any
                 // forms would need the URL to reflect the articleId.
-                if ($created) return trigger(
+      /*          if ($created) return trigger(
                     'warning',
                     'redirect_created',
                     3,
                     "{$req['protocol']}://{$req['host']}{$req['base']}/articles/{$articleId}/{$article['permalink']}"
-                );
+                );*/
+
+
+
+
+
+
             };
             if (isset($req['get']['unlink'])) {
                 if (!pass('can', 'delete', 'article', $articleId)) return trigger('http_status', 403);

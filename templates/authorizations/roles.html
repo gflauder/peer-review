@@ -8,9 +8,9 @@
 
 {% if added or deleted %}
     {% if success %}
-        {{ lib.alert(success, __('save_success')) }}
+        {{ lib.alert(true, __('save_success')) }}
     {% else %}
-        {{ lib.alert(success, __('save_failure')) }}
+        {{ lib.alert(false, __('save_failure')) }}
     {% endif %}
 {% endif %}
 {% import 'lib.twig' as lib %}

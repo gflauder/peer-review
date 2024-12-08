@@ -140,6 +140,9 @@ msgstr ""
 msgid "label_abstract"
 msgstr ""
 
+msgid "label_abstract_en"
+msgstr ""
+
 msgid "label_accept"
 msgstr ""
 
@@ -272,6 +275,9 @@ msgstr ""
 msgid "label_files"
 msgstr ""
 
+msgid "label_select_files"
+msgstr ""
+
 msgid "label_from"
 msgstr ""
 
@@ -321,6 +327,9 @@ msgid "label_keyword"
 msgstr ""
 
 msgid "label_keywords"
+msgstr ""
+
+msgid "label_keywords_en"
 msgstr ""
 
 msgid "label_last_accepted"
@@ -462,6 +471,9 @@ msgid "label_subject"
 msgstr ""
 
 msgid "label_title"
+msgstr ""
+
+msgid "label_title_en"
 msgstr ""
 
 msgid "label_to"

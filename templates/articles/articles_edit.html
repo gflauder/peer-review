@@ -13,9 +13,9 @@
 
 {% if saved %}
     {% if success %}
-        {{ lib.alert(success, __('save_success')) }}
+        {{ lib.alert(true, __('save_success')) }}
     {% else %}
-        {{ lib.alert(success, __('save_failure')) }}
+        {{ lib.alert(false, __('save_failure')) }}
     {% endif %}
 {% endif %}
 
@@ -55,12 +55,20 @@
                                required>
                     </div>
                 </div>
+                <div class="row mb-3">
+                    <label for="title" class="col-sm-2 col-form-label text-sm-end text-start">{{ __('label_title_en') }}</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="title" name="title_en" value="{{ article.title_en }}"
+                               >
+                    </div>
+                </div>
+
 
                 {% if pass('can', 'move', 'article', article.id) or pass('can', 'move', 'issue', article.issueId) or not article.id %}
                     <div class="row mb-3">
                         <label for="issueId" class="col-sm-2 col-form-label text-sm-end text-start">{{ __('label_issueId') }}</label>
                         <div class="col-sm-3">
-                            <select data-label="{{ __('label_issueId') }}" id="issueId" class="select form-select "
+                            <select data-label="{{ __('label_issueId') }}" id="issueId" name="issueId" class="select form-select "
                                     required>
                                 {% if not article.id %}
                                 <option selected disabled>{{ __('label_issueId') }}...
@@ -102,11 +110,35 @@
                 </div>
 
                 <div class="row mb-3">
+                    <label for="keywords" class="col-sm-2 col-form-label text-sm-end text-start">{{ __('label_keywords_en') }}</label>
+                    <div class="col-sm-10">
+                        <input type="hidden" name="__arrays[]" value="keywords_en">
+                        <select name="keywords_en[]" data-label="{{ __('label_keywords_en') }}"
+                                data-maxcount="{{ config.articles.max_keywords }}" id="keywords_en"
+                                placeholder="{{ __('hint_keywords_en') }}" class="keywords feedback-tags" multiple>
+                            {% for keyword in article.keywords_en %}
+                                <option selected>{{ keyword }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+
+
+                <div class="row mb-3">
                     <label for="abstract" class="col-sm-2 col-form-label text-sm-end text-start">{{ __('label_abstract') }}</label>
                     <div class="col-sm-10">
                         <textarea class="form-control" id="abstract" name="abstract">{{ article.abstract }}</textarea>
                     </div>
                 </div>
+
+                <div class="row mb-3">
+                    <label for="abstract" class="col-sm-2 col-form-label text-sm-end text-start">{{ __('label_abstract_en') }}</label>
+                    <div class="col-sm-10">
+                        <textarea class="form-control" id="abstract" name="abstract_en">{{ article.abstract_en }}</textarea>
+                    </div>
+                </div>
+
+
 
                 {% if pass('can', 'move', 'article', article.id) or pass('can', 'move', 'issue', article.issueId) or pass('has_role', 'author') %}
                     <div class="row mb-3">
@@ -132,8 +164,7 @@
 
 
                     <div class="row mb-3">
-                        <div id="file-list" class="col-sm-4 offset-sm-2">
-
+                        <div id="file-list" class="col-sm-8 offset-sm-2">
                             <div class="accordion" id="versionFiles">
                                 {% for version in article.versions %}
                                     <div class="accordion-item">
@@ -223,7 +254,7 @@
 
                 <div class="row mb-3">
                     <div class="col-sm-10 offset-sm-2">
-                        <button type="submit" class="btn btn-primary">{{ __('save') }}</button>
+                        <button type="submit" class="btn btn-primary">{{ __('label_save') }}</button>
                     </div>
                 </div>
             </form>

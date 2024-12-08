@@ -8,15 +8,15 @@
 {{ title(__('title_outbox')) }}
 {% if sent %}
     {% if success %}
-        {{ lib.alert(success, __('send_success')) }}
+        {{ lib.alert(true, __('send_success')) }}
     {% else %}
-        {{ lib.alert(success, __('send_failure')) }}
+        {{ lib.alert(false, __('send_failure')) }}
     {% endif %}
 {% elseif deleted %}
     {% if success %}
-        {{ lib.alert(success, __('delete_success')) }}
+        {{ lib.alert(true, __('delete_success')) }}
     {% else %}
-        {{ lib.alert(success, __('delete_failure')) }}
+        {{ lib.alert(false, __('delete_failure')) }}
     {% endif %}
 {% endif %}
 <div class="card">

@@ -100,6 +100,9 @@ msgstr "Your e-mail identifies you here"
 msgid "hint_keywords"
 msgstr "Enter 3 to 6 keywords"
 
+msgid "hint_keywords_en"
+msgstr "Enter 3 to 6 keywords"
+
 msgid "hint_new_password"
 msgstr "Fill only if you want to change it"
 
@@ -149,6 +152,9 @@ msgstr "-nothing"
 
 msgid "label_abstract"
 msgstr "Abstract"
+
+msgid "label_abstract_en"
+msgstr "English Abstract"
 
 msgid "label_accept"
 msgstr "Accept"
@@ -282,6 +288,9 @@ msgstr "File"
 msgid "label_files"
 msgstr "Files"
 
+msgid "label_select_files"
+msgstr "Select File(s) by holding Ctrl when selecting"
+
 msgid "label_from"
 msgstr "from"
 
@@ -332,6 +341,9 @@ msgstr "Keyword"
 
 msgid "label_keywords"
 msgstr "Keywords"
+
+msgid "label_keywords_en"
+msgstr "English Keywords"
 
 msgid "label_last_accepted"
 msgstr "Most recent acceptance"
@@ -473,6 +485,9 @@ msgstr "Subject"
 
 msgid "label_title"
 msgstr "Title"
+
+msgid "label_title_en"
+msgstr "English Title"
 
 msgid "label_to"
 msgstr "to"

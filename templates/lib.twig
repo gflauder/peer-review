@@ -1,7 +1,7 @@
 {% macro alert(good, body) %}
     <div class="alert alert-{% if good %}success{% else %}danger{% endif %} alert-dismissible" role="alert">
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="{{ __('label_close') }}"></button>
-        <span class="bi bi-exclamation-triangle" aria-hidden="true"></span>
+        <span class="bi {% if good %}bi-check2-circle{% else %}bi-exclaimation-triable"{% endif %} aria-hidden="true"></span>
         {{ body }}
     </div>
 {% endmacro %}
@@ -270,7 +270,8 @@
                 <div class="row mb-3">
                     <label for="issueId" class="col-sm-2 col-form-label text-end">{{ __('label_issueId') }}</label>
                     <div class="col-md-9">
-                    <input type="text" class="form-control" id="issueId" name="issueId" value="{{ __('issue_zero') }}" disabled>
+                        <input type="text" class="form-control" id="issueId" name="issueId"
+                               value="{{ __('issue_zero') }}" disabled>
                     </div>
                 </div>
             {% endif %}
@@ -376,27 +377,62 @@
 
 
 {% macro input_files(id, size, required) %}
-
     <ul id="fileList"></ul>
-
-    <label for="fileInput">Select files to upload:</label>
+    <label for="fileInput">{{ __('label_select_files') }}</label>
     <input type="file" id="fileInput" name="files[]" multiple>
-
     <script>
         document.getElementById('fileInput').addEventListener('change', function (event) {
             const fileListElement = document.getElementById('fileList');
-            fileListElement.innerHTML = '';  // Clear the current list
+            const existingFiles = new Set();
 
+            // Read existing files from the list
+            Array.from(fileListElement.children).forEach(listItem => {
+                existingFiles.add(listItem.dataset.name);
+            });
+
+            // Add newly selected files if they are not already in the list
             const files = event.target.files;
             for (const file of files) {
-                const listItem = document.createElement('li');
-                const fileSize = (file.size / 1024).toFixed(2); // Convert size to KB and format to 2 decimal places
-                listItem.textContent = `${file.name} - ${fileSize} `; // Display the name and size of the selected file
-                fileListElement.appendChild(listItem);
+                if (!existingFiles.has(file.name)) {
+                    const listItem = document.createElement('li');
+                    const fileSize = (file.size / 1024).toFixed(2); // Convert size to KB and format to 2 decimal places
+                    listItem.innerHTML = `
+                    ${file.name} - ${fileSize} KB
+                    <span class="remove-file" style="cursor: pointer; color: red;" title="Remove">
+                        <icon class="bi bi-x-circle"></icon>
+                    </span>
+                `;
+                    listItem.dataset.name = file.name;
+                    listItem.dataset.size = fileSize;
+                    fileListElement.appendChild(listItem);
+                    existingFiles.add(file.name); // Add the new file to the set
+                }
             }
+
+            // Add event listener to remove the file from the list
+            fileListElement.addEventListener('click', function (event) {
+                // Check if the click is on the span or any child elements like the icon
+                if (event.target.closest('.remove-file')) {
+                    const listItem = event.target.closest('li');
+                    const fileName = listItem.dataset.name;
+                    existingFiles.delete(fileName); // Remove from the Set
+                    listItem.remove(); // Remove the list item
+                }
+            });
         });
     </script>
 {% endmacro %}
+
+{# {% macro input_files(id, size, required) %}
+    <div class="fileupload-multiple btn-group{% if size %} btn-group-{{ size }}{% endif %}" data-basename="{{ id }}" data-i="0" role="group">
+        <label class="btn btn-default btn-file{% if size %} btn-{{ size }}{% endif %}">
+            <span class="filelabel-add"><span class="glyphicon glyphicon-plus fg-ok"></span> {{ __('label_new_file') }}...</span>
+            <span class="filelabel-change"><span class="glyphicon glyphicon-file"></span> {{ __('label_file') }}:</span>
+            <input type="file" class="hidden"{{ required ? ' required' : '' }}>
+        </label>
+        <span class="file-name btn btn-default{% if size %} btn-{{ size }}{% endif %} disabled"></span>
+    </div>
+{% endmacro %} #}
 
 
 
@@ -431,23 +467,22 @@
 {% macro modal() %}
     <div class="modal fade" id="user-modal" data-append-base="userdata" data-append-key="email" tabindex="-1"
          aria-labelledby="user-modal-label">
-        <div class="modal-dialog modal-dialog-centered role=" document
-        ">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title" id="user-modal-label"><span class="bi bi-person"></span> <span
-                            class="text"></span></h4>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"
-                        aria-label="{{ __('label_close') }}"></button>
-            </div>
-            <div class="modal-body">
-                {% include 'users/user_edit.html' with {'modal': true} %}
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-outline-secondary"><span class="fg-ok"><span
-                                class="bi bi-plus"></span></span> {{ __('label_add') }}</button>
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="user-modal-label"><span class="bi bi-person"></span> <span
+                                class="text"></span></h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                            aria-label="{{ __('label_close') }}"></button>
+                </div>
+                <div class="modal-body">
+                    {% include 'users/user_edit.html' with {'modal': true} %}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary"><span class="fg-ok"><span
+                                    class="bi bi-plus"></span></span> {{ __('label_add') }}</button>
+                </div>
             </div>
         </div>
-    </div>
     </div>
 {% endmacro %}

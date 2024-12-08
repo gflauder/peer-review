@@ -1,6 +1,8 @@
+{% if not modal %}
 <div class="card">
     <div class="card-body">
         <h3>{{ __('label_user') }}</h3>
+{% endif %}
         <form id="user_prefs" method="post" class="form-tight">
             {% if modal %}
                 <input type="hidden" name="email" value="">
@@ -15,10 +17,12 @@
                 </div>
             {% endif %}
             <div class="form-group">
-                <input data-colsize="9" data-label="{{ __('label_name') }}" type="text" id="name"
+                <input {% if not modal %} data-colsize="9"{% else %}data-colsize="12"{% endif%}
+                        data-label="{{ __('label_name') }}" type="text" id="name"
                        value="{{ user.name }}" class="mb-3" required minlength="2"
                        maxlength="100"{% if not modal and not user.active %} disabled{% endif %}>
-                <select data-colsize="3" class="mb-3" data-label="{{ __('label_gender') }}" name="gender"
+                <select {% if not modal %} data-colsize="3" {% endif%}
+                        class="mb-3" data-label="{{ __('label_gender') }}" name="gender"
                         required{% if not modal and not user.active %} disabled{% endif %}>
                     <option disabled{% if not user.id %} selected{% endif %}>{{ __('label_gender') }}...</option>
                     <option {% if user.id and user.gender == 'X' %}selected
@@ -32,10 +36,11 @@
                 </select>
             </div>
             <div class="form-group">
-                <input data-label="{{ __('label_profession') }}" class="mb-3" type="text" id="profession"
-                       value="{{ user.profession }}" minlength="3" maxlength="100"
+                <input data-colsize="9" data-label="{{ __('label_profession') }}" class="mb-3 col-9"
+                       type="text" id="profession" value="{{ user.profession }}" minlength="3" maxlength="100"
                        required{% if not modal and not user.active %} disabled{% endif %}>
-                <input data-label="{{ __('label_employer') }}" class="mb-3" type="text" id="employer" value="{{ user.employer }}"
+                <input data-colsize="9" data-label="{{ __('label_employer') }}" class="mb-3 col-9"
+                       type="text" id="employer" value="{{ user.employer }}"
                        minlength="3" maxlength="100"{% if not modal and not user.active %} disabled{% endif %}>
             </div>
             {% if not modal and user.id != session.user.id and pass('can', 'edit', 'user', user.id) %}
@@ -53,5 +58,7 @@
             {% endif %}
         </form>
 
+{% if not modal %}
     </div>
 </div>
+{% endif %}

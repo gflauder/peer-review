@@ -1,10 +1,10 @@
 {% block subject %}
-{% import 'lib.twig' as lib %}
+{% import 'lib' as lib %}
 Invitation to edit: {{ lib.format_issue(issue, true, true) |truncate(64, true) }}
 {% endblock %}
 
 {% block html %}
-{% import 'lib.twig' as lib %}
+{% import 'lib' as lib %}
 <p>Hello,</p>
 <p>
 You are invited to join {{ config.global.name }}, where this e-mail was added,

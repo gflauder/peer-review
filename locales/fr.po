@@ -101,6 +101,9 @@ msgstr "Votre courriel vous identifie ici"
 msgid "hint_keywords"
 msgstr "Entrer 3 à 6 mots-clefs"
 
+msgid "hint_keywords_en"
+msgstr "Entrer 3 à 6 mots-clefs"
+
 msgid "hint_new_password"
 msgstr "Remplir seulement si vous voulez le modifier"
 
@@ -153,6 +156,9 @@ msgstr "-rien-"
 msgid "label_abstract"
 msgstr "Résumé"
 
+msgid "label_abstract_en"
+msgstr "Résumé en anglais"
+
 msgid "label_accept"
 msgstr "Accepter"
 
@@ -196,7 +202,7 @@ msgid "label_attached"
 msgstr "attaché"
 
 msgid "label_authors"
-msgstr "Auteurs"
+msgstr "Courriel des auteurs"
 
 msgid "label_begin"
 msgstr "Depuis"
@@ -285,6 +291,9 @@ msgstr "Fichier"
 msgid "label_files"
 msgstr "Fichiers"
 
+msgid "label_select_files"
+msgstr "Sélectionnez le(s) fichier(s) en maintenant Ctrl enfoncé lors de la sélection"
+
 msgid "label_from"
 msgstr "de"
 
@@ -335,6 +344,9 @@ msgstr "Mot-clef"
 
 msgid "label_keywords"
 msgstr "Mots-clefs"
+
+msgid "label_keywords_en"
+msgstr "Mots-clefs en anglais"
 
 msgid "label_last_accepted"
 msgstr "Acceptation la plus récente"
@@ -476,6 +488,9 @@ msgstr "Sujet"
 
 msgid "label_title"
 msgstr "Titre"
+
+msgid "label_title_en"
+msgstr "Titre en anglais"
 
 msgid "label_to"
 msgstr "à"
