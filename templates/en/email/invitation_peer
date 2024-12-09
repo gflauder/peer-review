@@ -3,25 +3,86 @@
 Invitation to review: {{ lib.format_article(article, true, true) |truncate(64, true) }}
 {% endblock %}
 
+
 {% block html %}
-{% import 'lib.twig' as lib %}
-<p>Hello,</p>
-<p>
-You are invited to come review as an expert, article
-"{{ lib.format_article(article, true, true) }}"
-which was submitted to {{ config.global.name }}.
-</p>
-<p><b>Abstract:</b></p>
-<blockquote>{{ article.abstract }}</blockquote>
-<p>
-Please let us know about your interest to perform this evaluation at the
-following link:
-</p>
-<p>
-<a href="{{ req.protocol }}://{{ req.host }}/en/{{ validation_link }}">{{ req.protocol }}://{{ req.host }}/en/{{ validation_link }}</a>
-</p>
-<p>
-Thank you,
-<br>{{ config.global.name }}
-</p>
+    {% import 'lib.twig' as lib %}
+    <body style="font-family: 'Poppins', Arial, sans-serif; margin: 0; padding: 0;">
+
+    <table width="100%" border="0" cellspacing="0" cellpadding="0" style="border-collapse: collapse;">
+        <tr>
+            <td align="center" style="padding: 20px;">
+                <table width="600" border="0" cellspacing="0" cellpadding="0"
+                       style="border-collapse: collapse; width: 100%; max-width: 600px; border: 1px solid #cccccc;">
+                    <!-- Header -->
+                    <tr>
+                        <td style="background-color: #345C72; padding: 10px; text-align: center; color: white;">
+                            <h1>{{ __('title_program') }}</h1>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="background-color: #345C72; padding-top: 10px; padding-bottom: 40px; text-align: center; color: white; font-size: 18px;">
+                            Invitation to Review
+                        </td>
+                    </tr>
+                    <!-- Body -->
+                    <tr>
+                        <td style="padding: 40px; text-align: left; font-size: 16px; line-height: 1.6; color: #333;">
+                            <p>Hello,</p>
+                            <p>
+                                You are invited to come review as an expert, article
+                                "{{ lib.format_article(article, true, true) }}"
+                                which was submitted to {{ config.global.name }}.
+                            </p>
+                            <p><b>Abstract:</b></p>
+                            <blockquote>{{ article.abstract }}</blockquote>
+                            <p>
+                                Please let us know about your interest to perform this evaluation by clicking the button below:
+                            </p>
+                            <p>
+                                Thank you,
+                            </p>
+                            <br>{{ config.global.name }}
+                        </td>
+                    </tr>
+                    <!-- Call to Action Button -->
+                    <tr>
+                        <td style="padding: 0 20px 20px 20px; text-align: center;">
+                            <table cellspacing="0" cellpadding="0" style="margin: auto;">
+                                <tr>
+                                    <td align="center"
+                                        style="background-color: #345C72; padding: 10px; border-radius: 5px;">
+                                        <a href="{{ req.protocol }}://{{ req.host }}/en/{{ validation_link }}">
+                                            target="_blank"
+                                            style="color: #ffffff; text-decoration: none; font-weight: bold;">
+                                            Confirm Now
+                                        </a>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                    <!-- Additional Information -->
+                    <tr>
+                        <td style="padding: 10px; text-align: center; font-size: 12px; color: #333;">
+                            <p>
+                                You can also manually copy and paste this link to your browser: {{ req.protocol }}://{{ req.host }}
+                                /en/{{ validation_link }}
+                            </p>
+                        </td>
+                    </tr>
+
+                    <!-- Footer -->
+                    <tr>
+                        <td style="background-color: #333333; padding: 10px; text-align: center; color: white; font-size: 13px;">
+                            &copy; 2024 | {{ __('title_program') }}
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+
+
+
+    </table>
+    </body>
 {% endblock %}
