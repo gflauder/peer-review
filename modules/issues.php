@@ -109,7 +109,7 @@ class Issues
         if (!is_array($in)) {
             $in = $db->selectSingleArray(
                 "
-                SELECT volume, number, title FROM issues WHERE id=?
+                SELECT volume, number FROM issues WHERE id=?
                 ",
                 array($in)
             );
@@ -118,7 +118,7 @@ class Issues
             return $out;
         };
         if ($in['number']) {
-            $out = ($in['volume'] ? $in['volume'] . '.' : '') . $in['number'] ." - ". $in['title'];
+            $out = ($in['volume'] ? $in['volume'] . '.' : '') . $in['number'];
         };
         return $out;
     }
