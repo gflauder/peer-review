@@ -83,8 +83,16 @@
                         </div>
                     </div>
                 {% else %}
-                    <span data-label="{{ __('label_issueId') }}"
-                          class="input-like">{{ lib.format_issue(article.issueId) }}</span>
+                    {% for issue in issues %}
+                        {% if issue.id == issueId %}
+                            <div class="row mb-3">
+                                <label for="issueId" class="col-sm-2 col-form-label text-sm-end text-start">{{ __('label_issueId') }}</label>
+                                <span data-label="{{ __('label_issueId') }}" id="issueId" class="text-bg-light rounded border border-2 ms-2 col-sm-3 p-2 ">
+                                {{ issue.volume ? issue.volume~'.' : '' }}{{ issue.number }} {{ issue.title }}
+                            </span>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
                 {% endif %}
 
                 <div class="row mb-3">

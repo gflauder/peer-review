@@ -1,6 +1,6 @@
 {% import 'lib.twig' as lib %}
 {% if req.redirect %}
-    {{ lib.alert(true, __('redirecting')) }}
+    {{ lib.loading() }}
 {% endif %}
 
 {% if pass('no_fatal_warnings') %}

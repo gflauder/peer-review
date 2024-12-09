@@ -1,10 +1,85 @@
 {% macro alert(good, body) %}
+<div class="alert-container">
     <div class="alert alert-{% if good %}success{% else %}danger{% endif %} alert-dismissible" role="alert">
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="{{ __('label_close') }}"></button>
-        <span class="bi {% if good %}bi-check2-circle{% else %}bi-exclaimation-triable"{% endif %} aria-hidden="true"></span>
+        <span class="icon-large bi {% if good %}bi-check2-circle{% else %}bi-exclaimation-triable"{% endif %} aria-hidden="true"></span>
         {{ body }}
     </div>
+</div>
+    <style>
+        .icon-large {
+            font-size: 1.5em; /* Adjust the size as needed */
+            margin-right: 10px; /* Add space between the icon and text */
+            vertical-align: middle; /* Align icon vertically with text */
+        }
+        :root {
+            --sidebar-width: 300px; /* Default sidebar width */
+        }
+
+        .alert-container {
+            position: fixed;
+            top: 10px; /* Align at the top */
+            left: 50%; /* Start from the horizontal center */
+            transform: translateX(-50%); /* Offset back to center of window */
+            margin-left: calc(var(--sidebar-width, 0) / 2); /* Offset by half the sidebar's width */
+            z-index: 1050; /* Ensure it appears on top of other content */
+            padding: 10px;
+            width: auto; /* Adjust the width as needed */
+            background-color: rgba(255, 255, 255, 0.9); /* Semi-transparent background */
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
+        }
+
+        /* Adjustments when the sidebar is hidden */
+        @media (max-width: 1199px) {
+            :root {
+                --sidebar-width: 0; /* No sidebar offset */
+            }
+
+            .alert-container {
+                /* Reset the margin-left since there's no sidebar */
+                margin-left: 0;
+            }
+        }
+
+
+
+    </style>
 {% endmacro %}
+
+{% macro loading() %}
+<div class="text-center">
+    <div class="spinner-border" role="status">
+        <span class="visually-hidden">Loading...</span>
+    </div>
+</div>
+
+<style>
+    .loading-container {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 8px; /* Adjust the value for more or less rounding */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Adjust the color and blur for shadow effect */
+    background-color: white; /* Example background color */
+    padding: 20px; /* Add some padding around the spinner */
+    z-index: 1000; /* Ensure it's on top of other content */
+    }
+
+    .spinner-border {
+    width: 5rem; /* Adjust size */
+    height: 5rem; /* Adjust size */
+    }
+
+    .text-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Full viewport height (best for flex centering) */
+    }
+</style>
+{% endmacro %}
+
 
 {% macro warning(level, code, args) %}
     {% if level == 0 %}
@@ -245,6 +320,7 @@
     {{ __('label_'~field) }}
 {%- endmacro %}
 
+
 {% macro format_issue(issue, flat, nohtml, withdate) -%}
     {%- set req = grab('request') -%}
     {%- if not issue.id -%}
@@ -252,29 +328,18 @@
     {%- endif -%}
     {%- if issue != false -%}
         {%- if pass('can', 'view', 'issue', issue.id) and not flat -%}
-            <a href="{{ req.base }}/issues/{{ issue.id }}/{{ issue.permalink }}"><span
-                        class="bi bi-book"></span>{{ issue.volume ? issue.volume~'.' : '' }}{{ issue.number }} {{ issue.title }}
-            </a>
+            <a href="{{ req.base }}/issues/{{ issue.id }}/{{ issue.permalink }}"><span class="bi bi-book-fill"></span>{{ issue.volume ? issue.volume~'.' : '' }}{{ issue.number }} {{ issue.title }}</a>
         {%- else -%}
-            {% if not nohtml %}<span
-                    class="bi bi-book"></span>{% endif %}{{ issue.volume ? issue.volume~'.' : '' }}{{ issue.number }} {{ issue.title }}
+            {% if not nohtml %}<span class="bi bi-book mr-2"></span>{% endif %}{{ issue.volume ? issue.volume~'.' : '' }}{{ issue.number }} {{ issue.title }}
         {%- endif -%}
         {%- if withdate -%}
             &nbsp; <small>{{ issue.publication }}</small>
         {%- endif -%}
     {%- else -%}
         {%- if pass('can', 'view', 'issue', 0) and not flat -%}
-            <a href="{{ req.base }}/issues/0"><span class="bi bi-book"></span>{{ __('issue_zero') }}</a>
+            <a href="{{ req.base }}/issues/0"><span class="bi bi-book mr-2"></span>{{ __('issue_zero') }}</a>
         {%- else -%}
-            {%- if not nohtml %}
-                <div class="row mb-3">
-                    <label for="issueId" class="col-sm-2 col-form-label text-end">{{ __('label_issueId') }}</label>
-                    <div class="col-md-9">
-                        <input type="text" class="form-control" id="issueId" name="issueId"
-                               value="{{ __('issue_zero') }}" disabled>
-                    </div>
-                </div>
-            {% endif %}
+            {%- if not nohtml %}<span class="bi bi-book mr-2"></span>{% endif %}{{ __('issue_zero') }}
         {%- endif -%}
     {%- endif -%}
 {%- endmacro %}

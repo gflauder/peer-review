@@ -17,7 +17,7 @@
                 </div>
             {% endif %}
             <div class="form-group">
-                <input {% if not modal %} data-colsize="9"{% else %}data-colsize="12"{% endif%}
+                <input {% if not modal %} data-colsize="9" {% else %} data-colsize="12" {% endif%}
                         data-label="{{ __('label_name') }}" type="text" id="name"
                        value="{{ user.name }}" class="mb-3" required minlength="2"
                        maxlength="100"{% if not modal and not user.active %} disabled{% endif %}>
