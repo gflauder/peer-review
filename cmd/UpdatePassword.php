@@ -3,6 +3,7 @@
 if ($argc !== 3) {
     echo "Usage: php update_password.php <user_id> <new_password>" . PHP_EOL;
     exit(1);
+
 }
 
 // Retrieve arguments
