@@ -4,7 +4,7 @@
 
 ## Attribution
 
-This project is a fork of [Original Project](https://github.com/original-author/original-project) by [Original Author](https://github.com/original-author).
+This project is a fork of vphantom/pyriteview (https://github.com/vphantom/pyriteview) by Stéphane Lavergne (https://github.com/vphantom).
 
 Article versioning hub for peer-reviewed publications.
 

@@ -74,7 +74,7 @@ $().ready(function () {
             );
             $(this).wrap('<div class="col-sm-10"></div>');
             if (icon) {
-                $(this).after('<span class="form-control-feedback glyphicon glyphicon-' + icon + '"></span>');
+                $(this).after('<span class="form-control-feedback bi bi-' + icon + '"></span>');
             }
         });
 
@@ -96,7 +96,7 @@ $().ready(function () {
                 '<div class="input-block col-sm-' + colsize + fgClasses + '"></div>'
             ).parent().prepend('<label for="' + id + '">' + label + '</label>');
             if (icon) {
-                $(this).after('<span class="form-control-feedback glyphicon glyphicon-' + icon + '"></span>');
+                $(this).after('<span class="form-control-feedback bi bi-' + icon + '"></span>');
             }
         });
 
