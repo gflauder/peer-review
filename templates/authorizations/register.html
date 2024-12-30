@@ -8,7 +8,8 @@
         <div class="col-12 d-flex justify-content-center align-items-center">
             {% if not created %}
                 <div class="login-form-container">
-                        <h5 class="card-title">{{ __('title_register') }}</h5>
+                    <h3 class="display-4 text-center">{{ __('title_register') }}</h3>
+
                         <form method="post" id="registration" class="needs-validation" name="registration" novalidate>
                             {{ filter('form_begin', 'registration') |raw }}
                             <div class="mb-3">
