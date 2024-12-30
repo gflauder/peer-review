@@ -21,7 +21,9 @@
                     {% include 'components/flash_messages.html' with {'alert_type': 'danger', 'alert_title': __('error_login_title'), 'alert_message': __('error_login_body')} %}
                 {% else %}
                     {#Login Form#}
-                         {% include 'authorizations/login.html' %}
+                        {# {% include 'authorizations/login.html' %}#}
+
+                    {% include 'pages/home.html' %}
                 {% endif %}
             {% endif %}
         {% elseif req.status == 440 %}

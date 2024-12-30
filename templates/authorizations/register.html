@@ -4,10 +4,10 @@
 
 <div class="container mt-5">
     <div class="row justify-content-center">
-        <div class="col-md-6">
+
+        <div class="col-12 d-flex justify-content-center align-items-center">
             {% if not created %}
-                <div class="card">
-                    <div class="card-body">
+                <div class="login-form-container">
                         <h5 class="card-title">{{ __('title_register') }}</h5>
                         <form method="post" id="registration" class="needs-validation" name="registration" novalidate>
                             {{ filter('form_begin', 'registration') |raw }}
@@ -68,16 +68,16 @@
                                 <div class="form-group">
                                     <input placeholder="{{ __('label_new_password') }}" type="{{ pass_type }}"
                                            id="{{ pass_name }}" minlength="8" maxlength="72" tabindex="15"
-                                           class="input-password hideaway-focus">
+                                           class="form-control input-password hideaway-focus">
                                     <input placeholder="{{ __('label_again_password') }}" type="{{ pass_type }}"
                                            id="{{ pass_name }}2" data-parsley-equalto="#{{ pass_name }}"
-                                           data-parsley-validate-if-empty tabindex="16" class="input-password">
+                                           data-parsley-validate-if-empty tabindex="16" class="form-control input-password">
                                 </div>
                             </div>
                             <button type="submit" class="mt-3 btn btn-primary"><span class="fg-ok"><span
                                             class="bi bi-envelope"></span></span> {{ __('label_emailconfirm') }}
                             </button>
-                            <a class="btn btn-dark mt-3 float-end" href="{{ req.base }}/">Back to Login </a>
+                            <a class="btn btn-dark mt-3 float-end" href="{{ req.base }}/auth">Back to Login </a>
                         </form>
                     </div>
                 </div>
@@ -109,7 +109,27 @@
 
 <style>
 
-    #main {
-        margin-left: 0;
+    /* Center the login form container with flexbox */
+    .login-form-container {
+        max-width: 450px; /* Limit the width of the form */
+        width: 100%; /* Make it responsive */
+        padding: 20px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional styling for the form */
+        background-color: #fff; /* Optional: Background color for the form */
+        border-radius: 10px; /* Rounded corners */
+    }
+
+    /* Additional Styling for Buttons and Inputs */
+    .login-form .form-control {
+        font-size: 1rem;
+        height: auto;
+        padding: 10px 20px;
+        margin-bottom: 15px;
+    }
+
+    .login-form .btn {
+        padding: 10px 15px;
+        font-size: 0.9rem;
+        font-weight: 600;
     }
 </style>

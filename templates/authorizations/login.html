@@ -1,69 +1,46 @@
-<!--Login Container-->
-<div class="container-fluid vh-86 full-width-container">
-    <div class="row p-0 h-100">
-        <!-- Left Column -->
-        <div class="col-md-8 p-0 d-none d-md-flex position-relative justify-content-center align-items-center">
-            <div class="bg-image"></div>
-            <div class="text-overlay p-3 d-flex flex-column justify-content-between align-items-center">
-                <h1 class="display-3">{{ __('title_welcome_to') }} {{ __('title_program') }}</h1>
-                <div class="h4">{{ __('title_welcome_4')|raw }}</div>
-                <div class="row p-2 m-2 image-row">
-                    <div class="col-12 d-flex justify-content-center">
-                        <img src="/dist/images/quebec.png" class="img-fluid" alt="Image">
-                        <img src="/dist/images/Canada.png" class="img-fluid" alt="Image">
-                        <img src="/dist/images/pum.jpg" class="img-fluid" alt="Image">
-                        <img src="/dist/images/eradut.png" class="img-fluid" alt="Image">
+{% import 'lib.twig' as lib %}
+{{ title(__('title_login')) }}
+
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+
+        <div class="col-12 d-flex justify-content-center align-items-center">
+            <div class="login-form-container">
+                <h3 class="display-4 text-center">{{ __('label_login') }}</h3>
+                <p class="text-muted mb-4 text-center">{{ __('title_welcome_1') }}</p>
+
+                <form class="login-form" method="post" action="{{ req.base }}/login" id="login-form"
+                      onsubmit="return checkPassword()">
+                    {{ filter('form_begin', 'login-form') |raw }}
+                    <div class="form-group">
+                        <input type="email" name="email" placeholder="{{ __('label_email') }}" value="{{ post.email }}"
+                               class="form-control  shadow-sm px-4 mb-2" required
+                               autocomplete="true">
                     </div>
-                </div>
-            </div>
-        </div>
-
-
-        <!-- Right Column -->
-        <div class="col-md-4 bg-light">
-            <div class="login d-flex align-items-center py-5">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-xl-10 mx-auto">
-                            <h3 class="display-4">{{ __('label_login') }}</h3>
-                            <p class="text-muted mb-4">{{ __('title_welcome_1') }}</p>
-
-                            <form class="login-form" method="post" action="{{ req.base }}/login" id="login-form"
-                                  onsubmit="return checkPassword()">
-                                {{ filter('form_begin', 'login-form') |raw }}
-                                <div class="form-group">
-                                    <input type="email" name="email" placeholder="{{ __('label_email') }}"
-                                           value="{{ post.email }}"
-                                           class="form-control rounded-pill border-0 shadow-sm px-4 mb-2" required
-                                           autocomplete="true">
-                                </div>
-                                <div class="form-group hideaway">
-                                    <input type="password" name="password" id="password"
-                                           placeholder="{{ __('label_password_opt') }}"
-                                           class="form-control rounded-pill border-0 shadow-sm px-4"
-                                           autocomplete="off">
-                                </div>
-                                <button type="submit"
-                                        class="btn btn-primary btn-block text-uppercase mt-2 mb-2 rounded-pill shadow-sm">{{ __('label_login') }}</button>
-                            </form>
-                            <h5><a href="{{ req.base }}/register">{{ __('title_register') }} &raquo;</a></h5>
-                            <p>{{ __('title_welcome_2') }}</p>
-                            <p>{{ __('title_welcome_3') }}
-                                <a href="{{ req.base }}/password_reset"> {{ __('label_clickhere') }}</a>.
-                            </p>
-                            {% if alert_type %}
-                            <div class="card border-{{ alert_type }} mb-3 animate__animated"  id="myCard">
-                                <div class="card-body text-{{ alert_type }}">
-                                    <h5 class="card-title">{{ alert_title }}</h5>
-                                    <p class="card-text">{{ alert_message |raw }}</p>
-                                </div>
-                            </div>
-                            {% endif %}
-
-
+                    <div class="form-group hideaway">
+                        <input type="password" name="password" id="password" placeholder="{{ __('label_password_opt') }}"
+                               class="form-control shadow-sm px-4" autocomplete="off">
+                    </div>
+                    <button type="submit"
+                            class="btn btn-primary btn-block text-uppercase mt-2 mb-2 shadow-sm">
+                        {{ __('label_login') }}
+                    </button>
+                </form>
+                <h5 class="text-center"><a href="{{ req.base }}/register">{{ __('title_register') }} &raquo;</a></h5>
+                <p class="text-center">{{ __('title_welcome_2') }}</p>
+                <p class="text-center">
+                    {{ __('title_welcome_3') }}
+                    <a href="{{ req.base }}/password_reset">{{ __('label_clickhere') }}</a>.
+                </p>
+                {% if alert_type %}
+                    <div class="card border-{{ alert_type }} mb-3 animate__animated" id="myCard">
+                        <div class="card-body text-{{ alert_type }}">
+                            <h5 class="card-title">{{ alert_title }}</h5>
+                            <p class="card-text">{{ alert_message |raw }}</p>
                         </div>
                     </div>
-                </div>
+                {% endif %}
             </div>
         </div>
     </div>
@@ -108,106 +85,34 @@
 </script>
 
 <style>
-    .text-overlay {
-        position: absolute;
-        top: 0;
-        left: 20px; /* Adjust as needed */
-        right: 20px; /* Maintain some padding from the sides */
-        bottom: 0;
-        z-index: 1; /* On top of the background image */
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-end; /* Pushes children to the bottom */
-        align-items: center;
-        padding-bottom: 20px; /* Padding from the bottom */
+    .vh-100 {
+        height: 100vh;
     }
 
-    .image-row {
-        display: flex;
-        justify-content: center;
-        align-items: flex-end; /* Ensures images remain at the bottom */
-        width: 100%; /* Ensures flex items span the column width */
-        gap: 50px; /* Optional spacing between images */
-        max-width: 750px; /* Example max-width of the entire row */
-        margin: 0 auto; /* Centers the row within its container */
+    /* Center the login form container with flexbox */
+    .login-form-container {
+        max-width: 450px; /* Limit the width of the form */
+        width: 100%; /* Make it responsive */
+        padding: 20px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional styling for the form */
+       /* background-color: #fff; !* Optional: Background color for the form *!*/
+        border-radius: 10px; /* Rounded corners */
     }
 
-    .image-row img {
-        flex-shrink: 1; /* Allows images to shrink */
-        max-width: 35%; /* Maximum width for individual images */
-        max-height: 150px; /* Example maximum height for images */
-        height: auto; /* Maintains aspect ratio */
+    /* Additional Styling for Buttons and Inputs */
+    .login-form .form-control {
+        font-size: 1rem;
+        height: auto;
+        padding: 10px 20px;
+        margin-bottom: 15px;
     }
 
-    .bg-image {
-        background-image: url('/dist/images/bg.jpg');
-        background-size: cover;
-        background-position: center;
-        height: 100vh; /* Example height */
-        width: 100%;
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
+    .login-form .btn {
+        padding: 10px 15px;
+        font-size: 0.9rem;
+        font-weight: 600;
     }
-
-    .display-3 {
-        font-size: calc(1.3rem + 2.7vw); /* Creates a responsive font based on viewport width */
-    }
-
-    @media (min-width: 768px) {
-        .display-3 {
-            font-size: 2rem; /* Larger font size for medium and above */
-        }
-    }
-
-    @media (min-width: 1200px) {
-        .display-3 {
-            font-size: 3rem; /* Even larger for larger viewports */
-        }
-    }
-
     .hideaway {
         display: none;
-    }
-
-    .bg-image {
-        background-image: url('/dist/images/bg.jpg');
-        background-size: cover;
-        background-position: center;
-        height: 100%;
-        background-color: rgb(189, 189, 189);;
-        background-blend-mode: screen;
-    }
-
-    .text-overlay {
-        position: absolute;
-        top: 20px; /* Adjust as needed */
-        left: 20px; /* Adjust as needed */
-        right: 20px; /* Add padding to the right */
-        z-index: 1; /* Ensure it is in front of the background image */
-        color: #000000; /* Adjust text color as needed */
-    }
-
-    .text-overlay a {
-        color: #002f8c; /* Change to your desired color */
-    }
-
-    .text-justify {
-        text-align: justify;
-    }
-
-    .full-width-container {
-        width: 100% !important;
-        max-width: 100% !important;
-    }
-
-    .image-container {
-        gap: 3rem; /* Adjust the gap value as needed */
-    }
-
-    .vh-86 {
-        height: 86vh !important;
     }
 </style>

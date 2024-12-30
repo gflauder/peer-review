@@ -212,9 +212,9 @@ textarea {
 	z-index: 1001;
 }
 .vertical-border {
-	width: 1px;
+	width: 2px;
 	background-color: rgba(255, 255, 255, 0.77);
-	margin: 0 10px; /* Adjust the margin as needed */
+	margin: 12px 10px; /* Adjust the margin as needed */
 	height: 100%; /* Ensure the div has height */
 	min-height: 40px; /* Set a minimum height */
 }

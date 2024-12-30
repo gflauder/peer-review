@@ -32,9 +32,9 @@
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item h6 font-weight-bold m-2 {% if req.path_args[0] == 'about' %} active{% endif %}">
                         <a class="nav-link text-white"
-                           href="{{ req.base }}/articles/new">{{ __('title_submit_article')|raw }}</a>
+                           href="{{ req.base }}{% if session.identified %}/articles/new{% else %}/auth{% endif %}">{{ __('title_submit_article')|raw }}</a>
                     </li>
-                    <div class="vertical-border text-white"></div>
+                   <div class="vertical-border text-white"></div>
 
                     <li class="nav-item h6 font-weight-bold m-2 {% if req.path_args[0] == 'instructions' %} active{% endif %}">
                         <a class="nav-link text-white"

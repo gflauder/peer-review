@@ -663,10 +663,15 @@ h6 {
 
 @media (min-width: 1200px) {
 
-    #main, #footer {
+     #footer {
         margin-left: 300px;
         bottom: 0;
         background: #f8f9fa;
+        padding: 1rem;
+    }
+    #main {
+        margin-left: 300px;
+        bottom: 0;
         padding: 1rem;
     }
 }
