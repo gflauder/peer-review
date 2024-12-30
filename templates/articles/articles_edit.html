@@ -1,9 +1,6 @@
 {% import 'lib.twig' as lib %}
-{% if req.lang == 'fr' %}
-    {% use 'fr/blocks.html' %}
-{% else %}
-    {% use 'en/blocks.html' %}
-{% endif %}
+{% use 'blocks.html' %}
+
 
 {{ title(__('title_articles')) }}
 
