@@ -292,7 +292,7 @@ msgid "label_files"
 msgstr "Fichiers"
 
 msgid "label_select_files"
-msgstr "Sélectionnez le(s) fichier(s) en maintenant Ctrl enfoncé lors de la sélection"
+msgstr "Attacher fichier..."
 
 msgid "label_from"
 msgstr "de"

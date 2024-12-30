@@ -443,8 +443,36 @@
 
 {% macro input_files(id, size, required) %}
     <ul id="fileList"></ul>
-    <label for="fileInput">{{ __('label_select_files') }}</label>
-    <input type="file" id="fileInput" name="files[]" multiple>
+    <label for="fileInput" class="btn-secondary-style">{{ __('label_select_files') }}</label>
+    <input type="file" id="fileInput" name="files[]" multiple style="display:none;">
+    <style>
+        .btn-secondary-style {
+            display: inline-block;
+            font-weight: 400;
+            color: #fff; /* White text */
+            text-align: center;
+            vertical-align: middle;
+            background-color: #6c757d; /* Bootstrap secondary gray background */
+            border: 1px solid #6c757d; /* Border color same as background */
+            padding: 5px 10px; /* Button padding */
+            font-size: 14px; /* Standard font size */
+            line-height: 1.5;
+            border-radius: 4px; /* Standard rounded edges */
+            transition: all 0.2s ease-in-out; /* Hover effect */
+            cursor: pointer; /* Show pointer on hover */
+        }
+
+        .btn-secondary-style:hover {
+            color: #fff; /* Keep the white text */
+            background-color: #5a6268; /* Slightly darker gray for hover */
+            border-color: #545b62; /* Adjust border for hover */
+        }
+
+        .btn-secondary-style:active {
+            background-color: #545b62; /* Darker gray on active state */
+            border-color: #4e555b; /* Active border color */
+        }
+    </style>
     <script>
         document.getElementById('fileInput').addEventListener('change', function (event) {
             const fileListElement = document.getElementById('fileList');

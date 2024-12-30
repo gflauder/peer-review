@@ -289,7 +289,7 @@ msgid "label_files"
 msgstr "Files"
 
 msgid "label_select_files"
-msgstr "Select File(s) by holding Ctrl when selecting"
+msgstr "Select File(s)"
 
 msgid "label_from"
 msgstr "from"
