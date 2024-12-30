@@ -211,12 +211,29 @@ textarea {
 	width: 100%;
 	z-index: 1001;
 }
+
+.navbar-nav > .nav-item {
+	display: flex;
+	align-items: center; /* Vertically center items inside the container */
+}
+
+.navbar-nav .nav-link {
+	display: flex;
+	align-items: center; /* Vertically center the text/icon inside links */
+	text-decoration: none; /* Optional: ensure links don’t have underlines */
+}
+
 .vertical-border {
 	width: 2px;
 	background-color: rgba(255, 255, 255, 0.77);
-	margin: 12px 10px; /* Adjust the margin as needed */
+	margin: 12px 5px; /* Adjust the margin as needed */
 	height: 100%; /* Ensure the div has height */
 	min-height: 40px; /* Set a minimum height */
+	display: flex;
+	align-items: center; /* Ensure borders are aligned vertically too */
+	justify-content: center; /* Center borders if their size affects layout */
+
+
 }
 .header-nav .nav-item.dropdown {
 	margin-right: 20px; /* Adjust the value as needed */
