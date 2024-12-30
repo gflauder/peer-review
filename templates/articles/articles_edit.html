@@ -224,7 +224,8 @@
 
 
                 <div class="row mb-3">
-                    <div class="col-sm-10 offset-sm-2">
+                    <div class="col-sm-2 col-sm-2 col-form-label text-sm-end text-start">{{ __('label_plagiarism') }}</div>
+                    <div class="col-sm-10 mt-2">
                         <div class="form-check">
                             <input type="checkbox" class="form-check-input" id="plagiarism_ok" name="plagiarism_ok"
                                    value="1" {{ article.plagiarism == '1' ? 'checked' : '' }}>
@@ -236,7 +237,8 @@
                 </div>
 
                 <div class="row mb-3">
-                    <div class="col-sm-10 offset-sm-2">
+                    <div class="col-sm-2 col-sm-2 col-form-label text-sm-end text-start">{{ __('label_policy') }}</div>
+                    <div class="col-sm-10 mt-2">
                         <div class="form-check">
                             <input type="checkbox" class="form-check-input" id="policy" name="policy" value="1"
                                    {% if article.id %}checked{% endif %} required>
@@ -247,7 +249,7 @@
                     </div>
                 </div>
 
-                <div class="row mb-3">
+{#                <div class="row mb-3">
                     <div class="col-sm-10 offset-sm-2">
                         <div class="form-check">
                             <input type="checkbox" class="form-check-input" id="copyright" name="copyright"
@@ -258,7 +260,7 @@
                                href="{{ req.base }}/page/copyright?d={{ 'now'|date('Y-m-d') }}">{{ __('title_copyright') }}</a>
                         </div>
                     </div>
-                </div>
+                </div>#}
 
                 <div class="row mb-3">
                     <div class="col-sm-10 offset-sm-2">
