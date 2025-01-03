@@ -693,6 +693,9 @@ h6 {
         .toggle-sidebar .sidebar {
             left: -300px;
         }
+        .title-program {
+            display: none;
+        }
     }
 
     .sidebar-nav {

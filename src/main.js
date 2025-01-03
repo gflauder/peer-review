@@ -14,7 +14,7 @@ Number.isInteger = Number.isInteger || function(value) {
 };
 
 $().ready(function() {
-  console.log('jQuery and Bootstrap are loaded');
+ // console.log('jQuery and Bootstrap are loaded');
   var $articleEditor = $('form#articles_edit');
 
   function updateCopyright() {
@@ -70,6 +70,7 @@ $().ready(function() {
 
   if (select('.toggle-sidebar-btn')) {
     on('click', '.toggle-sidebar-btn', function(e) {
+      // Toggle the sidebar class on the body
       select('body').classList.toggle('toggle-sidebar');
     });
   }

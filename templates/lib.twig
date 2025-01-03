@@ -442,9 +442,23 @@
 
 
 {% macro input_files(id, size, required) %}
-    <ul id="fileList"></ul>
-    <label for="fileInput" class="btn-secondary-style">{{ __('label_select_files') }}</label>
-    <input type="file" id="fileInput" name="files[]" multiple style="display:none;">
+    <div class="row mb-3">
+        <!-- File list container (appears above) -->
+        <div class="col-sm-10">
+            <ul id="{{ id }}_fileList" class="mb-3"></ul>
+        </div>
+
+        <!-- Label and button row -->
+        <div class="row align-items-start">
+                     <!-- Upload button -->
+            <div class="col-sm-10">
+                <label for="{{ id }}" class="btn-secondary-style">{{ __('label_select_files') }}</label>
+                <input type="file" id="{{ id }}" name="{{ id }}[]" multiple style="display:none;">
+            </div>
+        </div>
+    </div>
+
+
     <style>
         .btn-secondary-style {
             display: inline-block;
@@ -474,45 +488,49 @@
         }
     </style>
     <script>
-        document.getElementById('fileInput').addEventListener('change', function (event) {
-            const fileListElement = document.getElementById('fileList');
+        // Function wrapping ensures each instance operates independently
+        (function() {
+            const fileInput = document.getElementById('{{ id }}');
+            const fileListElement = document.getElementById('{{ id }}_fileList');
             const existingFiles = new Set();
 
-            // Read existing files from the list
-            Array.from(fileListElement.children).forEach(listItem => {
-                existingFiles.add(listItem.dataset.name);
-            });
+            fileInput.addEventListener('change', function (event) {
+                // Read existing files from the list
+                Array.from(fileListElement.children).forEach(listItem => {
+                    existingFiles.add(listItem.dataset.name);
+                });
 
-            // Add newly selected files if they are not already in the list
-            const files = event.target.files;
-            for (const file of files) {
-                if (!existingFiles.has(file.name)) {
-                    const listItem = document.createElement('li');
-                    const fileSize = (file.size / 1024).toFixed(2); // Convert size to KB and format to 2 decimal places
-                    listItem.innerHTML = `
-                    ${file.name} - ${fileSize} KB
-                    <span class="remove-file" style="cursor: pointer; color: red;" title="Remove">
-                        <icon class="bi bi-x-circle"></icon>
-                    </span>
-                `;
-                    listItem.dataset.name = file.name;
-                    listItem.dataset.size = fileSize;
-                    fileListElement.appendChild(listItem);
-                    existingFiles.add(file.name); // Add the new file to the set
+                // Add newly selected files if they are not already in the list
+                const files = event.target.files;
+                for (const file of files) {
+                    if (!existingFiles.has(file.name)) {
+                        const listItem = document.createElement('li');
+                        const fileSize = (file.size / 1024).toFixed(2); // Convert size to KB and format to 2 decimal places
+                        listItem.innerHTML = `
+                        ${file.name} - ${fileSize} KB
+                        <span class="remove-file" style="cursor: pointer; color: red;" title="Remove">
+                            <icon class="bi bi-x-circle"></icon>
+                        </span>
+                    `;
+                        listItem.dataset.name = file.name;
+                        listItem.dataset.size = fileSize;
+                        fileListElement.appendChild(listItem);
+                        existingFiles.add(file.name); // Add the new file to the set
+                    }
                 }
-            }
 
-            // Add event listener to remove the file from the list
-            fileListElement.addEventListener('click', function (event) {
-                // Check if the click is on the span or any child elements like the icon
-                if (event.target.closest('.remove-file')) {
-                    const listItem = event.target.closest('li');
-                    const fileName = listItem.dataset.name;
-                    existingFiles.delete(fileName); // Remove from the Set
-                    listItem.remove(); // Remove the list item
-                }
+                // Add event listener to remove the file from the list
+                fileListElement.addEventListener('click', function (event) {
+                    // Check if the click is on the span or any child elements like the icon
+                    if (event.target.closest('.remove-file')) {
+                        const listItem = event.target.closest('li');
+                        const fileName = listItem.dataset.name;
+                        existingFiles.delete(fileName); // Remove from the Set
+                        listItem.remove(); // Remove the list item
+                    }
+                });
             });
-        });
+        })();
     </script>
 {% endmacro %}
 

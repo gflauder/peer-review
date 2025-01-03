@@ -210,12 +210,16 @@
                             </div>
 
                             {% if article.versions|length > 0 %}
-                                <a class="list-group-item small"><strong>{{ __('label_new_version') }}:</strong></a>
+                                <a class="list-group-item small mt-2"><strong>{{ __('label_new_version') }}:</strong></a>
                             {% endif %}
-
-                            {{ lib.input_files('addfile', 'xs') }}
-
                         </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label class="col-sm-2 col-form-label text-sm-end text-start">{{ __('label_files') }}</label>
+                        <div class="col-sm-10">
+                            {{ lib.input_files('addfile', 'xs') }}
+                        </div>
+
                     </div>
                 </div>
 
@@ -278,13 +282,21 @@
             <div class="card mb-3">
                 <div class="card-body">
                     <h3>{{ __('title_change_status') }}</h3>
-                    {{ block('hint_article_change_status') }}
+
                     <form id="articles_edit_status" method="post" class="form-horizontal" enctype="multipart/form-data">
                         {{ form_begin_edit |raw }}
                         <input type="hidden" name="id" value="{{ article.id }}">
                         <input type="hidden" name="files_email_only" value="1">
-
                         <div class="row mb-3">
+                            <div class="col-sm-10 offset-sm-2">
+                                <small class="text-muted">
+                                {{ block('hint_article_change_status') }}
+                                </small>
+                            </div>
+
+                        </div>
+                        <div class="row mb-3">
+
                             <label class="col-sm-2 col-form-label text-sm-end text-start">{{ __('label_status') }}</label>
                             <div class="col-sm-10">
                                 <div class="btn-group" role="group" aria-label="{{ __('label_status') }}">
@@ -294,8 +306,8 @@
                                         {{ lib.format_status(article.status) }}
                                     </label>
                                     <span class="btn btn-outline-secondary btn-sm active disabled">
-                        <span class="bi bi-arrow-right"></span>
-                    </span>
+                                        <span class="bi bi-arrow-right"></span>
+                                    </span>
                                     {% for status in config.articles.states_next[article.status]|split(' ') %}
                                         <label class="btn btn-outline-secondary btn-sm">
                                             <input type="radio" name="status" autocomplete="off" value="{{ status }}">

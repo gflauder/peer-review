@@ -119,18 +119,14 @@ textarea {
 
 /* Hint paragraphs */
 .hint {
- padding-left: 3em;
- padding-top: 1.12em;
- padding-bottom: 0.01em;
- padding-right: 1em;
+ padding: 1em;
  margin-top: 1em;
  margin-bottom: 1em;
- margin-left: 3em;
  color: #444;
  font-size: 90%;
  background-color: #f8f8f8;
  position: relative;
- width: 38%;
+ width: 50%;
  min-width: 24em !important;
 }
 
@@ -310,10 +306,12 @@ textarea {
 		overflow-x: hidden;
 		overflow-y: auto;
 	}
+
 	.nav-sidebar .nav-second-level li {
 		display: block;
 	}
 }
+
 
 /* Read-only data lists */
 dl.dl-horizontal dd {

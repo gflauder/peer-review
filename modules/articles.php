@@ -528,8 +528,9 @@ class Articles
             } else {
                 return false;
             }
+            return true;
         }
-        return true;
+        return false;
     }
 
     /**
@@ -583,7 +584,7 @@ class Articles
 
                 if (isset($cols['issueId']) && $oldArticle['issueId'] !== $cols['issueId'] && count($oldArticle['versions']) > 0) {
 
-                   //todo:review this code, seems to be a bug and not move files
+                    //todo:review this code, seems to be a bug and not move files
                     // Move files directory if issue was reassigned
                     $issue = grab('issue', $cols['issueId']);
                     $issuePath = $config['articles']['path'] . '/' . $issue['issue'];
@@ -598,7 +599,7 @@ class Articles
                 };
 
                 // Log each modified  column
-                foreach (array('issueId', 'status', 'wordCount', 'title','title_en', 'keywords', 'keywords_en', 'abstract','abstract_en') as $col) {
+                foreach (array('issueId', 'status', 'wordCount', 'title', 'title_en', 'keywords', 'keywords_en', 'abstract', 'abstract_en') as $col) {
                     if (isset($cols[$col]) && $oldArticle[$col] !== $cols[$col]) {
                         trigger(
                             'log',
@@ -684,29 +685,30 @@ class Articles
 
             // Handle file uploads
             $newFiles = array();
-            if (isset($files['files'])) {
-                $files = $files['files'];
-            }
-            foreach ($files as $file) {
-                $newFile = self::_attach($res, $file);
-                if ($newFile !== false) {
-                    $newFiles[] = $newFile;
-                    trigger(
-                        'log',
-                        array(
-                            'action' => 'attached',
-                            'objectType' => 'article',
-                            'objectId' => $res,
-                            'fieldName' => 'files',
-                            'newValue' => $newFile['name'],
-                            'content' => $log
-                        )
-                    );
-                    $log = null;
-                }else{
-                   $db->rollback();
-                    return false ;
-                };
+            if (isset($files)) {
+                foreach ($files as $key => $fileArray) {
+                    foreach ($fileArray as $file) {
+                        $newFile = self::_attach($res, $file);
+                        if ($newFile !== false) {
+                            $newFiles[] = $newFile;
+                            trigger(
+                                'log',
+                                array(
+                                    'action' => 'attached',
+                                    'objectType' => 'article',
+                                    'objectId' => $res,
+                                    'fieldName' => 'files',
+                                    'newValue' => $newFile['name'],
+                                    'content' => $log
+                                )
+                            );
+                            $log = null;
+                        } else {
+                            $db->rollback();
+                            return false;
+                        };
+                    }
+                }
             };
 
             if (count($newFiles) > 0 && !isset($cols['files_email_only'])) {
@@ -1197,7 +1199,7 @@ on(
                 if (is_numeric($articleId)) {
                     if (!(pass('can', 'edit', 'article', $articleId) || pass('can', 'edit', 'issue', $article['issueId']))) return trigger('http_status', 403);
                 } else {
-                    if (!pass('can','create','article')) return trigger('http_status', 403);
+                    if (!pass('can', 'create', 'article')) return trigger('http_status', 403);
                 };
                 if (!isset($req['post']['userdata'])) {
                     $req['post']['userdata'] = array();
@@ -1243,16 +1245,12 @@ on(
                 // We need to display warnings so we can't redirect, but we
                 // need to redirect before displaying the article because any
                 // forms would need the URL to reflect the articleId.
-      /*          if ($created) return trigger(
-                    'warning',
-                    'redirect_created',
-                    3,
-                    "{$req['protocol']}://{$req['host']}{$req['base']}/articles/{$articleId}/{$article['permalink']}"
-                );*/
-
-
-
-
+                /*          if ($created) return trigger(
+                              'warning',
+                              'redirect_created',
+                              3,
+                              "{$req['protocol']}://{$req['host']}{$req['base']}/articles/{$articleId}/{$article['permalink']}"
+                          );*/
 
 
             };
@@ -1324,7 +1322,7 @@ on(
             } else {
                 // New article editor
                 $article['authors'] = array($_SESSION['user']['id']);
-                if (!pass('can','create','article')) return trigger('http_status', 403);
+                if (!pass('can', 'create', 'article')) return trigger('http_status', 403);
             };
             $deadline = (new DateTime())->modify($PPHP['config']['reviews']['deadline_modifier'])->format('Y-m-d');
             trigger(

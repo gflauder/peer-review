@@ -9,7 +9,7 @@
                     <span class="bi bi-envelope text-white"></span>{% if session.outbox|length > 0 %}<span
                             class="badge bg-secondary">{{ session.outbox|length }}</span>{% endif %}
                 </a>
-                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown" style="max-height: 500px; overflow-y: auto;">
                     {% for email in session.outbox %}
                         <li>
                             <a class="dropdown-item" href="{{ req.base }}/outbox/{{ email.id }}">
