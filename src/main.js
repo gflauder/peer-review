@@ -5,6 +5,8 @@ require('parsleyjs/dist/i18n/fr'); // Import the French locale
 require('parsleyjs/dist/i18n/fr.extra'); // Import the extra French
 
 var timeago = global.__timeago = require('timeago.js');
+// Register the French locale for timeago.js
+global.__timeago.register('fr', require('timeago.js/locales/fr'));
 var selectizeRender = {};
 var bootstrap = require('bootstrap');
 
