@@ -310,9 +310,10 @@
                                         <span class="bi bi-arrow-right"></span>
                                     </span>
                                     {% for status in config.articles.states_next[article.status]|split(' ') %}
-                                        <label class="btn btn-outline-secondary btn-sm">
-                                            <input type="radio" name="status" autocomplete="off" value="{{ status }}">
-                                            {{ lib.format_status(status, true) }}
+                                        <label class="btn btn-outline-secondary btn-sm {{ status == article.status ? 'active' }}">
+                                            <input type="radio" name="status" autocomplete="off" value="{{ status }}"
+                                                    {{ status == article.status ? 'checked' }}>
+                                            <span class="status-text">{{ lib.format_status(status, true) }}</span>
                                         </label>
                                     {% endfor %}
                                 </div>
@@ -567,9 +568,5 @@
     {% endif %}
 
 </div>
-<style>
-    input[type="radio"] {
-        display: none; /* Completely hides the radio button */
-    }
-</style>
+
 
