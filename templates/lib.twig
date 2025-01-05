@@ -109,14 +109,16 @@
     <div class="col-lg-3 col-md-6">
         <div class="card text-white bg-{{ context }} mb-3">
             <div class="card-header">
-                <div class="row">
+                <div class="row text-white"> <!-- Add "text-white" for the header text -->
                     {{ text |raw }}
                 </div>
             </div>
             <a href="{{ target }}" class="stretched-link">
                 <div class="card-footer">
-                    <span class="float-start">{{ target_label }}</span>
-                    <span class="float-end"><span class="bi bi-arrow-right-circle"></span></span>
+                    <span class="float-start text-white">{{ target_label }}</span> <!-- Add "text-white" -->
+                    <span class="float-end">
+                    <span class="bi bi-arrow-right-circle text-white"></span> <!-- Add "text-white" for icon -->
+                </span>
                     <div class="clearfix"></div>
                 </div>
             </a>

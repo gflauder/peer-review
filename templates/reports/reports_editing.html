@@ -74,91 +74,162 @@
             <button type="submit" class="btn btn-primary mb-3 hidden-print"><span
                         class="bi bi-search"></span> {{ __('label_generate') }}</button>
         </form>
-        <span class="visible-print-inline">
+        <br>
+        <hr>
+        <div class="visible-print-inline my-4 display-6">
 		    {{ __('label_begin') }} {{ req.post.begin |default(date_earlier) }} {{ __('label_end') }} {{ req.post.end |default(date_now) }}
-	    </span>
+	    </div>
+
+
         <div class="report">
             {% for issue in all_issues if issue.articles %}
-                <h3>{{ lib.format_issue(issue.id, true, true, true) }}</h3>
+                <div class="issue-section border-bottom mt-5">
+                    <h3 class="issue-title mt-6 text-primary">{{ lib.format_issue(issue.id, true, true, true) }}</h3>
+                </div>
+
                 {% for article in issue.articles %}
-                    <table class="table">
-                        <thead>
-                        <tr class="panel-default">
-                            <th colspan="5" class="panel-heading">{{ article.title }}</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {% if article.authors|length > 0 %}
-                            <tr>
-                                <td colspan="5">
-                                    {% for author in article.authors %}
-                                        <span class="user-identity">{{ self.format_user_full(author) }}</span>
+                    <div class="article-container mb-4 pb-2 shadow-sm border">
+                        <table class="table table-hover table-condensed">
+                            <thead>
+                            <tr class="table-header bg-light">
+                                <th colspan="5" class="article-title py-3">
+                                    {{ article.title }} - <span>{{ article.title }}</span>
+                                </th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% if article.authors|length > 0 %}
+                                <tr>
+                                    <td colspan="5" class="article-authors">
+                                        {% for author in article.authors %}
+                                            <span class="user-identity badge bg-secondary text-white py-1 px-2 me-1">
+                                        {{ self.format_user_full(author) }}
+                                    </span>
+                                        {% endfor %}
+                                    </td>
+                                </tr>
+                            {% endif %}
+
+                            {% if article.versions|length > 0 and req.post.show_versions %}
+                                <tr>
+                                    <td colspan="5" class="article-versions">
+                                        <strong>{{ __('label_versions') }}:</strong>
+                                        {% set ver = 1 %}
+                                        {% for version in article.versions %}
+                                            <span class="version badge bg-light text-dark py-1 px-2 me-1">
+                                        {{ ver }}. {{ version.created|slice(0,10) }}
+                                    </span>
+                                            {% set ver = ver + 1 %}
+                                        {% endfor %}
+                                    </td>
+                                </tr>
+                            {% endif %}
+
+                            {% if article.statusChanges|length > 0 and req.post.show_states %}
+                                <tr>
+                                    <td colspan="5" class="article-status-changes">
+                                        {% for tx in article.statusChanges %}
+                                            <span class="status-change badge bg-info text-white py-1 px-2 me-1">
+                                    {{ lib.format_status(tx.newValue) }} {{ __('label_on') }} {{ tx.timestamp|slice(0,10) }}
+                                </span>
+                                        {% endfor %}
+                                    </td>
+                                </tr>
+                            {% endif %}
+
+                            {% if (article.hasReviews and req.post.show_peers == 2) or (article.hasAcceptedReviews and req.post.show_peers) %}
+                                <tr>
+                                    <th style="width: 4em;">{{ __('label_version') }}</th>
+                                    <th>{{ __('label_peer') }}</th>
+                                    <th style="width: 8em;">{{ __('label_invited') }}</th>
+                                    <th style="width: 8em;" class="text-title">{{ __('label_accepted') }}</th>
+                                    <th style="width: 20em;">{{ __('label_verdict') }}</th>
+                                </tr>
+                                {% set ver = 1 %}
+                                {% for version in article.versions %}
+                                    {% for review in version.reviews if req.post.show_peers == 2 or (review.agreed and review.status != 'deleted') %}
+                                        <tr>
+                                            <td>{{ ver }}</td>
+                                            <td>{{ self.format_user_full(session.user.id in article.authors ? -1 : review.peerId) }}</td>
+                                            <td class="text-nowrap">{{ review.created|slice(0,10) }}</td>
+                                            <td class="text-nowrap">
+                                                {% if review.status == 'deleted' %}
+                                                    {{ __('label_declined') }}
+                                                {% else %}
+                                                    {{ review.agreed|slice(0,10) }}
+                                                {% endif %}
+                                            </td>
+                                            <td class="text-nowrap">
+                                                {% if review.status in config.reviews.states_final and review.status != 'deleted' %}
+                                                    {{ lib.format_status(review.status) }}
+                                                    {{ __('label_on') }}
+                                                    {{ review.completed|slice(0,10) }}
+                                                {% endif %}
+                                            </td>
+                                        </tr>
                                     {% endfor %}
-                                </td>
-                            </tr>
-                        {% endif %}
-                        {% if article.versions|length > 0 and req.post.show_versions %}
-                            <tr>
-                                <td colspan="5">
-                                    {{ __('label_versions') }}:
-                                    {% set ver = 1 %}
-                                    {% for version in article.versions %}
-                                        <span class="version">{{ ver }}. {{ version.created|slice(0,10) }}</span>
-                                        {% set ver = ver + 1 %}
-                                    {% endfor %}
-                                </td>
-                            </tr>
-                        {% endif %}
-                        {% if article.statusChanges|length > 0 and req.post.show_states %}
-                            <tr>
-                                <td colspan="5">
-                                    {% for tx in article.statusChanges %}
-                                        <span class="status-change">{{ lib.format_status(tx.newValue) }} {{ __('label_on') }} {{ tx.timestamp|slice(0,10) }}</span>
-                                    {% endfor %}
-                                </td>
-                            </tr>
-                        {% endif %}
-                        {% if (article.hasReviews and req.post.show_peers == 2) or (article.hasAcceptedReviews and req.post.show_peers) %}
-                            <tr>
-                                <th style="width: 4em;">{{ __('label_version') }}</th>
-                                <th>{{ __('label_peer') }}</th>
-                                <th style="width: 8em;">{{ __('label_invited') }}</th>
-                                <th style="width: 8em;" class="text-title">{{ __('label_accepted') }}</th>
-                                <th style="width: 20em;">{{ __('label_verdict') }}</th>
-                            </tr>
-                            {% set ver = 1 %}
-                            {% for version in article.versions %}
-                                {% for review in version.reviews if req.post.show_peers == 2 or (review.agreed and review.status != 'deleted') %}
-                                    <tr>
-                                        <td>{{ ver }}</td>
-                                        <td>{{ self.format_user_full(session.user.id in article.authors ? -1 : review.peerId) }}</td>
-                                        <td class="text-nowrap">{{ review.created|slice(0,10) }}</td>
-                                        <td class="text-nowrap">
-                                            {% if review.status == 'deleted' %}
-                                                {{ __('label_declined') }}
-                                            {% else %}
-                                                {{ review.agreed|slice(0,10) }}
-                                            {% endif %}
-                                        </td>
-                                        <td class="text-nowrap">
-                                            {% if review.status in config.reviews.states_final and review.status != 'deleted' %}
-                                                {{ lib.format_status(review.status) }}
-                                                {{ __('label_on') }}
-                                                {{ review.completed|slice(0,10) }}
-                                            {% endif %}
-                                        </td>
-                                    </tr>
+                                    {% set ver = ver + 1 %}
                                 {% endfor %}
-                                {% set ver = ver + 1 %}
-                            {% endfor %}
-                        {% endif %}
-                        </tbody>
-                    </table>
+                            {% endif %}
+                            </tbody>
+                        </table>
+                    </div>
                 {% endfor %}
             {% endfor %}
         </div>
     </div>
 </div>
+<style>
+    /* Section for each issue */
+    .issue-section {
+        border-bottom: 2px solid #ddd;
+        padding-bottom: 10px;
+        margin-bottom: 5px;
+    }
+    .issue-title {
+        font-size: 1.8rem;
+        font-weight: 600;
+        color: #0056b3; /* Bootstrap's primary color */
+    }
+
+    /* Article container */
+    .article-container {
+        background-color: #fff;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+       /* padding: 15px;*/
+        padding-left: 5px;
+        /*margin-bottom: 20px;*/
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    .article-title {
+        font-size: 1.25rem;
+        font-weight: bold;
+        color: #333;
+    }
+
+    /* Article details */
+    .article-authors .user-identity {
+        font-size: 0.9rem;
+        display: inline-block;
+        margin-right: 5px;
+    }
+    .article-versions .version,
+    .article-status-changes .status-change {
+        font-size: 0.85rem;
+        margin-right: 5px;
+    }
+
+    /* Tables */
+    .table-header {
+        background-color: #f8f9fa; /* very light gray */
+        font-weight: bold;
+    }
+    .table th, .table td {
+        vertical-align: middle;
+        padding: 8px;
+    }
+</style>
 {% macro format_user_full(id) -%}
     {%- set user = grab('user_resolve', id) -%}
     {%- if user != false -%}
