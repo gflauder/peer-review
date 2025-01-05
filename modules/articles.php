@@ -388,12 +388,13 @@ class Articles
         $sources = array();
         $sources[] = grab('can_sql', 'issues.id', 'view', 'issue');
         $sources[] = grab('can_sql', 'articles.id', 'view', 'article');
+
         if (pass('has_role', 'author')) {
             $sources[] = grab('can_sql', 'articles.id', 'edit', 'article');
-        };
-        if (pass('has_role', 'peer')) {
+        }elseif(pass('has_role', 'peer')){
             $sources[] = $db->query('reviews.peerId=?', $_SESSION['user']['id']);
         };
+
         $q->implodeClosed('OR', $sources);
         if (pass('has_role', 'reader')) {
             $q->and("articles.status='published'");
