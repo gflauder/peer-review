@@ -20,7 +20,7 @@
                     </td>
                     <td class="widest">
                         <div class="window">
-                            <a href="{{ req.base }}/outbox/{{ email.id }}">{{ lib.label_roles(email.roles, true) }} {{ email.subject }}</a>
+                            <a href="{{ req.base }}/outbox/{{ email.id }}"> {{ email.subject }}</a>
                         </div>
                     </td>
                     <td class="time">{{ lib.format_timestamp(email.localmodified) }}</td>
