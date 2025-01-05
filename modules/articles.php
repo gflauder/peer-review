@@ -391,7 +391,9 @@ class Articles
 
         if (pass('has_role', 'author')) {
             $sources[] = grab('can_sql', 'articles.id', 'edit', 'article');
-        }elseif(pass('has_role', 'peer')){
+        }
+
+        if(pass('has_role', 'peer')){
             $sources[] = $db->query('reviews.peerId=?', $_SESSION['user']['id']);
         };
 
@@ -529,9 +531,8 @@ class Articles
             } else {
                 return false;
             }
-            return true;
         }
-        return false;
+        return true;
     }
 
     /**
