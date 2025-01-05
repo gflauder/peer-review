@@ -740,7 +740,7 @@ msgid "title_prefs"
 msgstr "Preferences"
 
 msgid "title_program"
-msgstr "Criminal Review"
+msgstr "Revue Criminologie"
 
 msgid "title_recent"
 msgstr "Recent Activities"

@@ -63,6 +63,13 @@
     <div class="wrapper">
         <div class="content">
             {% if session.identified %}
+
+                    <button type="button" id="sidebarCollapse" class="btn btn-secondary toggle-sidebar-btn rounded-circle">
+                        <i class="bi bi-list"></i>
+                    </button>
+
+
+
                 <div class="sidebar">
                     {% include 'components/side_bar.html' %}
                 </div>

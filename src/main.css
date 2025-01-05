@@ -263,6 +263,32 @@ textarea {
 	}
 }
 
+#sidebarCollapse {
+	position: fixed;
+	top: 73px;
+	left: 276px;
+	z-index: 999; /* Ensure the button appears above other content */
+	width: 40px;
+	height: 40px;
+	background-color: #3e60c9; /* Button background color */
+	color: #fff; /* Button text color */
+	transition: transform 0.3s ease; /* Smooth transition for sliding */
+}
+
+#sidebarCollapse.collapsed {
+	left: -18px; /* Move button off-screen when sidebar is collapsed */
+}
+@media (max-width: 1199px) {
+	#sidebarCollapse {
+		top: 73px;
+		left: -9px;
+	}
+
+	#sidebarCollapse.collapsed {
+		left: 276px; /* Align the button properly on mobile when collapsed */
+	}
+}
+
 /* Left menu */
 .nav-sidebar {
 	margin: 0 -21px 20px -20px;

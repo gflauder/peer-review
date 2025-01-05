@@ -1,5 +1,6 @@
 <!-- ======= Sidebar ======= -->
-<aside id="sidebar" class="sidebar">
+<aside id="sidebar">
+
     <ul class="sidebar-nav" id="sidebar-nav">
         <li class="nav-item">
             <a href="{{ req.base }}/" class="nav-link collapsed{% if req.path == '' %} active{% endif %}">
@@ -36,7 +37,9 @@
                     <i class="bi bi-file-earmark-richtext"></i><span>{{ __('title_reports') }}</span>
                     <i class="bi bi-chevron-down ms-auto"></i>
                 </a>
-                <ul id="components-nav" class="nav-content collapse {% if req.path starts with 'admin/reports' %} show{% endif %}" data-bs-parent="#sidebar-nav">
+                <ul id="components-nav"
+                    class="nav-content collapse {% if req.path starts with 'admin/reports' %} show{% endif %}"
+                    data-bs-parent="#sidebar-nav">
                     <li>
                         <a href="{{ req.base }}/admin/reports/activity" {% if req.path starts with 'admin/reports/activity' %}
                             class="active"{% endif %}>
@@ -76,3 +79,25 @@
         {% endif %}
     </ul>
 </aside><!-- End Sidebar-->
+
+<style>
+/*
+    .custom-menu {
+        position: absolute;
+        top: 20px; !* Adjust top position as needed *!
+        right: 0; !* Position the button at the right edge of the sidebar *!
+        transform: translateX(100%); !* Align the button to the right edge *!
+        transition: top 0.3s, right 0.3s; !* Smooth transition for repositioning *!
+        z-index: 9999; !* Ensure the button is above other elements *!
+    }*/
+
+    #sidebar.active .custom-menu {
+        margin-right: -50px;
+    }
+
+    #sidebar.collapsed .custom-menu {
+        top: 20px; /* Keep at the top when collapsed */
+        right: auto; /* Remove the "right" positioning */
+        left: 0; /* Position at the top left when collapsed */
+    }
+</style>

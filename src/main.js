@@ -70,12 +70,62 @@ $().ready(function() {
     el.addEventListener('scroll', listener);
   };
 
-  if (select('.toggle-sidebar-btn')) {
-    on('click', '.toggle-sidebar-btn', function(e) {
+  if (select('#sidebarCollapse')) {
+    on('click', '#sidebarCollapse', function(e) {
       // Toggle the sidebar class on the body
       select('body').classList.toggle('toggle-sidebar');
     });
   }
+
+  let isSidebarCollapsed = false;
+
+/* ----  Sidebar collapse Button  ----*/
+
+// Get references to the sidebar and button
+  const sidebarToggleBtn = document.getElementById('sidebarCollapse');
+  const sidebar = document.querySelector('.sidebar');
+
+// Function to dynamically determine the icon for the sidebar toggle button
+  function updateSidebarButtonIcon() {
+    const screenWidth = window.innerWidth;
+
+    // If the sidebar is collapsed, show the right arrow (`>`)
+    if (sidebar.classList.contains('collapsed')) {
+      sidebarToggleBtn.innerHTML = '<i class="bi bi-list"></i>';
+      return; // Exit the function, no further checks are required
+    }
+
+    // If the sidebar is expanded, determine the icon based on screen width
+    if (screenWidth <= 1199) {
+      sidebarToggleBtn.innerHTML = '<i class="bi bi-list"></i>'; // Left arrow for expanded sidebar on smaller screens
+    } else {
+      sidebarToggleBtn.innerHTML = '<i class="bi bi-list"></i>'; // Left arrow for expanded sidebar on larger screens
+    }
+  }
+
+// Ensure correct button state and icon when the page loads
+  document.addEventListener('DOMContentLoaded', function () {
+    if (sidebar.classList.contains('collapsed')) {
+      // If the sidebar is collapsed on page load, set the button to show the right arrow (`>`)
+      sidebarToggleBtn.innerHTML = '<i class="bi bi-list"></i>';
+    } else {
+      // If the sidebar is expanded, determine the button icon based on screen size
+      updateSidebarButtonIcon();
+    }
+  });
+
+// Toggle the sidebar state and update the button on button click
+  sidebarToggleBtn.addEventListener('click', function () {
+    sidebar.classList.toggle('collapsed'); // Collapse or expand the sidebar
+    sidebarToggleBtn.classList.toggle('collapsed'); // Sync the button state
+    updateSidebarButtonIcon(); // Update the button icon
+  });
+
+// Listen for window resize events and update the button icon dynamically
+  window.addEventListener('resize', updateSidebarButtonIcon);
+/* ----  END Sidebar collapse Button --- */
+
+
 
   if (select('.search-bar-toggle')) {
     on('click', '.search-bar-toggle', function(e) {
