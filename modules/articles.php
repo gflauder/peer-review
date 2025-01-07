@@ -390,23 +390,22 @@ class Articles
         $sources[] = grab('can_sql', 'articles.id', 'view', 'article');
 
         //todo: Not sure we even need a peer here?
-       /* if (!pass('has_role', 'admin')
-            || !pass('has_role', 'editor-in-chief'
-            || !pass('has_role', 'editor')
-            ))
-        {
-            if (pass('has_role', 'author')) {
-                $sources[] = grab('can_sql', 'articles.id', 'edit', 'article');
-            }
-            if (pass('has_role', 'peer')) {
-                $sources[] = $db->query('reviews.peerId=?', $_SESSION['user']['id']);
-            };
-        }*/
+        /* if (!pass('has_role', 'admin')
+             || !pass('has_role', 'editor-in-chief'
+             || !pass('has_role', 'editor')
+             ))
+         {
+             if (pass('has_role', 'author')) {
+                 $sources[] = grab('can_sql', 'articles.id', 'edit', 'article');
+             }
+             if (pass('has_role', 'peer')) {
+                 $sources[] = $db->query('reviews.peerId=?', $_SESSION['user']['id']);
+             };
+         }*/
 
         if (pass('has_role', 'author')) {
             $sources[] = grab('can_sql', 'articles.id', 'edit', 'article');
         }
-
 
 
         $q->implodeClosed('OR', $sources);
@@ -971,10 +970,13 @@ class Articles
 
             // Handle file uploads
             $newFiles = array();
-            foreach ($files as $file) {
-                $newFile = self::_attach($cols['articleId'], $file);
-                if ($newFile !== false) {
-                    $newFiles[] = $newFile;
+            foreach ($files as $key => $fileArray) {
+                foreach ($fileArray as $file) {
+
+                    $newFile = self::_attach($cols['articleId'], $file);
+                    if ($newFile !== false) {
+                        $newFiles[] = $newFile;
+                    };
                 };
             };
             if (count($newFiles) > 0) {
