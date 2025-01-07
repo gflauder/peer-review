@@ -56,8 +56,7 @@
                         <tr>
                             <td style="padding: 10px; text-align: center; font-size: 12px; color: #333;">
                                 <p>
-                                    You can also manually copy and paste this link to your browser: {{ req.protocol }}://{{ req.host }}
-                                    /en/{{ validation_link }}
+                                    You can also manually copy and paste this link to your browser: {{ req.protocol }}://{{ req.host }}/en/{{ validation_link }}
                                 </p>
 
                                 <p>
