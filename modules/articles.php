@@ -389,13 +389,25 @@ class Articles
         $sources[] = grab('can_sql', 'issues.id', 'view', 'issue');
         $sources[] = grab('can_sql', 'articles.id', 'view', 'article');
 
+        //todo: Not sure we even need a peer here?
+       /* if (!pass('has_role', 'admin')
+            || !pass('has_role', 'editor-in-chief'
+            || !pass('has_role', 'editor')
+            ))
+        {
+            if (pass('has_role', 'author')) {
+                $sources[] = grab('can_sql', 'articles.id', 'edit', 'article');
+            }
+            if (pass('has_role', 'peer')) {
+                $sources[] = $db->query('reviews.peerId=?', $_SESSION['user']['id']);
+            };
+        }*/
+
         if (pass('has_role', 'author')) {
             $sources[] = grab('can_sql', 'articles.id', 'edit', 'article');
         }
 
-        if(pass('has_role', 'peer')){
-            $sources[] = $db->query('reviews.peerId=?', $_SESSION['user']['id']);
-        };
+
 
         $q->implodeClosed('OR', $sources);
         if (pass('has_role', 'reader')) {
@@ -586,8 +598,6 @@ class Articles
 
                 if (isset($cols['issueId']) && $oldArticle['issueId'] !== $cols['issueId'] && count($oldArticle['versions']) > 0) {
 
-                    //todo:review this code, seems to be a bug and not move files
-                    // Move files directory if issue was reassigned
                     $issue = grab('issue', $cols['issueId']);
                     $issuePath = $config['articles']['path'] . '/' . $issue['issue'];
                     if (!file_exists($issuePath)) {
@@ -910,6 +920,7 @@ class Articles
                     break;
                 };
                 // Regardless if user existed, make sure it now has 'peer' role
+                //todo: This breaks permissions if someone is an admin or already has abilities to peer review.
                 trigger('grant', $peer, 'peer');
                 // Log and e-mail, which will be part of the rolled back transaction if we fail.
                 trigger(
