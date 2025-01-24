@@ -257,6 +257,9 @@ msgstr ""
 msgid "label_email"
 msgstr ""
 
+msgid "label_back_to_login"
+msgstr ""
+
 msgid "label_emailconfirm"
 msgstr ""
 
@@ -657,6 +660,9 @@ msgid "title_about"
 msgstr ""
 
 msgid "title_activity_report"
+msgstr ""
+
+msgid "title_edit_articles"
 msgstr ""
 
 msgid "title_articles"

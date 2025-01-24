@@ -244,6 +244,8 @@ class Articles
         $article['isPeer'] = count($article['versions']) > 0
             ? $article['versions'][count($article['versions']) - 1]['isPeer']
             : false;
+
+
         if (pass('can', 'view', 'article', $id)
             || pass('can', 'view', 'issue', $article['issueId'])
             || pass('can', 'edit', 'article', $id)
@@ -1319,12 +1321,17 @@ on(
                     };
                 };
 
-                // View only from this point
-                if (!(pass('can', 'view', 'article', $articleId)
-                    || pass('can', 'edit', 'article', $articleId)
-                    || pass('can', 'view', 'issue', $article['issueId'])
-                    || $article['isPeer'])
-                ) return trigger('http_status', 403);
+                if(!$article){
+                     return trigger('http_status', 403);
+                }else{
+                    if (!(pass('can', 'view', 'article', $articleId)
+                        || pass('can', 'edit', 'article', $articleId)
+                        || pass('can', 'view', 'issue', $article['issueId'])
+                        || $article['isPeer'])
+                    ) return trigger('http_status', 403);
+                }
+
+
 
                 $history = grab(
                     'history',

@@ -273,6 +273,9 @@ msgstr "Éditeurs"
 msgid "label_email"
 msgstr "Courriel"
 
+msgid "label_back_to_login"
+msgstr "Retour à connexion"
+
 msgid "label_emailconfirm"
 msgstr "Envoyer courriel de confirmation"
 
@@ -679,6 +682,9 @@ msgstr "À propos"
 
 msgid "title_activity_report"
 msgstr "Rapport d'activité"
+
+msgid "title_edit_articles"
+msgstr "Suivi d'un article soumis"
 
 msgid "title_articles"
 msgstr "Articles"

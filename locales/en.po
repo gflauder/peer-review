@@ -273,6 +273,9 @@ msgstr "E-Mail"
 msgid "label_emailconfirm"
 msgstr "Send confirmation e-mail"
 
+msgid "label_back_to_login"
+msgstr "Back to Login"
+
 msgid "label_employer"
 msgstr "Employer"
 
@@ -675,6 +678,9 @@ msgstr "About us"
 
 msgid "title_activity_report"
 msgstr "Activity Report"
+
+msgid "title_edit_articles"
+msgstr "Edit Articles"
 
 msgid "title_articles"
 msgstr "Articles"
