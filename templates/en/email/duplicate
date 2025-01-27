@@ -13,6 +13,7 @@
 {% endblock %}
 
 {% block body %}
+    {% import 'lib.twig' as lib %}
     <p>Greetings,</p>
     <p>
         This message is just to let you know that you or someone else attempted to create an account for this e-mail address, but it already exists.
@@ -27,4 +28,10 @@
         Sincerely,
     </p>
     <br>{{ config.global.name }}
+{% endblock %}
+
+{% block cta_text %}
+{% endblock %}
+
+{% block cta_link %}
 {% endblock %}

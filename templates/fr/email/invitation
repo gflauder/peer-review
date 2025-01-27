@@ -13,6 +13,7 @@
 {% endblock %}
 
 {% block body %}
+    {% import 'lib.twig' as lib %}
     <p>Bonjour,</p>
     <p>
         Un compte a été créé pour votre adresse courriel sur le site de la Revue Criminologie.

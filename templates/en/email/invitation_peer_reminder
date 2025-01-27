@@ -13,6 +13,7 @@
 {% endblock %}
 
 {% block body %}
+    {% import 'lib.twig' as lib %}
     <p>Greetings,</p>
     <p>
         This is a friendly reminder that you agreed to review the article "{{ lib.format_article(article, true, true) }}" before {{ deadline }}. Please click the button below to submit your review at your earliest convenience.

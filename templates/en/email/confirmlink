@@ -13,6 +13,7 @@
 {% endblock %}
 
 {% block body %}
+    {% import 'lib.twig' as lib %}
     <p>Hello,</p>
     <p>
         You are receiving this email to confirm ownership of the email address you provided. If you made this request,

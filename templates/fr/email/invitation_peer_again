@@ -13,6 +13,7 @@
 {% endblock %}
 
 {% block body %}
+    {% import 'lib.twig' as lib %}
     <p>Bonjour,</p>
     <p>
         Vous êtes invités à réévaluer en tant qu'expert l'article

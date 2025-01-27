@@ -349,7 +349,7 @@
 {% macro format_article(article, flat, nohtml) -%}
     {%- set req = grab('request') -%}
     {%- if not article.id -%}
-        {%- set article = grab('article', article) -%}
+        {%- set article = grab('article', article, true) -%}
     {%- endif -%}
     {%- if article != false -%}
         {%- if (

@@ -13,6 +13,7 @@
 {% endblock %}
 
 {% block body %}
+    {% import 'lib.twig' as lib %}
     <p>Greetings,</p>
     <p>
         You are invited to join {{ config.global.name }}, where an account for this e-mail address has been created. Please click the button below to confirm your account creation.

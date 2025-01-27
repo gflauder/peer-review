@@ -28,8 +28,10 @@
                             {% block body %}{{ body | default(null) }}{% endblock %}
                         </td>
                     </tr>
+
+
                     <!-- Call to Action Button -->
-                    {% if block('cta_text') is defined and block('cta_link') is defined %}
+                    {% if block('cta_text') is not empty and block('cta_link') is not empty %}
                         <tr>
                             <td style="padding: 10px; text-align: center;">
                                 <table cellspacing="0" cellpadding="0" style="margin: auto;">
@@ -48,6 +50,7 @@
                             </td>
                         </tr>
                     {% endif %}
+
                     <!-- Additional Information -->
                     {% if block('additional_info') is not empty %}
                         <tr>

@@ -13,6 +13,7 @@
 {% endblock %}
 
 {% block body %}
+    {% import 'lib.twig' as lib %}
     <p>Bonjour,</p>
     <p>
         Ce message est pour vous informer que l'adresse de courriel et/ou le mot de passe de votre compte
@@ -28,3 +29,8 @@
     <br>{{ config.global.name }}
 {% endblock %}
 
+{% block cta_text %}
+{% endblock %}
+
+{% block cta_link %}
+{% endblock %}

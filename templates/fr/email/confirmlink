@@ -13,6 +13,7 @@
 {% endblock %}
 
 {% block body %}
+    {% import 'lib.twig' as lib %}
     <p>Bonjour,</p>
     <p>
         Ce message est envoyé pour confirmer que vous êtes bien le propriétaire de cette adresse e-mail. Si vous avez fait cette demande, cliquez sur le bouton ci-dessous :

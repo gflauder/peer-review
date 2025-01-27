@@ -13,6 +13,7 @@
 {% endblock %}
 
 {% block body %}
+    {% import 'lib.twig' as lib %}
     <p>Bonjour,</p>
     <p>
         {{ lib.format_user(peerId, true, true) }} a refusé d'évaluer l'article
@@ -28,4 +29,10 @@
         Sincèrement,
     </p>
     <br>{{ config.global.name }}
+{% endblock %}
+
+{% block cta_text %}
+{% endblock %}
+
+{% block cta_link %}
 {% endblock %}

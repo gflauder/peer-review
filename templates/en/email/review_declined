@@ -14,9 +14,11 @@
 {% endblock %}
 
 {% block body %}
+    {% import 'lib.twig' as lib %}
     <p>Greetings,</p>
     <p>
-        {{ lib.format_user(peerId, true, true) }} was invited to review the article "{{ lib.format_article(article, true, true) }}". Unfortunately, this invitation was refused.
+    {{ lib.format_user(peerId, true, true) }} was invited to review the article "{{ lib.format_article(article, true, true) }}".
+    <p>Unfortunately, this invitation was refused.</p>
     </p>
     {% if log %}
         <p>The person suggested alternate reviewers:</p>
@@ -26,4 +28,10 @@
     {% endif %}
     <p>Thank you,</p>
     <br>{{ config.global.name }}
+{% endblock %}
+
+{% block cta_text %}
+{% endblock %}
+
+{% block cta_link %}
 {% endblock %}

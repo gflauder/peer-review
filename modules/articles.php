@@ -183,7 +183,7 @@ class Articles
      *
      * @return array|bool Article (associative) or false on failure
      */
-    public static function get($id)
+    public static function get($id, $ignorePermissions = false)
     {
         global $PPHP;
         $db = $PPHP['db'];
@@ -241,11 +241,29 @@ class Articles
                 $uniquePeers[$review['peerId']] = true;
             };
         };
-        $article['isPeer'] = count($article['versions']) > 0
-            ? $article['versions'][count($article['versions']) - 1]['isPeer']
-            : false;
+        /*        $article['isPeer'] = count($article['versions']) > 0
+                    ? $article['versions'][count($article['versions']) - 1]['isPeer']
+                    : false;*/
 
+        $latestReview = null; // To store the latest review matching the peerId
+        // Loop through all reviews in this article's version
+        foreach ($article['versions'][0]['reviews'] as $review) {
+            if ($review['peerId'] == $_SESSION['user']['id']) {
+                // If it's the first matched review or newer than the current latest
+                if ($latestReview === null || strtotime($review['created']) > strtotime($latestReview['created'])) {
+                    $latestReview = $review; // Update the latest review
+                }
+            }
+        }
 
+        // Evaluate the status of the latest review
+        if ($latestReview && $latestReview['status'] === 'deleted' && !$ignorePermissions ) {
+            $article['isPeer'] = false; // If the latest review's status is "created", set true
+        } else {
+            $article['isPeer'] = true; // Otherwise, set false
+        }
+
+       // At this point, $article['isPeer'] contains the correct value
         if (pass('can', 'view', 'article', $id)
             || pass('can', 'view', 'issue', $article['issueId'])
             || pass('can', 'edit', 'article', $id)
@@ -392,6 +410,7 @@ class Articles
         $sources[] = grab('can_sql', 'articles.id', 'view', 'article');
 
         //todo: Not sure we even need a peer here?
+
         /* if (!pass('has_role', 'admin')
              || !pass('has_role', 'editor-in-chief'
              || !pass('has_role', 'editor')
@@ -921,7 +940,6 @@ class Articles
                     break;
                 };
                 // Regardless if user existed, make sure it now has 'peer' role
-                //todo: This breaks permissions if someone is an admin or already has abilities to peer review.
                 trigger('grant', $peer, 'peer');
                 // Log and e-mail, which will be part of the rolled back transaction if we fail.
                 trigger(
@@ -1016,7 +1034,7 @@ class Articles
                 );
                 $log = null;
                 if ($oldReview['peerId'] == $_SESSION['user']['id']) {
-                    $article = grab('article', $oldReview['articleId']);
+                    $article = grab('article', $oldReview['articleId'],true);
                     switch ($cols['status']) {
                         case 'reviewing':
                             // Peer accepted
@@ -1321,16 +1339,15 @@ on(
                     };
                 };
 
-                if(!$article){
-                     return trigger('http_status', 403);
-                }else{
+                if (!$article) {
+                    return trigger('http_status', 403);
+                } else {
                     if (!(pass('can', 'view', 'article', $articleId)
                         || pass('can', 'edit', 'article', $articleId)
                         || pass('can', 'view', 'issue', $article['issueId'])
                         || $article['isPeer'])
                     ) return trigger('http_status', 403);
                 }
-
 
 
                 $history = grab(

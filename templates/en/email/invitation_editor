@@ -13,6 +13,7 @@
 {% endblock %}
 
 {% block body %}
+    {% import 'lib.twig' as lib %}
     <p>Greetings,</p>
     <p>
         You are invited to join {{ config.global.name }} as an editor for the issue {{ lib.format_issue(issue, true, true) }}. To see your issue, click the button below.

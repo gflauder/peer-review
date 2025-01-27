@@ -13,6 +13,7 @@
 {% endblock %}
 
 {% block body %}
+    {% import 'lib.twig' as lib %}
     <p>Greetings,</p>
     <p>
         You have been added as an author for the article "{{ lib.format_article(article, true, true) }}" which was submitted to {{ config.global.name }}. You can click the button below to access it.

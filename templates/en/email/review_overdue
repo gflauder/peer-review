@@ -13,6 +13,7 @@
 {% endblock %}
 
 {% block body %}
+   {% import 'lib.twig' as lib %}
    <p>Greetings,</p>
    <p>
       You had agreed to review the article "{{ fullTitle }}" for the Revue Criminologie before {{ deadline }}. We have yet to receive your review and would greatly appreciate your collaboration to complete it as soon as possible using the button below.

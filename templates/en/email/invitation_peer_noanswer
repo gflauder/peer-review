@@ -14,6 +14,7 @@
 {% endblock %}
 
 {% block body %}
+    {% import 'lib.twig' as lib %}
     <p>Hello,</p>
     <p>
         You were invited to review as an expert the article "{{ lib.format_article(article, true, true) }}" which was submitted to {{ config.global.name }}.
