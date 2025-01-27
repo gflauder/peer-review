@@ -775,9 +775,6 @@ msgstr "Submit <br>an Article"
 msgid "title_users"
 msgstr "Users"
 
-msgid "title_welcome_to"
-msgstr "Welcome to the"
-
 msgid "title_welcome_1"
 msgstr "To use this application, you must sign into your account here. If you do not have an account, register below."
 
@@ -786,12 +783,6 @@ msgstr "If your account does not have a password, or you would prefer not to use
 
 msgid "title_welcome_3"
 msgstr " If you already have an account and a password, but forgot your password,"
-
-msgid "title_welcome_4"
-msgstr "The journal Criminology was founded by Denis Szabo in 1968. It mainly presents research results and is aimed at both scientists and professionals. It is a thematic journal that responds to the current concerns and interests of criminologists in Quebec and abroad.<br><br> The topics covered are generally multidisciplinary and the journal calls on researchers from different fields. It is the only criminology journal published in French in America. This online article management system allows you to submit scientific articles to us and to follow the progress of the peer review of your articles.<br><br> We invite you to read the  <a href='/en/page/instructions'>Instructions For Authors</a>  before proceeding with your submission. "
-
-msgid "title_welcome_5"
-msgstr "<a href='/en/auth'>Login</a> or <a href='/en/register'>Register</a> to get started. "
 
 msgid "user_new"
 msgstr "New User"

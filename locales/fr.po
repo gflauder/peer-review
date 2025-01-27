@@ -779,9 +779,6 @@ msgstr "Soumettre<br>un article"
 msgid "title_users"
 msgstr "Usagers"
 
-msgid "title_welcome_to"
-msgstr "Bienvenue à"
-
 msgid "title_welcome_1"
 msgstr "Pour utiliser cette application, vous devez vous connecter à votre compte ici. Si vous n'avez pas de compte, vous devriez vous inscrire."
 
@@ -790,12 +787,6 @@ msgstr "Si votre compte n'a pas de mot de passe ou si vous préférez ne pas l'u
 
 msgid "title_welcome_3"
 msgstr "Si vous avez déjà un compte et un mot de passe, mais que vous avez oublié votre mot de passe,"
-
-msgid "title_welcome_4"
-msgstr "La revue Criminologie a été fondée par Denis Szabo en 1968. Elle présente principalement des résultats de recherche et s'adresse tant aux scientifiques qu’aux professionnels. Il s’agit d’une revue thématique qui répond aux préoccupations et aux intérêts actuels des criminologues québécois et étrangers. Les thèmes abordés sont généralement pluridisciplinaires et la revue fait appel à des chercheurs et des chercheures de différents domaines. Elle est la seule revue de criminologie publiée en français en Amérique.<br><br> Ce système de gestion en ligne des articles vous permet de nous soumettre des articles scientifiques et de suivre l'évolution de l'évaluation de vos articles par les pairs. <br><br>Nous vous invitons à lire les <a href="/fr/page/instructions">directives aux auteurs</a> avant de poursuivre avec votre soumission."
-
-msgid "title_welcome_5"
-msgstr "<a href='/fr/auth'>Connexion</a> ou <a href='/fr/register'>Inscription</a> pour commencer. "
 
 msgid "user_new"
 msgstr "Nouvel usager"
