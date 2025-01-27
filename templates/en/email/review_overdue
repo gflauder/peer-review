@@ -27,13 +27,17 @@
    <br>{{ config.global.name }}
 {% endblock %}
 
-{% block call_to_action %}
-   <a href="{{ completionLink }}"
-      style="background-color: #345C72; color: #ffffff; text-decoration: none; font-weight: bold; padding: 10px 20px; border-radius: 5px;"
-      target="_blank">
-      Complete your review
-   </a>
-   <p style="font-size: 12px; text-align: center; margin-top: 10px; color: #333;">
-      You can also manually copy and paste this link to your browser: {{ completionLink }}
+{% block cta_text %}
+   Complete your review
+{% endblock %}
+
+{% block cta_link %}
+   {{ completionLink }}
+{% endblock %}
+
+{% block additional_info %}
+   <p>
+      You can also manually copy and paste this link into your browser:
+      {{ completionLink }}
    </p>
 {% endblock %}

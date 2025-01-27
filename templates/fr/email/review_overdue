@@ -28,15 +28,14 @@
     <br>{{ config.global.name }}
 {% endblock %}
 
-{% block call_to_action %}
-    <table cellspacing="0" cellpadding="0" style="margin: auto;">
-        <tr>
-            <td align="center" style="background-color: #345C72; padding: 10px; border-radius: 5px;">
-                <a href="{{ req.protocol }}://{{ req.host }}/" target="_blank" style="color: #ffffff; text-decoration: none; font-weight: bold;">Soumettre votre évaluation</a>
-            </td>
-        </tr>
-    </table>
+{% block cta_text %}
+    Soumettre votre évaluation
 {% endblock %}
+
+{% block cta_link %}
+    {{ req.protocol }}://{{ req.host }}/
+{% endblock %}
+
 
 {% block additional_info %}
     <p style="text-align: center; font-size: 12px; color: #333;">
