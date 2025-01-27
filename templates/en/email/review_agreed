@@ -1,17 +1,22 @@
+{% extends "email_template.twig" %}
+
 {% block subject %}
-{% import 'lib.twig' as lib %}
-Peer review role accepted by {{ lib.format_user(peerId, true, true) }}
+    {{ config.global.name }} - Reviewer confirmation
 {% endblock %}
 
-{% block html %}
-{% import 'lib.twig' as lib %}
-<p>Hello,</p>
-<p>
-{{ lib.format_user(peerId, true, true) }} who was recruited to review
-article "{{ lib.format_article(article, true, true) }}" accepted this role.
-</p>
-<p>
-Thank you,
-<br>{{ config.global.name }}
-</p>
+{% block header %}
+    {{ __('title_program') }}
+{% endblock %}
+
+{% block sub_header %}
+    Reviewer Confirmation
+{% endblock %}
+
+{% block body %}
+    <p>Greetings,</p>
+    <p>
+        {{ lib.format_user(peerId, true, true) }} has accepted to review the article "{{ lib.format_article(article, true, true) }}".
+    </p>
+    <p>Thank you,</p>
+    <br>{{ config.global.name }}
 {% endblock %}

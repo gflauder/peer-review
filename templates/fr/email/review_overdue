@@ -1,24 +1,46 @@
+{% extends "email_template.twig" %}
+
 {% block subject %}
-{% import 'lib.twig' as lib %}
-Évaluation en retard pour: {{ lib.format_article(article, true, true) |truncate(64, true) }}
+    {{ config.global.name }} - Évaluation en retard
 {% endblock %}
 
-{% block html %}
-{% import 'lib.twig' as lib %}
-<p>Bonjour,</p>
-<p>
-Veuillez noter que nous n'avons pas reçu votre évaluation de l'article
-"{{ lib.format_article(article, true, true) }}"
-qui était attendue au plus tard le {{ deadline }}.
-</p>
-<p>
-Vous pouvez encore la compléter aujourd'hui à:
-</p>
-<p>
-<a href="{{ req.protocol }}://{{ req.host }}/">{{ req.protocol }}://{{ req.host }}/</a>
-</p>
-<p>
-Merci,
-<br>{{ config.global.name }}
-</p>
+{% block header %}
+    {{ __('title_program') }}
+{% endblock %}
+
+{% block sub_header %}
+    Évaluation en retard
+{% endblock %}
+
+{% block body %}
+    <p>Bonjour,</p>
+    <p>
+        Vous aviez accepté d'évaluer l'article <em>{{ lib.format_article(article, true, true) }}</em> avant le
+        <strong>{{ deadline }}</strong>. Nous espérons que vous serez en mesure de nous soumettre votre évaluation dans les plus brefs délais.
+    </p>
+    <p>
+        Si vous avez besoin de plus de temps, nous vous invitons à contacter notre équipe à l'adresse suivante :
+        <a href="mailto:admin@criminologie.ca">admin@criminologie.ca</a>.
+    </p>
+    <p>
+        Sincèrement,
+    </p>
+    <br>{{ config.global.name }}
+{% endblock %}
+
+{% block call_to_action %}
+    <table cellspacing="0" cellpadding="0" style="margin: auto;">
+        <tr>
+            <td align="center" style="background-color: #345C72; padding: 10px; border-radius: 5px;">
+                <a href="{{ req.protocol }}://{{ req.host }}/" target="_blank" style="color: #ffffff; text-decoration: none; font-weight: bold;">Soumettre votre évaluation</a>
+            </td>
+        </tr>
+    </table>
+{% endblock %}
+
+{% block additional_info %}
+    <p style="text-align: center; font-size: 12px; color: #333;">
+        Vous pouvez aussi copier-coller ce lien manuellement dans votre fureteur:
+        <br>{{ req.protocol }}://{{ req.host }}/
+    </p>
 {% endblock %}

@@ -1,22 +1,41 @@
+{% extends "email_template.twig" %}
+
 {% block subject %}
-{% import 'lib.twig' as lib %}
-Vous êtes auteur de: {{ lib.format_article(article, true, true) |truncate(64, true) }}
+    {{ config.global.name }} - Ajout d'un auteur
 {% endblock %}
 
-{% block html %}
-{% import 'lib.twig' as lib %}
-<p>Bonjour,</p>
-<p>
-Vous avez été ajouté comme auteur de l'article
-"{{ lib.format_article(article, true, true) }}"
-qui a été soumis à {{ config.global.name }}.
-Vous pouvez cliquer le lien ci-dessous pour y accéder immédiatement:
-</p>
-<p>
-<a href="{{ req.protocol }}://{{ req.host }}/{{ validation_link }}">{{ req.protocol }}://{{ req.host }}/{{ validation_link }}</a>
-</p>
-<p>
-Merci,
-<br>{{ config.global.name }}
-</p>
+{% block header %}
+    {{ __('title_program') }}
 {% endblock %}
+
+{% block sub_header %}
+    Ajout d'un auteur
+{% endblock %}
+
+{% block body %}
+    <p>Bonjour,</p>
+    <p>
+        Vous avez été ajouté comme auteur à l'article <em>{{ lib.format_article(article, true, true) }}</em>
+        pour la {{ config.global.name }}. Vous pouvez cliquer sur le bouton ci-dessous pour accéder à l'article.
+    </p>
+    <p>
+        Sincèrement,
+    </p>
+    <br>{{ config.global.name }}
+{% endblock %}
+
+{% block cta_text %}
+    Page de l'article
+{% endblock %}
+
+{% block cta_link %}
+    {{ req.protocol }}://{{ req.host }}/{{ validation_link }}
+{% endblock %}
+
+{% block additional_info %}
+    <p>
+        Vous pouvez aussi copier-coller ce lien manuellement dans votre fureteur:
+        {{ req.protocol }}://{{ req.host }}/{{ validation_link }}
+    </p>
+{% endblock %}
+

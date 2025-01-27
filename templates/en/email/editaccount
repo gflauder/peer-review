@@ -1,20 +1,25 @@
+{% extends "email_template.twig" %}
+
 {% block subject %}
-{{ config.global.name }} - Account information changed
+    {{ config.global.name }} - Account information changed
 {% endblock %}
 
-{% block html %}
-<p>Hello,</p>
-<p>
-This message is to notify you that your account's e-mail address and/or
-password was successfully modified.  You do not need to take any further
-action at this time.
-</p>
-<p>
-If you have not requested this modification, please contact us so we may look
-into the issue.
-</p>
-<p>
-Thank you,
-<br>{{ config.global.name }}
-</p>
+{% block header %}
+    {{ __('title_program') }}
+{% endblock %}
+
+{% block sub_header %}
+    Account information changed
+{% endblock %}
+
+{% block body %}
+    <p>Greetings,</p>
+    <p>
+        This message is to notify you that your account's e-mail address and/or password was successfully modified. You do not need to take any further action at this time.
+    </p>
+    <p>
+        If you have not requested this modification, please contact our team at
+        <a href="mailto:admin@criminologie.ca">admin@criminologie.ca</a>.
+    </p>
+    <br>{{ config.global.name }}
 {% endblock %}

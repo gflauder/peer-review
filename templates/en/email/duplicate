@@ -1,26 +1,30 @@
+{% extends "email_template.twig" %}
+
 {% block subject %}
-{{ config.global.name }} - Account already exists
+    {{ config.global.name }} - Account already exists
 {% endblock %}
 
-{% block html %}
-<p>Hello,</p>
-<p>
-This message is just to let you know that you or someone else attempted to
-create an account for this e-mail address, but it already exists.  If you made
-this request, then perhaps you simply forgot your password?  If so, click the
-following link to reset your password:
-</p>
-<p>
-<a href="{{ req.protocol }}://{{ req.host }}/en/password_reset">{{ req.protocol }}://{{ req.host }}/en/password_reset</a>
-</p>
-<p>
-If you have not requested this verification, you can safely discard this
-message.  To learn more about the IP address where this request originated
-from, see:
-<a href="http://www.ip-adress.com/ip_tracer/{{ req.remote_addr }}">http://www.ip-adress.com/ip_tracer/{{ req.remote_addr }}</a>
-</p>
-<p>
-Thank you,
-<br>{{ config.global.name }}
-</p>
+{% block header %}
+    {{ __('title_program') }}
+{% endblock %}
+
+{% block sub_header %}
+    Account already exists
+{% endblock %}
+
+{% block body %}
+    <p>Greetings,</p>
+    <p>
+        This message is just to let you know that you or someone else attempted to create an account for this e-mail address, but it already exists.
+        If you made this request, simply enter your email address on our
+        <a href="https://criminologie.ca">homepage</a> to receive a link to login without a password.
+    </p>
+    <p>
+        If you do not receive the automated email within 5 minutes, please contact our team at
+        <a href="mailto:admin@criminologie.ca">admin@criminologie.ca</a>.
+    </p>
+    <p>
+        Sincerely,
+    </p>
+    <br>{{ config.global.name }}
 {% endblock %}

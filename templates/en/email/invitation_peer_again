@@ -1,28 +1,43 @@
+{% extends "email_template.twig" %}
+
 {% block subject %}
-{% import 'lib.twig' as lib %}
-Invitation to review again: {{ lib.format_article(article, true, true) |truncate(64, true) }}
+    {% import 'lib.twig' as lib %}
+    Reminder: Invitation to review {{ lib.format_article(article, true, true) |truncate(64, true) }}
 {% endblock %}
 
-{% block html %}
-{% import 'lib.twig' as lib %}
-<p>Hello,</p>
-<p>
-You are invited to come review as an expert, article
-"{{ lib.format_article(article, true, true) }}"
-which was submitted to {{ config.global.name }}.
-The article has been revised since your previous evaluation.
-</p>
-<p><b>Abstract:</b></p>
-<blockquote>{{ article.abstract }}</blockquote>
-<p>
-Please let us know about your interest to perform this new evaluation at the
-following link:
-</p>
-<p>
-<a href="{{ req.protocol }}://{{ req.host }}/en/{{ validation_link }}">{{ req.protocol }}://{{ req.host }}/en/{{ validation_link }}</a>
-</p>
-<p>
-Thank you,
-<br>{{ config.global.name }}
-</p>
+{% block header %}
+    {{ __('title_program') }}
+{% endblock %}
+
+{% block sub_header %}
+    Reminder: Invitation to Review
+{% endblock %}
+
+{% block body %}
+    <p>Greetings,</p>
+    <p>
+        This is a reminder that you are invited to review the article "{{ lib.format_article(article, true, true) }}" for the {{ config.global.name }}.
+    </p>
+    <p><b>Abstract:</b></p>
+    <blockquote>{{ article.abstract }}</blockquote>
+    <p>
+        To accept or refuse to review this article, please click on the button below.
+    </p>
+    <p>Thank you,</p>
+    <br>{{ config.global.name }}
+{% endblock %}
+
+{% block cta_text %}
+    Accept / Refuse invitation
+{% endblock %}
+
+{% block cta_link %}
+    {{ req.protocol }}://{{ req.host }}/en/{{ validation_link }}
+{% endblock %}
+
+{% block additional_info %}
+    <p>
+        You can also manually copy and paste this link into your browser:
+        {{ req.protocol }}://{{ req.host }}/en/{{ validation_link }}
+    </p>
 {% endblock %}

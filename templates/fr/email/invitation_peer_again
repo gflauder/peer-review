@@ -1,28 +1,48 @@
+{% extends "email_template.twig" %}
+
 {% block subject %}
-{% import 'lib.twig' as lib %}
-Invitation à revenir évaluer: {{ lib.format_article(article, true, true) |truncate(64, true) }}
+    {{ config.global.name }} - Invitation à réévaluer un article
 {% endblock %}
 
-{% block html %}
-{% import 'lib.twig' as lib %}
-<p>Bonjour,</p>
-<p>
-Vous êtes invités à revenir évaluer en tant qu'expert l'article
-"{{ lib.format_article(article, true, true) }}"
-qui a été soumis à {{ config.global.name }}.
-L'article a été révisé depuis votre évaluation précédente.
-</p>
-<p><b>Sommaire:</b></p>
-<blockquote>{{ article.abstract }}</blockquote>
-<p>
-Nous vous prions de bien vouloir nous faire part de votre intérêt à effectuer
-cette nouvelle évaluation à la page ci-dessous:
-</p>
-<p>
-<a href="{{ req.protocol }}://{{ req.host }}/{{ validation_link }}">{{ req.protocol }}://{{ req.host }}/{{ validation_link }}</a>
-</p>
-<p>
-Merci,
-<br>{{ config.global.name }}
-</p>
+{% block header %}
+    {{ __('title_program') }}
+{% endblock %}
+
+{% block sub_header %}
+    Invitation à réévaluer un article
+{% endblock %}
+
+{% block body %}
+    <p>Bonjour,</p>
+    <p>
+        Vous êtes invités à réévaluer en tant qu'expert l'article
+        <em>{{ lib.format_article(article, true, true) }}</em>
+        qui a été soumis à la {{ config.global.name }} suite à une révision.
+    </p>
+    <p><b>Résumé:</b></p>
+    <blockquote>{{ article.abstract }}</blockquote>
+    <p>
+        Nous vous prions de bien vouloir nous faire part de votre intérêt à effectuer cette évaluation
+        en cliquant sur le bouton ci-dessous. Il est important pour nous d'enregistrer
+        votre décision rapidement, afin de ne pas retarder le processus d'évaluation. Ceci ne prend qu'un instant.
+    </p>
+    <p>
+        Sincèrement,
+    </p>
+    <br>{{ config.global.name }}
+{% endblock %}
+
+{% block cta_text %}
+    Accepter ou refuser l'invitation
+{% endblock %}
+
+{% block cta_link %}
+    {{ req.protocol }}://{{ req.host }}/{{ validation_link }}
+{% endblock %}
+
+{% block additional_info %}
+    <p>
+        Vous pouvez aussi copier-coller ce lien manuellement dans votre fureteur:
+        {{ req.protocol }}://{{ req.host }}/{{ validation_link }}
+    </p>
 {% endblock %}

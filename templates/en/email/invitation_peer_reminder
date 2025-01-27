@@ -1,26 +1,37 @@
+{% extends "email_template.twig" %}
+
 {% block subject %}
-{% import 'lib.twig' as lib %}
-Reminder to review: {{ lib.format_article(article, true, true) |truncate(64, true) }}
+    {{ config.global.name }} - Review deadline reminder
 {% endblock %}
 
-{% block html %}
-{% import 'lib.twig' as lib %}
-<p>Hello,</p>
-<p>
-This is a simple reminder that we need your review of the article
-"{{ lib.format_article(article, true, true) }}"
-by {{ deadline }}.
-</p>
-<p><b>Abstract:</b></p>
-<blockquote>{{ article.abstract }}</blockquote>
-<p>
-You may complete your review now at:
-</p>
-<p>
-<a href="{{ req.protocol }}://{{ req.host }}/{{ validation_link }}">{{ req.protocol }}://{{ req.host }}/{{ validation_link }}</a>
-</p>
-<p>
-Thank you,
-<br>{{ config.global.name }}
-</p>
+{% block header %}
+    {{ __('title_program') }}
+{% endblock %}
+
+{% block sub_header %}
+    Review Deadline Reminder
+{% endblock %}
+
+{% block body %}
+    <p>Greetings,</p>
+    <p>
+        This is a friendly reminder that you agreed to review the article "{{ lib.format_article(article, true, true) }}" before {{ deadline }}. Please click the button below to submit your review at your earliest convenience.
+    </p>
+    <p>Thank you,</p>
+    <br>{{ config.global.name }}
+{% endblock %}
+
+{% block cta_text %}
+    Submit your review
+{% endblock %}
+
+{% block cta_link %}
+    {{ req.protocol }}://{{ req.host }}/{{ validation_link }}
+{% endblock %}
+
+{% block additional_info %}
+    <p>
+        You can also manually copy and paste this link into your browser:
+        {{ req.protocol }}://{{ req.host }}/{{ validation_link }}
+    </p>
 {% endblock %}

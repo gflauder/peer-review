@@ -1,18 +1,41 @@
+{% extends "email_template.twig" %}
+
 {% block subject %}
-Invitation à joindre {{ config.global.name }}
+    {{ config.global.name }} - Création de compte
 {% endblock %}
 
-{% block html %}
-<p>Bonjour,</p>
-<p>
-Vous êtes invités à vous joindre à {{ config.global.name }}, où ce courriel a été ajouté.
-Vous pouvez cliquer le lien ci-dessous pour accéder à votre nouveau compte:
-</p>
-<p>
-<a href="{{ req.protocol }}://{{ req.host }}/{{ validation_link }}">{{ req.protocol }}://{{ req.host }}/{{ validation_link }}</a>
-</p>
-<p>
-Merci,
-<br>{{ config.global.name }}
-</p>
+{% block header %}
+    {{ __('title_program') }}
 {% endblock %}
+
+{% block sub_header %}
+    Création de compte
+{% endblock %}
+
+{% block body %}
+    <p>Bonjour,</p>
+    <p>
+        Un compte a été créé pour votre adresse courriel sur le site de la Revue Criminologie.
+        Cliquez sur le bouton ci-dessous pour confirmer la création de votre compte.
+    </p>
+    <p>
+        Sincèrement,
+    </p>
+    <br>{{ config.global.name }}
+{% endblock %}
+
+{% block cta_text %}
+    Confirmation du compte
+{% endblock %}
+
+{% block cta_link %}
+    {{ req.protocol }}://{{ req.host }}/{{ validation_link }}
+{% endblock %}
+
+{% block additional_info %}
+    <p>
+        Vous pouvez aussi copier-coller ce lien manuellement dans votre fureteur:
+        {{ req.protocol }}://{{ req.host }}/{{ validation_link }}
+    </p>
+{% endblock %}
+

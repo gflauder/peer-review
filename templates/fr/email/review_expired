@@ -1,25 +1,35 @@
+{% extends "email_template.twig" %}
+
 {% block subject %}
-{% import 'lib.twig' as lib %}
-Invitation expirée pour: {{ lib.format_article(article, true, true) |truncate(64, true) }}
+    {{ config.global.name }} - Retrait d'une invitation
 {% endblock %}
 
-{% block html %}
-{% import 'lib.twig' as lib %}
-<p>Bonjour,</p>
-<p>
-Vous aviez été invité à évaluer l'article
-"{{ lib.format_article(article, true, true) }}"
-à paraître dans {{ config.global.name }}.
-</p>
-<p>
-Comme nous n'avons pas reçu de communication positive ni négative de votre
-part, cette invitation a maintenant expiré.
-Veuillez toutefois noter qu'il nous aurait été fort utile de connaître
-explicitement votre empêchement, afin de poursuivre plus rapidement notre
-recherche d'experts disponibles.
-</p>
-<p>
-Merci,
-<br>{{ config.global.name }}
-</p>
+{% block header %}
+    {{ __('title_program') }}
+{% endblock %}
+
+{% block sub_header %}
+    Retrait d'une invitation
+{% endblock %}
+
+{% block body %}
+    <p>Bonjour,</p>
+    <p>
+        Vous aviez été invité à évaluer l'article <em>{{ lib.format_article(article, true, true) }}</em>
+        pour la {{ config.global.name }}. Comme nous n'avons pas reçu de retour de votre part,
+        nous devons maintenant retirer notre invitation.
+    </p>
+    <p>
+        L'évaluation par les pairs joue un rôle essentiel dans notre processus de publication, et
+        nous espérons vivement pouvoir compter sur votre collaboration à l’avenir.
+    </p>
+    <p>
+        Votre retour est toujours une information précieuse pour nous. Si des circonstances vous
+        ont empêché de répondre, nous vous encourageons à nous tenir informés à l'avenir afin de
+        faciliter nos recherches d'experts disponibles.
+    </p>
+    <p>
+        Sincèrement,
+    </p>
+    <br>{{ config.global.name }}
 {% endblock %}

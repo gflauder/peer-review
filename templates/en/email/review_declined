@@ -1,24 +1,29 @@
+{% extends "email_template.twig" %}
+
 {% block subject %}
-{% import 'lib.twig' as lib %}
-Peer review role refused by {{ lib.format_user(peerId, true, true) }}
+    {% import 'lib.twig' as lib %}
+    Reviewer role refused for {{ lib.format_article(article, true, true) |truncate(64, true) }}
 {% endblock %}
 
-{% block html %}
-{% import 'lib.twig' as lib %}
-<p>Hello,</p>
-<p>
-{{ lib.format_user(peerId, true, true) }} who was recruited to review
-article "{{ lib.format_article(article, true, true) }}" has refused to
-participate.
-</p>
-{% if log %}
-<p>A suggestion was provided:</p>
-<blockquote>
-{{ log }}
-</blockquote>
-{% endif %}
-<p>
-Thank you,
-<br>{{ config.global.name }}
-</p>
+{% block header %}
+    {{ __('title_program') }}
+{% endblock %}
+
+{% block sub_header %}
+    Reviewer Role Refused
+{% endblock %}
+
+{% block body %}
+    <p>Greetings,</p>
+    <p>
+        {{ lib.format_user(peerId, true, true) }} was invited to review the article "{{ lib.format_article(article, true, true) }}". Unfortunately, this invitation was refused.
+    </p>
+    {% if log %}
+        <p>The person suggested alternate reviewers:</p>
+        <blockquote>
+            {{ log }}
+        </blockquote>
+    {% endif %}
+    <p>Thank you,</p>
+    <br>{{ config.global.name }}
 {% endblock %}

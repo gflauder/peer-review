@@ -1,0 +1,71 @@
+{% block subject %}
+    {{ subject | default(null) }}
+{% endblock %}
+
+{% block html %}
+    {% import 'lib.twig' as lib %}
+    <body style="font-family: 'Poppins', Arial, sans-serif; margin: 0; padding: 0;">
+
+    <table width="100%" border="0" cellspacing="0" cellpadding="0" style="border-collapse: collapse;">
+        <tr>
+            <td align="center" style="padding: 20px;">
+                <table width="600" border="0" cellspacing="0" cellpadding="0"
+                       style="border-collapse: collapse; width: 100%; max-width: 600px; border: 1px solid #cccccc;">
+                    <!-- Header -->
+                    <tr>
+                        <td style="padding: 10px; text-align: center; color: #ababab;">
+                            <h1>{% block header %}{{ header | default(null) }}{% endblock %}</h1>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="padding-top: 10px; padding-bottom: 40px; text-align: center; color: #ababab; font-size: 18px;">
+                            {% block sub_header %}{{ sub_header | default(null) }}{% endblock %}
+                        </td>
+                    </tr>
+                    <!-- Body -->
+                    <tr>
+                        <td style="padding: 40px; text-align: left; font-size: 16px; line-height: 1.6; color: #333;">
+                            {% block body %}{{ body | default(null) }}{% endblock %}
+                        </td>
+                    </tr>
+                    <!-- Call to Action Button -->
+                    {% if block('cta_text') is defined and block('cta_link') is defined %}
+                        <tr>
+                            <td style="padding: 10px; text-align: center;">
+                                <table cellspacing="0" cellpadding="0" style="margin: auto;">
+
+                                    <tr>
+                                        <td align="center" style="padding: 10px;">
+                                            <a href="{% block cta_link %}#{% endblock %}"
+                                               target="_blank"
+                                               style="color: #345C72; text-decoration: underline; font-weight: bold;">
+                                                {% block cta_text %}CTA Button{% endblock %}
+                                            </a>
+                                        </td>
+                                    </tr>
+
+                                </table>
+                            </td>
+                        </tr>
+                    {% endif %}
+                    <!-- Additional Information -->
+                    {% if block('additional_info') is not empty %}
+                        <tr>
+                            <td style="padding: 10px; text-align: center; font-size: 12px; color: #333;">
+                                {% block additional_info %}{{ additional_info | default(null) }}{% endblock %}
+                            </td>
+                        </tr>
+                    {% endif %}
+
+                    <!-- Footer -->
+                    <tr>
+                        <td style="padding: 10px; text-align: center; color: #ababab; font-size: 13px;">
+                            &copy; {{ "now"|date("Y") }} | {{ __('title_program') }}
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+    </body>
+{% endblock %}

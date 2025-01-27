@@ -1,24 +1,45 @@
+{% extends "email_template.twig" %}
+
 {% block subject %}
-{% import 'lib.twig' as lib %}
-Article {{ lib.format_status(article.status, false, true) }}: {{ article.title |truncate(64, true) }}
+    {{ config.global.name }} - Changement de statut d'un article
 {% endblock %}
 
-{% block html %}
-{% import 'lib.twig' as lib %}
-<p>Bonjour,</p>
-<p>
-Ce message est pour vous informer que l'article
-<a href="{{ req.protocol }}://{{ req.host }}{{ req.base }}/articles/{{ article.id }}/{{ article.permalink }}">{{ article.title |truncate(64, true) }}</a>
-a été {{ lib.format_status(article.status, false, true) }}.
-</p>
-{% if log %}
-<p>Un commentaire a été noté:</p>
-<blockquote>
-{{ log }}
-</blockquote>
-{% endif %}
-<p>
-Merci,
-<br>{{ config.global.name }}
-</p>
+{% block header %}
+    {{ __('title_program') }}
 {% endblock %}
+
+{% block sub_header %}
+    Changement de statut d'un article
+{% endblock %}
+
+{% block body %}
+    <p>Bonjour,</p>
+    <p>
+        Ce message est pour vous informer que le statut de l'article
+        <a href="{{ req.protocol }}://{{ req.host }}{{ req.base }}/articles/{{ article.id }}/{{ article.permalink }}">
+            {{ article.title |truncate(64, true) }}
+        </a>
+        a été modifié. L'article est maintenant {{ lib.format_status(article.status, false, true) }}.
+        Si des commentaires sont disponibles, ils se trouvent en pièce jointe à ce courriel.
+    </p>
+    <p>
+        Sincèrement,
+    </p>
+    <br>{{ config.global.name }}
+{% endblock %}
+
+{% block cta_text %}
+    Page de l'article
+{% endblock %}
+
+{% block cta_link %}
+    {{ req.protocol }}://{{ req.host }}{{ req.base }}/articles/{{ article.id }}/{{ article.permalink }}
+{% endblock %}
+
+{% block additional_info %}
+    <p>
+        Vous pouvez aussi copier-coller ce lien manuellement dans votre fureteur:
+        {{ req.protocol }}://{{ req.host }}{{ req.base }}/articles/{{ article.id }}/{{ article.permalink }}
+    </p>
+{% endblock %}
+

@@ -1,18 +1,37 @@
+{% extends "email_template.twig" %}
+
 {% block subject %}
-Invitation to join {{ config.global.name }}
+    {{ config.global.name }} - New account
 {% endblock %}
 
-{% block html %}
-<p>Hello,</p>
-<p>
-You are invited to join {{ config.global.name }}, where this e-mail address has been added.
-Please click the following link to access your new account:
-</p>
-<p>
-<a href="{{ req.protocol }}://{{ req.host }}/en/{{ validation_link }}">{{ req.protocol }}://{{ req.host }}/en/{{ validation_link }}</a>
-</p>
-<p>
-Thank you,
-<br>{{ config.global.name }}
-</p>
+{% block header %}
+    {{ __('title_program') }}
+{% endblock %}
+
+{% block sub_header %}
+    New account
+{% endblock %}
+
+{% block body %}
+    <p>Greetings,</p>
+    <p>
+        You are invited to join {{ config.global.name }}, where an account for this e-mail address has been created. Please click the button below to confirm your account creation.
+    </p>
+    <p>Thank you,</p>
+    <br>{{ config.global.name }}
+{% endblock %}
+
+{% block cta_text %}
+    Confirm your account
+{% endblock %}
+
+{% block cta_link %}
+    {{ req.protocol }}://{{ req.host }}/en/{{ validation_link }}
+{% endblock %}
+
+{% block additional_info %}
+    <p>
+        You can also manually copy and paste this link into your browser:
+        {{ req.protocol }}://{{ req.host }}/en/{{ validation_link }}
+    </p>
 {% endblock %}

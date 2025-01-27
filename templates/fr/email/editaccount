@@ -1,20 +1,46 @@
+{% extends "email_template.twig" %}
+
 {% block subject %}
-{{ config.global.name }} - Modifications au compte
+    {{ config.global.name }} - Confirmation de compte
 {% endblock %}
 
-{% block html %}
-<p>Bonjour,</p>
-<p>
-Ce message est pour vous informer que l'adresse de courriel et/ou le mot de
-passe de votre compte ont été modifiés.  Vous n'avez pas d'autre action à
-prendre.
-</p>
-<p>
-Si vous n'avez pas demandé cette modification, veuillez nous contacter sans
-tarder pour nous permettre de regarder ce qui s'est passé.
-</p>
-<p>
-Merci,
-<br>{{ config.global.name }}
-</p>
+{% block header %}
+    {{ __('title_program') }}
 {% endblock %}
+
+{% block sub_header %}
+    Confirmation de compte
+{% endblock %}
+
+{% block body %}
+    <p>Bonjour,</p>
+    <p>
+        Ce message est pour confirmer que vous contrôlez bien cette adresse de courriel.
+        Si vous avez demandé de créer un compte pour la Revue Criminologie, nous vous invitons à
+        appuyer sur le bouton ci-dessous.
+    </p>
+    <p>
+        Si vous n'avez pas demandé cette vérification, vous pouvez sans danger ignorer
+        ce message.
+    </p>
+    <p>
+        Sincèrement,
+    </p>
+    <br>{{ config.global.name }}
+{% endblock %}
+
+{% block cta_text %}
+    Confirmer votre compte
+{% endblock %}
+
+{% block cta_link %}
+    {{ req.protocol }}://{{ req.host }}/{{ validation_link }}
+{% endblock %}
+
+{% block additional_info %}
+    <p>
+        Vous pouvez aussi copier-coller ce lien manuellement dans votre fureteur:
+        {{ req.protocol }}://{{ req.host }}/{{ validation_link }}
+    </p>
+{% endblock %}
+

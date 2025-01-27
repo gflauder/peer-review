@@ -1,29 +1,39 @@
-{% import 'lib.twig' as lib %}
-{% set truncatedTitle = lib.format_article(article, true, true) | truncate(64, true) %}
-{% set fullTitle = lib.format_article(article, true, true) %}
-{% set completionLink = req.protocol ~ '://' ~ req.host ~ '/' %}
+{% extends "email_template.twig" %}
 
 {% block subject %}
-   {% import 'lib.twig' as lib %}
-Late review for: {{ truncatedTitle }}
+   {{ config.global.name }} - Review Overdue
 {% endblock %}
 
-{% block html %}
-   % import 'lib.twig' as lib %}
-<p>Hello,</p>
-<p>
-Please note that we have not received your review of the article
-"{{ fullTitle }}"
-which was expected on {{ deadline }} at the latest.
-</p>
-<p>
-You may still complete it today at:
-</p>
-<p>
-<a href="{{ completionLink }}">{{ completionLink }}</a>
-</p>
-<p>
-Thank you,
-<br>{{ config.global.name }}
-</p>
+{% block header %}
+   {{ __('title_program') }}
+{% endblock %}
+
+{% block sub_header %}
+   Late Review for: {{ truncatedTitle }}
+{% endblock %}
+
+{% block body %}
+   <p>Greetings,</p>
+   <p>
+      You had agreed to review the article "{{ fullTitle }}" for the Revue Criminologie before {{ deadline }}. We have yet to receive your review and would greatly appreciate your collaboration to complete it as soon as possible using the button below.
+   </p>
+   <p>
+      Should you need more time to complete your review, we invite you to contact our team at
+      <a href="mailto:admin@criminologie.ca">admin@criminologie.ca</a>.
+   </p>
+   <p>
+      Reviewing articles is an essential part of our publication process, and we thank you again for your time and collaboration.
+   </p>
+   <br>{{ config.global.name }}
+{% endblock %}
+
+{% block call_to_action %}
+   <a href="{{ completionLink }}"
+      style="background-color: #345C72; color: #ffffff; text-decoration: none; font-weight: bold; padding: 10px 20px; border-radius: 5px;"
+      target="_blank">
+      Complete your review
+   </a>
+   <p style="font-size: 12px; text-align: center; margin-top: 10px; color: #333;">
+      You can also manually copy and paste this link to your browser: {{ completionLink }}
+   </p>
 {% endblock %}

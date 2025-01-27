@@ -1,26 +1,48 @@
+{% extends "email_template.twig" %}
+
 {% block subject %}
-{% import 'lib.twig' as lib %}
-Rappel d'évaluation de: {{ lib.format_article(article, true, true) |truncate(64, true) }}
+    {{ config.global.name }} - Rappel d'évaluation d'un article
 {% endblock %}
 
-{% block html %}
-{% import 'lib.twig' as lib %}
-<p>Bonjour,</p>
-<p>
-Un petit rappel que nous avons besoin de votre évaluation de l'article
-"{{ lib.format_article(article, true, true) }}"
-d'ici le {{ deadline }}.
-</p>
-<p><b>Sommaire:</b></p>
-<blockquote>{{ article.abstract }}</blockquote>
-<p>
-Vous pouvez la compléter dès maintenant à:
-</p>
-<p>
-<a href="{{ req.protocol }}://{{ req.host }}/{{ validation_link }}">{{ req.protocol }}://{{ req.host }}/{{ validation_link }}</a>
-</p>
-<p>
-Merci,
-<br>{{ config.global.name }}
-</p>
+{% block header %}
+    {{ __('title_program') }}
+{% endblock %}
+
+{% block sub_header %}
+    Rappel d'évaluation d'un article
+{% endblock %}
+
+{% block body %}
+    <p>Bonjour,</p>
+    <p>
+        Ceci est un rappel que vous avez accepté d'évaluer l'article
+        <em>{{ lib.format_article(article, true, true) }}</em>
+        qui a été soumis à la {{ config.global.name }} d'ici au **{{ deadline }}**.
+        Vous pouvez cliquer sur le bouton ci-dessous pour accéder à la page de l'article.
+    </p>
+    <p>
+        Si vous ne pensez pas être en mesure de compléter l'évaluation dans ce délai,
+        nous vous invitons à contacter <a href="mailto:admin@criminologie.ca">notre équipe</a>
+        dans les plus brefs délais pour trouver un arrangement.
+        Il est important pour nous de recevoir votre évaluation afin de ne pas retarder le processus de décision.
+    </p>
+    <p>
+        Sincèrement,
+    </p>
+    <br>{{ config.global.name }}
+{% endblock %}
+
+{% block cta_text %}
+    Soumettre votre évaluation
+{% endblock %}
+
+{% block cta_link %}
+    {{ req.protocol }}://{{ req.host }}/{{ validation_link }}
+{% endblock %}
+
+{% block additional_info %}
+    <p>
+        Vous pouvez aussi copier-coller ce lien manuellement dans votre fureteur:
+        {{ req.protocol }}://{{ req.host }}/{{ validation_link }}
+    </p>
 {% endblock %}
