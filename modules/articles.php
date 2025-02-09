@@ -1,29 +1,15 @@
 <?php
 
 /**
- * Articles
- *
- * PHP version 5
- *
- * @category  Application
- * @package   PyriteView
- * @author    Stéphane Lavergne <lis@imars.com>
- * @copyright 2017 Stéphane Lavergne
- * @license   http://www.gnu.org/licenses/agpl-3.0.txt  GNU Affero GPL version 3
- * @link      https://github.com/vphantom/pyriteview
- */
-
-/**
  * Articles class
  *
  * PHP version 7.4
  *
  * @category  Application
  * @package   PyriteView
- * @author    Stéphane Lavergne <lis@imars.com>
- * @copyright 2017 Stéphane Lavergne
+ * @author    gflauder <gflauder@hotmail.com>
+ * @copyright 2017 GFlauder
  * @license   http://www.gnu.org/licenses/agpl-3.0.txt  GNU Affero GPL version 3
- * @link      https://github.com/vphantom/pyriteview
  */
 class Articles
 {
@@ -247,7 +233,8 @@ class Articles
 
         $latestReview = null; // To store the latest review matching the peerId
         // Loop through all reviews in this article's version
-        foreach ($article['versions'][0]['reviews'] as $review) {
+        if (isset($article['versions'][0]['reviews']) && is_array($article['versions'][0]['reviews'])) {
+            foreach ($article['versions'][0]['reviews'] as $review) {
             if ($review['peerId'] == $_SESSION['user']['id']) {
                 // If it's the first matched review or newer than the current latest
                 if ($latestReview === null || strtotime($review['created']) > strtotime($latestReview['created'])) {
@@ -255,12 +242,15 @@ class Articles
                 }
             }
         }
+        }
 
         // Evaluate the status of the latest review
-        if ($latestReview && $latestReview['status'] === 'deleted' && !$ignorePermissions ) {
-            $article['isPeer'] = false; // If the latest review's status is "created", set true
+        if ($latestReview === null) {
+            $article['isPeer'] = false; // No review exists; not considered a peer
+        } elseif ($latestReview['status'] === 'deleted' && !$ignorePermissions) {
+            $article['isPeer'] = false; // Latest review is "deleted" and permissions are enforced
         } else {
-            $article['isPeer'] = true; // Otherwise, set false
+            $article['isPeer'] = true; // Otherwise, considered a peer
         }
 
        // At this point, $article['isPeer'] contains the correct value

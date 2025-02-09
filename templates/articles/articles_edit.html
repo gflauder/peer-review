@@ -65,7 +65,10 @@
                     <div class="row mb-3">
                         <label for="issueId" class="col-sm-2 col-form-label text-sm-end text-start">{{ __('label_issueId') }}</label>
                         <div class="col-sm-3">
-                            <select data-label="{{ __('label_issueId') }}" id="issueId" name="issueId" class="select form-select "
+                            <select data-label="{{ __('label_issueId') }}"
+                                    id="issueId"
+                                    name="issueId"
+                                    class="select form-select "
                                     required>
                                 {% if not article.id %}
                                 <option selected disabled>{{ __('label_issueId') }}...
@@ -166,8 +169,6 @@
 
                 <div data-label="{{ __('label_files') }}" class="input-like" id="file-list">
                     {% set vid = 1 %}
-
-
                     <div class="row mb-3">
                         <div id="file-list" class="col-sm-8 offset-sm-2">
                             <div class="accordion" id="versionFiles">
@@ -216,10 +217,9 @@
                     </div>
                     <div class="row mb-3">
                         <label class="col-sm-2 col-form-label text-sm-end text-start">{{ __('label_files') }}</label>
-                        <div class="col-sm-10">
-                            {{ lib.input_files('addfile', 'xs') }}
+                        <div class="col-sm-10">{{ article.versions|length }}
+                            {{ lib.input_files('addfile', 'xs', article.versions|length == 0) }}
                         </div>
-
                     </div>
                 </div>
 
@@ -263,6 +263,10 @@
                         </div>
                     </div>
                 </div>
+
+
+              {#todo: make file manditory on new saves. #}
+
 
                 <div class="row mb-3">
                     <div class="col-sm-10 offset-sm-2">
