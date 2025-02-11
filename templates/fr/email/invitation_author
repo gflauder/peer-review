@@ -16,8 +16,7 @@
     {% import 'lib.twig' as lib %}
     <p>Bonjour,</p>
     <p>
-        Vous avez été ajouté comme auteur à l'article <em>{{ lib.format_article(article, true, true) }}</em>
-        pour la {{ config.global.name }}. Vous pouvez cliquer sur le bouton ci-dessous pour accéder à l'article.
+        Vous avez été ajouté comme auteur à l'article <em>{{ lib.format_article(article, true, true) }}</em> pour la {{ config.global.name }}. Vous pouvez cliquer sur le bouton ci-dessous pour accéder à l'article.
     </p>
     <p>
         Sincèrement,

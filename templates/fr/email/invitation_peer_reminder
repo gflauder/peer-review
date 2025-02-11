@@ -16,16 +16,10 @@
     {% import 'lib.twig' as lib %}
     <p>Bonjour,</p>
     <p>
-        Ceci est un rappel que vous avez accepté d'évaluer l'article
-        <em>{{ lib.format_article(article, true, true) }}</em>
-        qui a été soumis à la {{ config.global.name }} d'ici au **{{ deadline }}**.
-        Vous pouvez cliquer sur le bouton ci-dessous pour accéder à la page de l'article.
+        Ceci est un rappel que vous avez accepté d'évaluer l'article <em>{{ lib.format_article(article, true, true) }}"</em> qui a été soumis à la {{ config.global.name }} d'ici au {{ deadline }}. Vous pouvez cliquer sur le bouton ci-dessous pour accéder à la page de l'article.
     </p>
     <p>
-        Si vous ne pensez pas être en mesure de compléter l'évaluation dans ce délai,
-        nous vous invitons à contacter <a href="mailto:admin@criminologie.ca">notre équipe</a>
-        dans les plus brefs délais pour trouver un arrangement.
-        Il est important pour nous de recevoir votre évaluation afin de ne pas retarder le processus de décision.
+        Si vous ne pensez pas être en mesure de compléter l'évaluation dans ce délai, nous vous invitons à contacter <a href="mailto:admin@criminologie.ca">notre équipe</a> dans les plus brefs délais pour trouver un arrangement. Il est important pour nous de recevoir votre évaluation afin de ne pas retarder le processus de décision.
     </p>
     <p>
         Sincèrement,

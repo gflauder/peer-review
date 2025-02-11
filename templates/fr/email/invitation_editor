@@ -16,9 +16,7 @@
     {% import 'lib.twig' as lib %}
     <p>Bonjour,</p>
     <p>
-        Vous avez été ajouté comme éditeur du numéro
-        <em>{{ lib.format_issue(issue, true, true) }}</em>
-        pour la {{ config.global.name }}. Vous pouvez cliquer sur le bouton ci-dessous pour accéder au numéro.
+        Vous avez été ajouté comme éditeur du numéro <em>{{ lib.format_issue(issue, true, true) }}"</em> pour la {{ config.global.name }}. Vous pouvez cliquer sur le bouton ci-dessous pour accéder au numéro.
     </p>
     <p>
         Sincèrement,

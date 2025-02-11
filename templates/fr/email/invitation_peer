@@ -16,21 +16,18 @@
     {% import 'lib.twig' as lib %}
     <p>Bonjour,</p>
     <p>
-        Vous êtes invités à évaluer en tant qu'expert l'article
-        <em>{{ lib.format_article(article, true, true) }}</em>
-        qui a été soumis à {{ config.global.name }}.
+        Vous êtes invités à évaluer en tant qu'expert l'article <em>{{ lib.format_article(article, true, true) }}"</em> qui a été soumis à {{ config.global.name }}.
     </p>
     <p><b>Résumé:</b></p>
     <blockquote>{{ article.abstract }}</blockquote>
     <p>
-        Nous vous prions de bien vouloir nous faire part de votre intérêt à effectuer cette évaluation
-        en cliquant sur le bouton ci-dessous. Il est important pour nous d'enregistrer votre décision rapidement,
-        afin de ne pas retarder le processus d'évaluation. Ceci ne prend qu'un instant.
+        Nous vous prions de bien vouloir nous faire part de votre intérêt à effectuer cette évaluation en cliquant sur le bouton ci-dessous. Il est important pour nous d'enregistrer votre décision rapidement, afin de ne pas retarder le processus d'évaluation. Ceci ne prend qu'un instant.
     </p>
     <p>
         Sincèrement,
     </p>
     <br>{{ config.global.name }}
+
 {% endblock %}
 
 {% block cta_text %}

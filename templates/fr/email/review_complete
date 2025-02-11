@@ -16,9 +16,7 @@
     {% import 'lib.twig' as lib %}
     <p>Bonjour,</p>
     <p>
-        {{ lib.format_user(peerId, true, true) }} a complété son évaluation et a pris la décision de
-        {{ lib.format_status(status, false, true) }} l'article
-        <em>{{ lib.format_article(article, true, true) }}</em>.
+        {{ lib.format_user(peerId, true, true) }} a complété son évaluation et a pris la décision de {{ lib.format_status(status, false, true) }} l'article <em>{{ lib.format_article(article, true, true) }}</em>.
     </p>
     <p>
         Sincèrement,

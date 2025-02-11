@@ -17,17 +17,9 @@
     <p>Bonjour,</p>
     <p>
         Vous aviez été invité à évaluer l'article <em>{{ lib.format_article(article, true, true) }}</em>
-        pour la {{ config.global.name }}. Comme nous n'avons pas reçu de retour de votre part,
-        nous devons maintenant retirer notre invitation.
-    </p>
-    <p>
-        L'évaluation par les pairs joue un rôle essentiel dans notre processus de publication, et
-        nous espérons vivement pouvoir compter sur votre collaboration à l’avenir.
-    </p>
-    <p>
-        Votre retour est toujours une information précieuse pour nous. Si des circonstances vous
-        ont empêché de répondre, nous vous encourageons à nous tenir informés à l'avenir afin de
-        faciliter nos recherches d'experts disponibles.
+        pour la {{ config.global.name }}. Comme nous n'avons pas reçu de retour de votre part, nous devons
+        maintenant retirer notre invitation. L'évaluation par les pairs joue un rôle important dans notre processus
+        de publication, et nous espérons vivement que nous pourrons compter sur un retour de votre part une prochaine fois.
     </p>
     <p>
         Sincèrement,

@@ -16,11 +16,7 @@
     {% import 'lib.twig' as lib %}
     <p>Bonjour,</p>
     <p>
-        Ce message est pour vous informer que l'article
-        <a href="{{ req.protocol }}://{{ req.host }}{{ req.base }}/articles/{{ article.id }}/{{ article.permalink }}">
-            {{ article.title |truncate(64, true) }}
-        </a>
-        a été créé ou modifié par {{ lib.format_user(session.user, true, true) }}.
+        Ce message est pour vous informer que l'article <a href="{{ req.protocol }}://{{ req.host }}{{ req.base }}/articles/{{ article.id }}/{{ article.permalink }}">{{ article.title |truncate(64, true) }}</a> a été créé ou modifié par {{ lib.format_user(session.user, true, true) }}.
     </p>
     <p>
         Sincèrement,

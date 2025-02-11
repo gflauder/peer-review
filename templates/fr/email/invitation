@@ -16,8 +16,7 @@
     {% import 'lib.twig' as lib %}
     <p>Bonjour,</p>
     <p>
-        Un compte a été créé pour votre adresse courriel sur le site de la Revue Criminologie.
-        Cliquez sur le bouton ci-dessous pour confirmer la création de votre compte.
+        Un compte a été créé pour votre adresse courriel sur le site de la Revue Criminologie. Cliquez sur le bouton ci-dessous pour confirmer la création de votre compte.
     </p>
     <p>
         Sincèrement,

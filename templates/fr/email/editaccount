@@ -16,13 +16,10 @@
     {% import 'lib.twig' as lib %}
     <p>Bonjour,</p>
     <p>
-        Ce message est pour confirmer que vous contrôlez bien cette adresse de courriel.
-        Si vous avez demandé de créer un compte pour la Revue Criminologie, nous vous invitons à
-        appuyer sur le bouton ci-dessous.
+        Ce message est pour vous informer que l'adresse de courriel et/ou le mot de passe de votre compte ont été modifiés.  Vous n'avez pas d'autre action à prendre.
     </p>
     <p>
-        Si vous n'avez pas demandé cette vérification, vous pouvez sans danger ignorer
-        ce message.
+        Si vous n'avez pas demandé cette vérification, contactez notre équipe au <a href="mailto:admin@criminologie.ca">admin@criminologie.ca</a> dans les plus brefs délais.
     </p>
     <p>
         Sincèrement,

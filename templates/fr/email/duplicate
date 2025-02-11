@@ -16,12 +16,7 @@
     {% import 'lib.twig' as lib %}
     <p>Bonjour,</p>
     <p>
-        Ce message est pour vous informer que l'adresse de courriel et/ou le mot de passe de votre compte
-        ont été modifiés. Vous n'avez pas d'autre action à prendre.
-    </p>
-    <p>
-        Si vous n'avez pas demandé cette vérification, contactez notre équipe au
-        <a href="mailto:admin@criminologie.ca">admin@criminologie.ca</a> dans les plus brefs délais.
+        Ce message est pour vous informer que vous ou quelqu'un d'autre avez tenté de créer un compte pour cette adresse de courriel. Un compte est cependant déjà associé à ce courriel. Pour vous connecter à votre compte, rendez-vous sur <a href ="https://criminologie.ca">notre site</a> et entrez votre courriel dans notre formulaire de connexion. Vous recevrez dans les prochaines minutes un courriel pour vous connecter à votre compte sans mot de passe.
     </p>
     <p>
         Sincèrement,
