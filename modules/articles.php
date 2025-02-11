@@ -929,8 +929,14 @@ class Articles
                     $success = false;
                     break;
                 };
+
                 // Regardless if user existed, make sure it now has 'peer' role
-                trigger('grant', $peer, 'peer');
+                trigger('grant', $peer, 'peer'); // Grant the peer role
+                // Ensure the user can still act as an author
+                if (!pass('has_role',$peer,'author')) {
+                    trigger('grant', $peer, 'author');
+                }
+
                 // Log and e-mail, which will be part of the rolled back transaction if we fail.
                 trigger(
                     'log',
@@ -1148,6 +1154,12 @@ on(
         global $PPHP;
 
         if (!pass('can', 'create', 'article')) return false;
+        // Allow peers to create articles if they are also authors
+        if (pass('has_role', 'peer') && pass('has_role', 'author')) {
+            return true; // Peers who are authors can create articles
+        }
+
+
         if (pass('has_role', 'author')) {
             // Authors are throttled in articles per day
             $maxDailyCount = $PPHP['config']['articles']['max_daily_articles'];

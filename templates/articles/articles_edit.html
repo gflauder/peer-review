@@ -327,13 +327,13 @@
                         <div class="row mb-3">
                             <label class="col-sm-2 col-form-label text-sm-end text-start">{{ __('label_files') }}</label>
                             <div class="col-sm-10">
-                                {{ lib.input_files('addfiletomail', 'xs') }}
+                                {{ lib.input_files('addfiletomail', 'xs',false) }}
                             </div>
                         </div>
 
                         <div class="row mb-3">
                             <div class="col-sm-10 offset-sm-2">
-                                {{ lib.leftright_submit('change_and_send', true) }}
+                                {{ lib.leftright_submit('change_and_send',true) }}
                             </div>
                         </div>
                     </form>
@@ -560,7 +560,7 @@
                         </button>
                     {% else %}
                         {{ block('hint_review') }}
-                        <div>{{ lib.input_files('addfilefrompeer', 'xs', true) }}</div>
+                        <div>{{ lib.input_files('addfilefrompeer', 'xs', false) }}</div>
                         {% for status in config.reviews.states_next[review.status]|split(' ') %}
                             <button class="btn btn-default" type="submit" name="status"
                                     value="{{ status }}">{{ lib.format_status(status, true) }}</button>
