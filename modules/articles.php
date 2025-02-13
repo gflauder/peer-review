@@ -53,18 +53,18 @@ class Articles
         );
         foreach ($config['states'] as $status) {
             $db->exec("REPLACE INTO articleStatus (name) VALUES (?)", array($status));
-        };
+        }
 
         $customs = '';
         if (isset($config['fields'])) {
             foreach ($config['fields'] as $name => $definition) {
                 $customs .= "                {$name} {$definition},\n";
-            };
-        };
+            }
+        }
         $db->exec(
             "
             CREATE TABLE IF NOT EXISTS 'articles' (
-                id          INTEGER PRIMARY KEY AUTOINCREMENT,
+                id          INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
                 issueId     INTEGER NOT NULL DEFAULT '0',
                 status      VARCHAR(64) NOT NULL DEFAULT 'created',
                 wordCount   INTEGER NOT NULL DEFAULT '0',
@@ -81,7 +81,7 @@ class Articles
         );
         $db->exec(
             "
-            CREATE TABLE IF NOT EXISTS 'articleVersions' (
+            CREATE TABLE IF NOT EXISTS `articleVersions` (
                 id          INTEGER PRIMARY KEY AUTOINCREMENT,
                 articleId   INTEGER NOT NULL DEFAULT '0',
                 created     TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -128,7 +128,7 @@ class Articles
      *
      * @return string Issue "issue" nickname
      */
-    private static function _getIssueName($in)
+    private static function _getIssueName($in): string
     {
         global $PPHP;
         $db = $PPHP['db'];
@@ -142,10 +142,10 @@ class Articles
                 ",
                 array($in)
             );
-        };
+        }
         if (!is_array($in)) {
             return '0';
-        };
+        }
         return Issues::getIssueName($in);
     }
 
@@ -169,7 +169,7 @@ class Articles
      *
      * @return array|bool Article (associative) or false on failure
      */
-    public static function get($id, $ignorePermissions = false)
+    public static function get(int $id, $ignorePermissions = false)
     {
         global $PPHP;
         $db = $PPHP['db'];
@@ -186,7 +186,7 @@ class Articles
         );
         if ($article === false) {
             return false;
-        };
+        }
 
         // Process up to the point where we can determine if the user is
         // allowed access to this article.  This means getting reviews.
@@ -202,14 +202,14 @@ class Articles
         );
         if (!is_array($article['versions'])) {
             $article['versions'] = array();
-        };
+        }
         $uniquePeers = array();
         // The following is quite ugly with $vkey/$rkey but it's to edit in place.
         foreach ($article['versions'] as $vkey => $version) {
             $article['versions'][$vkey]['files'] = json_decode($version['files'], true);
             if (!is_array($article['versions'][$vkey]['files'])) {
                 $article['versions'][$vkey]['files'] = array();
-            };
+            }
             $article['versions'][$vkey]['reviews'] = $db->selectArray(
                 "
                 SELECT *, CAST(round(julianday(deadline) - julianday('now')) AS INTEGER) AS daysLeft
@@ -223,10 +223,10 @@ class Articles
                 $article['versions'][$vkey]['reviews'][$rkey]['files'] = json_decode($review['files'], true);
                 if (!is_array($article['versions'][$vkey]['reviews'][$rkey]['files'])) {
                     $article['versions'][$vkey]['reviews'][$rkey]['files'] = array();
-                };
+                }
                 $uniquePeers[$review['peerId']] = true;
-            };
-        };
+            }
+        }
         /*        $article['isPeer'] = count($article['versions']) > 0
                     ? $article['versions'][count($article['versions']) - 1]['isPeer']
                     : false;*/
@@ -235,13 +235,13 @@ class Articles
         // Loop through all reviews in this article's version
         if (isset($article['versions'][0]['reviews']) && is_array($article['versions'][0]['reviews'])) {
             foreach ($article['versions'][0]['reviews'] as $review) {
-            if ($review['peerId'] == $_SESSION['user']['id']) {
-                // If it's the first matched review or newer than the current latest
-                if ($latestReview === null || strtotime($review['created']) > strtotime($latestReview['created'])) {
-                    $latestReview = $review; // Update the latest review
+                if ($review['peerId'] == $_SESSION['user']['id']) {
+                    // If it's the first matched review or newer than the current latest
+                    if ($latestReview === null || strtotime($review['created']) > strtotime($latestReview['created'])) {
+                        $latestReview = $review; // Update the latest review
+                    }
                 }
             }
-        }
         }
 
         // Evaluate the status of the latest review
@@ -253,7 +253,7 @@ class Articles
             $article['isPeer'] = true; // Otherwise, considered a peer
         }
 
-       // At this point, $article['isPeer'] contains the correct value
+        // At this point, $article['isPeer'] contains the correct value
         if (pass('can', 'view', 'article', $id)
             || pass('can', 'view', 'issue', $article['issueId'])
             || pass('can', 'edit', 'article', $id)
@@ -268,7 +268,22 @@ class Articles
 
             // Consistency check!
             // Any author found in ACL but not in our column get added.
-            $article['authors'] = isset($article['authors']) && $article['authors'] !== null ? dejoin(';', $article['authors']) : [];
+            /**
+             * Processes the authors field of an article.
+             *
+             * @param array $article The article data.
+             * @return array Processed authors.
+             */
+            function processArticleAuthors(array $article): array
+            {
+                if (isset($article['authors']) && $article['authors'] !== null) {
+                    return dejoin(';', $article['authors']);
+                }
+                return [];
+            }
+
+// Using the extracted function
+            $article['authors'] = processArticleAuthors($article);
             $dirtyAuthors = false;
             foreach (
                 array_diff(
@@ -278,7 +293,7 @@ class Articles
             ) {
                 $article['authors'][] = $author;
                 $dirtyAuthors = true;
-            };
+            }
             if ($dirtyAuthors) {
                 $db->update(
                     'articles',
@@ -288,23 +303,23 @@ class Articles
                     'WHERE id=?',
                     array($id)
                 );
-            };
+            }
 
             // Authors do not have the editor role for this specific article.
             foreach ($article['editors'] as $key => $editor) {
                 if (in_array($editor, $article['authors'])) {
                     unset($article['editors'][$key]);
-                };
-            };
+                }
+            }
             if (count($article['editors']) < 1) {
                 $article['editors'] = grab('role_users', 'editor-in-chief');
-            };
+            }
 
             $article['issue'] = self::_getIssueName($article);
             $article['files_dir'] = "{$config['path']}/{$article['issue']}/{$article['id']}";
         } else {
             return false;
-        };
+        }
 
         return $article;
     }
@@ -332,7 +347,7 @@ class Articles
      *
      * @return array Articles or arrays keyed by status
      */
-    public static function getList($args = array())
+    public static function getList($args = array()): array
     {
         global $PPHP;
         $db = $PPHP['db'];
@@ -360,7 +375,7 @@ class Articles
                         $states = $val;
                     } else {
                         $states[] = $val;
-                    };
+                    }
                     break;
                 case 'noReviews':
                     $noReviews = true;
@@ -377,11 +392,15 @@ class Articles
                 case 'byStatus':
                     $byStatus = $val;
                     break;
-            };
-        };
+            }
+        }
 
-        $q = $db->query('SELECT articles.*, issues.volume, issues.number FROM articles');
-        $q->left_join('issues ON issues.id=articles.issueId');
+        $q = $db->query(
+                'SELECT articles.id, articles.title, issues.volume, issues.number
+                 FROM articles
+                 LEFT JOIN issues ON issues.id = articles.issueId'
+        );
+
         if ($noReviews || $miaPeers || $lateReviews) {
             // Get last version for each article
             $q->left_join(
@@ -393,7 +412,7 @@ class Articles
             );
             // Get reviews for chosen version
             $q->left_join('reviews ON reviews.versionId=articleVersions.id');
-        };
+        }
         $q->where();
         $sources = array();
         $sources[] = grab('can_sql', 'issues.id', 'view', 'issue');
@@ -422,13 +441,13 @@ class Articles
         $q->implodeClosed('OR', $sources);
         if (pass('has_role', 'reader')) {
             $q->and("articles.status='published'");
-        };
+        }
         if ($issueId !== null) {
             $q->and('articles.issueId=?', $issueId);
-        };
+        }
         if (count($states) > 0) {
             $q->append('AND articles.status IN')->varsClosed($states);
-        };
+        }
         if ($current) {
             $search = array();
 
@@ -440,7 +459,7 @@ class Articles
                 ->and("issues.publication > date('now', '-1 month') )");
 
             $q->and()->implodeClosed('OR', $search);
-        };
+        }
         if ($keyword !== null) {
             $search = array();
             $search[] = $db->query('articles.title LIKE ?', "%{$keyword}%");
@@ -450,30 +469,30 @@ class Articles
             $search[] = $db->query('articles.keywords_en LIKE ?', "%{$keyword}%");
             $search[] = $db->query('articles.abstract_en LIKE ?', "%{$keyword}%");
             $q->and()->implodeClosed('OR', $search);
-        };
+        }
         if ($noReviews) {
             $q->and('reviews.id IS NULL');
             $q->group_by('articles.id');  // Allowed with ORDER BY in SQLite
-        };
+        }
         if ($miaPeers) {
             $q->and('reviews.id IS NOT NULL');
             $q->and("reviews.status = 'created'");
             $q->and("reviews.created < date('now', '-{$config['reviews']['accept_days']} days')");
-        };
+        }
         if ($lateReviews) {
             $q->and('reviews.id IS NOT NULL');
             $q->and("reviews.status = 'reviewing'");
             $q->and("reviews.deadline < date('now')");
-        };
+        }
         $q->order_by('issues.volume DESC, issues.number DESC, articles.id DESC');
 
         if ($config['global']['debug']) {
             print_r($q);
-        };
+        }
         $list = $db->selectArray($q);
         if ($list === false) {
             return array();
-        };
+        }
 
         foreach ($list as $key => $article) {
             // Weird bug with PHP using $list => &$article
@@ -481,17 +500,17 @@ class Articles
             $list[$key]['keywords_en'] = dejoin(';', $article['keywords_en']);
             $list[$key]['permalink'] = makePermalink($article['title']);
             $list[$key]['issue'] = self::_getIssueName($article);
-        };
+        }
 
         if ($byStatus === true) {
             $sorted = array();
             foreach ($list as $article) {
                 $sorted[$article['status']][] = $article;
-            };
+            }
             return $sorted;
         } else {
             return $list;
-        };
+        }
     }
 
     /**
@@ -566,7 +585,7 @@ class Articles
      * @param array $cols Article information
      * @param array $files (Optional.) Files, usually from grab('request')['files']
      *
-     * @return int|bool The Id (possibly created) on success, false on error
+     * @return int|bool The id (possibly created) on success, false on error
      */
     public static function save($cols, $files = array())
     {
@@ -582,20 +601,20 @@ class Articles
         if (isset($cols['log'])) {
             $maillog = $log = $cols['log'];
             unset($cols['log']);
-        };
+        }
 
         $db->begin();
         if (isset($cols['keywords']) && is_array($cols['keywords'])) {
             $cols['keywords'] = implode(';', $cols['keywords']);
-        };
+        }
         if (isset($cols['keywords_en']) && is_array($cols['keywords_en'])) {
             $cols['keywords_en'] = implode(';', $cols['keywords_en']);
-        };
+        }
 
         if (isset($cols['authors']) && is_array($cols['authors'])) {
             $newAuthors = $cols['authors'];
             $cols['authors'] = implode(';', $cols['authors']);
-        };
+        }
         if (isset($cols['id'])) {
             $id = $cols['id'];
             unset($cols['id']);
@@ -612,13 +631,13 @@ class Articles
                     $issuePath = $config['articles']['path'] . '/' . $issue['issue'];
                     if (!file_exists($issuePath)) {
                         mkdir($issuePath, 06770);
-                    };
+                    }
                     rename(
                         "{$config['articles']['path']}/{$oldArticle['issue']}/{$id}",
                         "{$config['articles']['path']}/{$issue['issue']}/{$id}"
                     );
 
-                };
+                }
 
                 // Log each modified  column
                 foreach (array('issueId', 'status', 'wordCount', 'title', 'title_en', 'keywords', 'keywords_en', 'abstract', 'abstract_en') as $col) {
@@ -636,15 +655,15 @@ class Articles
                             )
                         );
                         $log = null;
-                    };
-                };
+                    }
+                }
 
                 // Notify authors of status changes
                 if (isset($cols['status']) && $oldArticle['status'] !== $cols['status']) {
                     $mailstatus = true;
-                };
+                }
 
-            };
+            }
         } else {
             $res = $db->insert('articles', $cols);
             if ($res !== false) {
@@ -657,8 +676,8 @@ class Articles
                         'objectId' => $res
                     )
                 );
-            };
-        };
+            }
+        }
         if ($res !== false) {
             if (isset($cols['authors']) && isset($cols['_authors'])) {
                 $oldAuthors = $oldArticle ? $oldArticle['authors'] : array();
@@ -687,7 +706,7 @@ class Articles
                             'article' => $res
                         )
                     );
-                };
+                }
                 foreach ($deled as $author) {
                     trigger('revoke', $author, null, 'edit', 'article', $res);
                     trigger(
@@ -702,8 +721,8 @@ class Articles
                         )
                     );
                     $log = null;
-                };
-            };
+                }
+            }
 
             // Handle file uploads
             $newFiles = array();
@@ -728,10 +747,10 @@ class Articles
                         } else {
                             $db->rollback();
                             return false;
-                        };
+                        }
                     }
                 }
-            };
+            }
 
             if (count($newFiles) > 0 && !isset($cols['files_email_only'])) {
                 $newVersion = self::saveVersion($res, $newFiles);
@@ -740,15 +759,15 @@ class Articles
                     $versionIds = array();
                     foreach ($oldArticle['versions'] as $version) {
                         $versionIds[] = $version['id'];
-                    };
+                    }
                     $q = $db->query('UPDATE reviews SET versionId=?', $newVersion);
                     $q->where('versionId IN')->varsClosed($versionIds);
                     $q->and('status IN')->varsClosed($config['reviews']['states_wip']);
                     // Not saving result as this is a "best effort" maintenance attempt.
                     $db->exec($q);
-                };
+                }
                 $newFiles = array();
-            };
+            }
 
             // Now that we may have files, we can actually e-mail the status change
             if ($mailstatus) {
@@ -765,9 +784,8 @@ class Articles
                     ),
                     $newFiles
                 );
-            };
-
-        };
+            }
+        }
         $db->commit();
 
         return $res;
@@ -808,7 +826,7 @@ class Articles
                     'files' => $files
                 )
             );
-        };
+        }
     }
 
     /**
@@ -827,8 +845,8 @@ class Articles
         $config = $PPHP['config']['reviews'];
         $res = array();
 
-        $q = $db->query('SELECT reviews.*, articleVersions.articleId FROM reviews');
-        $q->left_join('articleVersions ON articleVersions.id = reviews.versionId');
+        $q = $db->query("SELECT reviews.*, articleVersions.articleId FROM reviews 
+                         LEFT JOIN articleVersions ON articleVersions.id = reviews.versionId");
         $q->where('reviews.peerId = ?', $_SESSION['user']['id']);
         $q->and('reviews.status IN')->varsClosed($config['states_wip']);
         $q->order_by('reviews.deadline ASC');
@@ -837,8 +855,8 @@ class Articles
         if ($reviews !== false) {
             foreach ($reviews as $review) {
                 $res[$review['status']][] = $review;
-            };
-        };
+            }
+        }
 
         return $res;
     }
@@ -865,18 +883,11 @@ class Articles
         global $PPHP;
         $db = $PPHP['db'];
 
-        $q = $db->query(
-            "
-            SELECT
-                reviews.*,
-                articles.id AS articleId,
-                CAST(round(julianday('now') - julianday(reviews.created)) AS INTEGER) AS age,
-                CAST(round(julianday(reviews.deadline) - julianday('now')) AS INTEGER) AS daysLeft
-            FROM reviews
-            "
-        );
-        $q->left_join('articleVersions ON articleVersions.id=reviews.versionId');
-        $q->left_join('articles ON articles.id=articleVersions.articleId');
+        $q = $db->query("SELECT reviews.*, articles.id AS articleId, 
+                        CAST(round(julianday('now') - julianday(reviews.created)) AS INTEGER) AS age, 
+                        CAST(round(julianday(reviews.deadline) - julianday('now')) AS INTEGER) AS daysLeft 
+                        FROM reviews LEFT JOIN articleVersions ON articleVersions.id = reviews.versionId 
+                        LEFT JOIN articles ON articles.id = articleVersions.articleId");
         $q->where('reviews.status IN')->varsClosed($reviewStates);
         $q->and('articles.status IN')->varsClosed($articleStates);
 
@@ -902,7 +913,7 @@ class Articles
         if (isset($cols['log'])) {
             $maillog = $log = $cols['log'];
             unset($cols['log']);
-        };
+        }
 
         if (isset($cols['peers']) && isset($cols['versionId'])) {
             // We're creating new reviews, one per peer
@@ -928,12 +939,12 @@ class Articles
                 if ($db->insert('reviews', $cols) === false) {
                     $success = false;
                     break;
-                };
+                }
 
                 // Regardless if user existed, make sure it now has 'peer' role
                 trigger('grant', $peer, 'peer'); // Grant the peer role
                 // Ensure the user can still act as an author
-                if (!pass('has_role',$peer,'author')) {
+                if (!pass('has_role', $peer, 'author')) {
                     trigger('grant', $peer, 'author');
                 }
 
@@ -958,14 +969,14 @@ class Articles
                         'article' => grab('article', $cols['articleId'])
                     )
                 );
-            };
+            }
             if ($success) {
                 $db->commit();
             } else {
                 $db->rollback();
-            };
+            }
             return $success;
-        };
+        }
 
         if (isset($cols['id'])) {
             // We're updating a review
@@ -992,20 +1003,20 @@ class Articles
                     $newFile = self::_attach($cols['articleId'], $file);
                     if ($newFile !== false) {
                         $newFiles[] = $newFile;
-                    };
-                };
-            };
+                    }
+                }
+            }
             if (count($newFiles) > 0) {
                 $oldFiles = $oldReview['files'];
                 if ($oldFiles) {
                     $oldFiles = json_decode($oldFiles, true);
-                };
+                }
                 if (!is_array($oldFiles)) {
                     $oldFiles = array();
-                };
+                }
                 array_merge_indexed($oldFiles, $newFiles);
                 $cols['files'] = json_encode($oldFiles);
-            };
+            }
 
             $extraCol = '';
             if (isset($cols['status'])) {
@@ -1013,8 +1024,8 @@ class Articles
                     $extraCol = ", agreed=datetime('now')";
                 } elseif ($cols['status'] !== 'deleted') {
                     $extraCol = ", completed=datetime('now')";
-                };
-            };
+                }
+            }
             $res = $db->update('reviews', $cols, $extraCol . ' WHERE id=?', array($id)) !== false;
             if ($res && isset($cols['status'])) {
                 trigger(
@@ -1030,7 +1041,7 @@ class Articles
                 );
                 $log = null;
                 if ($oldReview['peerId'] == $_SESSION['user']['id']) {
-                    $article = grab('article', $oldReview['articleId'],true);
+                    $article = grab('article', $oldReview['articleId'], true);
                     switch ($cols['status']) {
                         case 'reviewing':
                             // Peer accepted
@@ -1081,13 +1092,13 @@ class Articles
                             );
                             break;
                         // No default
-                    };
-                };
-            };
+                    }
+                }
+            }
 
             $db->commit();
             return $res !== false;
-        };
+        }
     }
 
 
@@ -1097,7 +1108,7 @@ class Articles
      * @param array $a First article
      * @param array $b Second article
      *
-     * @return -1, 0 or 1 depending on whose status is earliest in config.articles.states.
+     * @return int -1, 0 or 1 depending on whose status is earliest in config.articles.states.
      */
     public static function compareStatus($a, $b)
     {
@@ -1108,7 +1119,7 @@ class Articles
         $bRank = array_search($b['status'], $states);
         if ($aRank === $bRank) {
             return 0;
-        };
+        }
         return ($aRank < $bRank) ? -1 : 1;
     }
 
@@ -1174,8 +1185,8 @@ on(
             );
             if (is_array($authorDailyCount) && count($authorDailyCount) >= $maxDailyCount) {
                 return false;
-            };
-        };
+            }
+        }
         return true;
     }
 );
@@ -1193,7 +1204,7 @@ on(
         if ($article !== false && empty($article)) return trigger('http_status', 404);
         if ($article !== false) {
             $PPHP['contextId'] = $articleId;
-        };
+        }
 
         // A binary request is necessarily for a file within an article
         //
@@ -1216,11 +1227,11 @@ on(
                 header('Content-Length: ' . filesize($fname));
                 readfile($fname);
                 exit;
-            };
+            }
             // The http_status event is actually too late in binary mode.
             header('Status: 404 Not Found');
             return trigger('http_status', 404);
-        };
+        }
 
         // Non-binary request can be for general listing or a specific article
         //
@@ -1237,15 +1248,15 @@ on(
                     if (!(pass('can', 'edit', 'article', $articleId) || pass('can', 'edit', 'issue', $article['issueId']))) return trigger('http_status', 403);
                 } else {
                     if (!pass('can', 'create', 'article')) return trigger('http_status', 403);
-                };
+                }
                 if (!isset($req['post']['userdata'])) {
                     $req['post']['userdata'] = array();
-                };
+                }
                 if (isset($req['post']['authors']) && isset($req['post']['_authors'])) {
                     $req['post']['authors'] = grab('clean_userids', $req['post']['authors'], $req['post']['userdata']);
                 } else {
                     unset($req['post']['authors']);
-                };
+                }
 
                 $success = grab('article_save', $req['post'], $req['files']);
                 $saved = true;
@@ -1272,12 +1283,12 @@ on(
                         'editarticle',
                         array(
                             'article' => $article,
-                            'log' => (isset($req['post']['log']) ? $req['post']['log'] : null)
+                            'log' => ($req['post']['log'] ?? null)
                         ),
                         array(),
                         true  // Author-editors could see Bcc
                     );
-                };
+                }
 
                 // We need to display warnings so we can't redirect, but we
                 // need to redirect before displaying the article because any
@@ -1290,7 +1301,7 @@ on(
                           );*/
 
 
-            };
+            }
             if (isset($req['get']['unlink'])) {
                 if (!pass('can', 'delete', 'article', $articleId)) return trigger('http_status', 403);
                 $saved = true;
@@ -1304,17 +1315,17 @@ on(
                             if ($success) {
                                 unset($version['files'][$key]);
                                 trigger('article_version_save', null, $version['files'], $version['id']);
-                            };
+                            }
                             break;
-                        };
-                    };
-                };
+                        }
+                    }
+                }
 
                 if ($success) return trigger('http_redirect', $req['base'] . '/articles/' . $articleId . '/' . $article['permalink']);
 
                 // Reload to be aware of changes
                 $article = grab('article', $articleId);
-            };
+            }
             if (is_numeric($articleId)) {
 
                 if (isset($req['post']['review'])) {
@@ -1326,20 +1337,20 @@ on(
                     ) return trigger('http_status', 403);
                     if (!isset($req['post']['userdata'])) {
                         $req['post']['userdata'] = array();
-                    };
+                    }
                     if (isset($req['post']['peers'])) {
                         $req['post']['peers'] = grab('clean_userids', $req['post']['peers'], $req['post']['userdata']);
-                    };
+                    }
                     if (count($article['versions']) > 0) {
                         $req['post']['versionId'] = $article['versions'][count($article['versions']) - 1]['id'];
-                    };
+                    }
                     $req['post']['articleId'] = $articleId;
                     // This handles create and update
                     $success = grab('review_save', $req['post'], $req['files']);
                     if ($success) {
                         $article = grab('article', $articleId);
-                    };
-                };
+                    }
+                }
 
                 if (!$article) {
                     return trigger('http_status', 403);
@@ -1364,7 +1375,7 @@ on(
                 // New article editor
                 $article['authors'] = array($_SESSION['user']['id']);
                 if (!pass('can', 'create', 'article')) return trigger('http_status', 403);
-            };
+            }
             $deadline = (new DateTime())->modify($PPHP['config']['reviews']['deadline_modifier'])->format('Y-m-d');
             trigger(
                 'render',
@@ -1400,10 +1411,10 @@ on(
                         $search['current'] = true;
                         $search['lateReviews'] = true;
                         break;
-                };
+                }
             } else {
                 $search['current'] = true;
-            };
+            }
             trigger(
                 'render',
                 'articles.html',
@@ -1412,7 +1423,7 @@ on(
                     'reviews' => grab('peer_reviews')
                 )
             );
-        };
+        }
 
     }
 );
@@ -1451,7 +1462,7 @@ on(
                     ),
                     null,
                     true,
-                    (isset($config['reviews']['accept_reminder_user']) ? $config['reviews']['accept_reminder_user'] : false)
+                    ($config['reviews']['accept_reminder_user'] ?? false)
                 );
             } elseif ($review['age'] > $maxAge) {
                 trigger('review_save', array('id' => $review['id'], 'status' => 'deleted'));
@@ -1488,8 +1499,8 @@ on(
                     array(),
                     true
                 );
-            };
-        };
+            }
+        }
 
         // Nagging peers who are near/after reviewing deadline
         $reviews = grab(
@@ -1531,7 +1542,7 @@ on(
                     array(),
                     true
                 );
-            };
-        };
+            }
+        }
     }
 );
