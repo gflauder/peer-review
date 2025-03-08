@@ -16,18 +16,22 @@
     {% import 'lib.twig' as lib %}
     <p>Greetings,</p>
     <p>
-        You have been added as an author for the article "{{ lib.format_article(article, true, true) }}" which was submitted to {{ config.global.name }}. You can click the button below to access it.
+        You have been added as an author for the article <a href="{{ req.protocol }}://{{ req.host }}{{ req.base }}/articles/{{ article.id }}/{{ article.permalink }}">
+            {{ article.title |truncate(64, true) }}
+        </a> which was submitted to {{ config.global.name }}. You can click the button below to access it.
     </p>
     <p>Thank you,</p>
     <br>{{ config.global.name }}
 {% endblock %}
 
 {% block cta_text %}
-    Article page
+Article page
 {% endblock %}
 
 {% block cta_link %}
-    {{ req.protocol }}://{{ req.host }}/en/{{ validation_link }}
+    <a href="{{ req.protocol }}://{{ req.host }}{{ req.base }}/articles/{{ article.id }}/{{ article.permalink }}">
+        {{ article.title |truncate(64, true) }}
+    </a>
 {% endblock %}
 
 {% block additional_info %}

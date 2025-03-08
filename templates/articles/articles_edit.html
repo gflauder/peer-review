@@ -345,7 +345,7 @@
         {#
         Reviews Section
         #}
-        {% if pass('can', 'move', 'article', article.id) or pass('can', 'move', 'issue', article.issueId) %}
+         {% if pass('can', 'move', 'article', article.id) or pass('can', 'move', 'issue', article.issueId) %}
             {% if (session.user.id not in article.authors) and article.versions|length > 0 %}
                 <div class="card mb-3">
                     <div class="card-body">

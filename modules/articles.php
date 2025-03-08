@@ -266,21 +266,6 @@ class Articles
             $article['peers'] = array_keys($uniquePeers);
             $article['editors'] = grab('object_users', '*', 'issue', $article['issueId']);
 
-            // Consistency check!
-            // Any author found in ACL but not in our column get added.
-            /**
-             * Processes the authors field of an article.
-             *
-             * @param array $article The article data.
-             * @return array Processed authors.
-             */
-            function processArticleAuthors(array $article): array
-            {
-                if (isset($article['authors']) && $article['authors'] !== null) {
-                    return dejoin(';', $article['authors']);
-                }
-                return [];
-            }
 
 // Using the extracted function
             $article['authors'] = processArticleAuthors($article);
@@ -396,9 +381,11 @@ class Articles
         }
 
         $q = $db->query(
-                'SELECT articles.id, articles.title, issues.volume, issues.number
+                'SELECT articles.id, articles.title, articles.status, issues.volume, issues.number
                  FROM articles
-                 LEFT JOIN issues ON issues.id = articles.issueId'
+                 LEFT JOIN issues ON issues.id = articles.issueId
+                     LEFT JOIN articleVersions ON articleVersions.articleId=articles.id AND articleVersions.id
+                LEFT JOIN reviews ON reviews.versionId=articleVersions.id'
         );
 
         if ($noReviews || $miaPeers || $lateReviews) {
@@ -420,7 +407,7 @@ class Articles
 
         //todo: Not sure we even need a peer here?
 
-        /* if (!pass('has_role', 'admin')
+         if (!pass('has_role', 'admin')
              || !pass('has_role', 'editor-in-chief'
              || !pass('has_role', 'editor')
              ))
@@ -431,11 +418,11 @@ class Articles
              if (pass('has_role', 'peer')) {
                  $sources[] = $db->query('reviews.peerId=?', $_SESSION['user']['id']);
              };
-         }*/
+         }
 
-        if (pass('has_role', 'author')) {
+/*        if (pass('has_role', 'author')) {
             $sources[] = grab('can_sql', 'articles.id', 'edit', 'article');
-        }
+        }*/
 
 
         $q->implodeClosed('OR', $sources);
@@ -496,8 +483,8 @@ class Articles
 
         foreach ($list as $key => $article) {
             // Weird bug with PHP using $list => &$article
-            $list[$key]['keywords'] = dejoin(';', $article['keywords']);
-            $list[$key]['keywords_en'] = dejoin(';', $article['keywords_en']);
+            $list[$key]['keywords'] = isset($article['keywords']) ? dejoin(';', $article['keywords']) : '';
+            $list[$key]['keywords_en'] = isset($article['keywords_en']) ? dejoin(';', $article['keywords_en']) : '';
             $list[$key]['permalink'] = makePermalink($article['title']);
             $list[$key]['issue'] = self::_getIssueName($article);
         }
@@ -505,7 +492,13 @@ class Articles
         if ($byStatus === true) {
             $sorted = array();
             foreach ($list as $article) {
-                $sorted[$article['status']][] = $article;
+                if (isset($article['status'])) {
+                    $sorted[$article['status']][] = $article;
+                } else {
+                     continue;
+                    // Option: Assign a default status (e.g. 'unknown')
+                    //$sorted['unknown'][] = $article;
+                }
             }
             return $sorted;
         } else {
@@ -1155,6 +1148,22 @@ class Articles
 
         return $times;
     }
+}
+
+// Consistency check!
+// Any author found in ACL but not in our column get added.
+/**
+ * Processes the authors field of an article.
+ *
+ * @param array $article The article data.
+ * @return array Processed authors.
+ */
+function processArticleAuthors(array $article): array
+{
+    if (isset($article['authors']) && $article['authors'] !== null) {
+        return dejoin(';', $article['authors']);
+    }
+    return [];
 }
 
 // Routes
