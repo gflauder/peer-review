@@ -4,7 +4,7 @@
 
 ## Attribution
 
-This project is a fork of vphantom/pyriteview (https://github.com/vphantom/pyriteview) by Stéphane Lavergne (https://github.com/vphantom).
+This project is a fork adn re-write of vphantom/pyriteview (https://github.com/vphantom/pyriteview) by Stéphane Lavergne (https://github.com/vphantom). Note that pyritephp is also now rewritten as PeerReviewCore.
 
 Article versioning hub for peer-reviewed publications.
 
@@ -55,7 +55,7 @@ To get the latest stable release, download and unpack a [release archive file](h
 
 ### Requirements
 
-* PHP 5.5 or later
+* PHP 7.4 or later
 * PHP extension modules: mbstring, mcrypt, pdo_sqlite, readline
 * SQLite 3
 * Typical Linux command line tools: make, wget, gzip
