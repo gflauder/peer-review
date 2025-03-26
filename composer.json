@@ -28,7 +28,7 @@
   "repositories": [
     {
       "type": "vcs",
-      "url": "https://github.com/gflauder/peerreviewcore.git"
+      "url": "https://github.com/gflauder/PeerReviewCore.git"
     }
   ]
 }
