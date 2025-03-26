@@ -1,5 +1,5 @@
 {
-  "name": "vphantom/pyriteview",
+  "name": "gflauder/peerreview",
   "type": "project",
   "license": "AGPL-3.0",
   "authors": [
@@ -16,7 +16,7 @@
     "ext-pcre": "*",
     "ext-pdo_sqlite": "*",
     "ext-readline": "*",
-    "gflauder/PeerReviewCore": "master",
+    "gflauder/peerreviewcore": "master",
     "phpmailer/phpmailer": "^6.9.1"
   },
   "scripts": {
@@ -28,7 +28,7 @@
   "repositories": [
     {
       "type": "vcs",
-      "url": "https://github.com/gflauder/PeerReviewCore.git"
+      "url": "https://github.com/gflauder/peerreviewcore.git"
     }
   ]
 }
