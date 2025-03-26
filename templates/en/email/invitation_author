@@ -16,9 +16,8 @@
     {% import 'lib.twig' as lib %}
     <p>Greetings,</p>
     <p>
-        You have been added as an author for the article <a href="{{ req.protocol }}://{{ req.host }}{{ req.base }}/articles/{{ article.id }}/{{ article.permalink }}">
-            {{ article.title |truncate(64, true) }}
-        </a> which was submitted to {{ config.global.name }}. You can click the button below to access it.
+        You have been added as an author for the article <em>{{ lib.format_article(article, true, true) }}</em>
+        which was submitted to {{ config.global.name }}. You can click the button below to access it.
     </p>
     <p>Thank you,</p>
     <br>{{ config.global.name }}
@@ -29,14 +28,12 @@ Article page
 {% endblock %}
 
 {% block cta_link %}
-    <a href="{{ req.protocol }}://{{ req.host }}{{ req.base }}/articles/{{ article.id }}/{{ article.permalink }}">
-        {{ article.title |truncate(64, true) }}
-    </a>
+    {{ req.protocol }}://{{ req.host }}/{{ validation_link }}
 {% endblock %}
 
 {% block additional_info %}
     <p>
         You can also manually copy and paste this link into your browser:
-        {{ req.protocol }}://{{ req.host }}{{ req.base }}/articles/{{ article.id }}/{{ article.permalink }}
+        {{ req.protocol }}://{{ req.host }}/{{ validation_link }}
     </p>
 {% endblock %}
