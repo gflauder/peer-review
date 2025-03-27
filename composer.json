@@ -16,8 +16,7 @@
     "ext-pcre": "*",
     "ext-pdo_sqlite": "*",
     "ext-readline": "*",
-    "gflauder/PeerReviewCore": "dev-master",
-
+    "gflauder/peerreviewcore": "dev-master",
     "phpmailer/phpmailer": "^6.9.1"
   },
   "scripts": {
