@@ -383,10 +383,13 @@ class Articles
         $q = $db->query(
                 'SELECT articles.id, articles.title, articles.status, issues.volume, issues.number
                  FROM articles
-                 LEFT JOIN issues ON issues.id = articles.issueId
-                     LEFT JOIN articleVersions ON articleVersions.articleId=articles.id AND articleVersions.id
-                LEFT JOIN reviews ON reviews.versionId=articleVersions.id'
+                 LEFT JOIN issues ON issues.id = articles.issueId'
         );
+
+        //todo - had this in the main query, but I think we need to maove this out as it causess the article to repeat.
+        /*                     /*LEFT JOIN articleVersions ON articleVersions.articleId=articles.id AND articleVersions.id
+                LEFT JOIN reviews ON reviews.versionId=articleVersions.id*/
+
 
         if ($noReviews || $miaPeers || $lateReviews) {
             // Get last version for each article
