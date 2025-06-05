@@ -386,8 +386,8 @@ class Articles
                  LEFT JOIN issues ON issues.id = articles.issueId'
         );
 
-        //todo - had this in the main query, but I think we need to maove this out as it causess the article to repeat.
-        /*                     /*LEFT JOIN articleVersions ON articleVersions.articleId=articles.id AND articleVersions.id
+        //todo - had this in the main query, but I think we need to move this out as it causes the article to repeat.
+        /*LEFT JOIN articleVersions ON articleVersions.articleId=articles.id AND articleVersions.id
                 LEFT JOIN reviews ON reviews.versionId=articleVersions.id*/
 
 
