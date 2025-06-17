@@ -401,19 +401,26 @@ class Articles
         $sources = array();
 
         // Modified permissions logic - ensure editors can see everything
-        if (pass('has_role', 'admin') || pass('has_role', 'editor-in-chief') || pass('has_role', 'editor')) {
-            // Admin, editor-in-chief, and editors see all articles
+        // Refined permissions logic
+        if (pass('has_role', 'admin') || pass('has_role', 'editor-in-chief')) {
+            // Admin and editor-in-chief see all articles
             $sources[] = "1=1";
+        } else if (pass('has_role', 'editor')) {
+            // Editors see only articles from issues they're assigned to
+            $sources[] = grab('can_sql', 'issues.id', 'edit', 'issue');
         } else {
-            // For other roles, use standard permissions
+            // Standard permissions for other roles
             $sources[] = grab('can_sql', 'issues.id', 'view', 'issue');
             $sources[] = grab('can_sql', 'articles.id', 'view', 'article');
 
             if (pass('has_role', 'author')) {
-                $sources[] = grab('can_sql', 'articles.id', 'edit', 'article');
+                // Authors see articles they've authored
+                // This assumes you have an 'authors' field that contains author IDs
+                $sources[] = $db->query('articles.authors LIKE ?', "%{$_SESSION['user']['id']}%");
             }
 
             if (pass('has_role', 'peer')) {
+                // Peers see articles they're reviewing
                 $sources[] = $db->query('reviews.peerId=?', $_SESSION['user']['id']);
             }
         }
