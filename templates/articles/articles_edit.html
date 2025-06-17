@@ -244,8 +244,9 @@
                             <input type="checkbox" class="form-check-input" id="policy" name="policy" value="1"
                                    {% if article.id %}checked{% endif %} required>
                             <label class="form-check-label" for="policy">{{ __('info_policy') }}</label>
-                            <a id="policy_link" target="_blank"
-                               href="{{ req.base }}/page/policy">{{ __('title_policy') }}</a>
+
+
+                            <a id="policy" target="_blank" href="{{ app.request.basePath }}/documents/{{  req.lang|default('fr') }}/Policy.pdf">{{ __('title_policy') }}</a>
                         </div>
                     </div>
                 </div>
@@ -258,8 +259,7 @@
                                    value="1"
                                    {% if article.id %}checked{% endif %} required>
                             <label class="form-check-label" for="copyright">{{ __('info_copyright') }}</label>
-                            <a id="copyright_link" target="_blank"
-                               href="{{ req.base }}/page/copyright?d={{ 'now'|date('Y-m-d') }}">{{ __('title_copyright') }}</a>
+                            <a id="copyright" target="_blank" href="{{ app.request.basePath }}/documents/{{ req.lang|default('fr') }}/Copyright.pdf">{{ __('title_copyright') }}</a>
                         </div>
                     </div>
                 </div>
