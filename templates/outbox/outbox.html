@@ -174,10 +174,10 @@
                                 {% if email.contextType and email.contextId %}
                                     <a href="/=bin/{{ email.contextType }}s/{{ email.contextId }}/{{ file.name }}"
                                        target="_blank"><span
-                                                class="bi bi bi-journal me-1"></span>{{ file.name }}
+                                                class="bi-book-fill me-1"></span>{{ file.name }}
                                     </a> ({{ lib.format_bytes(file.bytes) }})<br>
                                 {% else %}
-                                    <span class="bi bi bi-journal me-1"></span>{{ file.name }} ({{ lib.format_bytes(file.bytes) }})
+                                    <span class="bi-book-fill me-1"></span>{{ file.name }} ({{ lib.format_bytes(file.bytes) }})
                                     <br>
                                 {% endif %}
                             {% endfor %}

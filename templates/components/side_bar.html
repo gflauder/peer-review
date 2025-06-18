@@ -23,7 +23,7 @@
             <li class="nav-item">
                 <a href="{{ req.base }}/articles"
                    class="nav-link{% if req.path starts with 'articles' %} active{% endif %}">
-                    <i class="bi bi bi-journal me-1-text"></i>
+                    <i class="bi-book-fill me-1-text"></i>
                     <span>{{ __('title_articles') }}</span>
                 </a>
             </li>
@@ -34,7 +34,7 @@
                 <a class="nav-link {% if req.path starts with 'admin/reports' %} {% else %} collapsed{% endif %}"
                    data-bs-target="#components-nav" data-bs-toggle="collapse" href="#"
                    aria-expanded="{% if req.path starts with 'admin/reports' %}true{% else %}false{% endif %}">
-                    <i class="bi bi bi-journal me-1-earmark-richtext"></i><span>{{ __('title_reports') }}</span>
+                    <i class="bi-book-fill me-1-earmark-richtext"></i><span>{{ __('title_reports') }}</span>
                     <i class="bi bi-chevron-down ms-auto"></i>
                 </a>
                 <ul id="components-nav"
