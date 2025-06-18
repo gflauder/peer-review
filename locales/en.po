@@ -95,7 +95,7 @@ msgid "hint_ban"
 msgstr "Ban user"
 
 msgid "hint_email"
-msgstr "Your e-mail identifies you here"
+msgstr "Enter your email"
 
 msgid "hint_keywords"
 msgstr "Enter 3 to 6 keywords"

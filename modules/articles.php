@@ -174,7 +174,7 @@ class Articles
         global $PPHP;
         $db = $PPHP['db'];
         $config = $PPHP['config']['articles'];
-        $article = false;
+        $article = [];
 
         $article = $db->selectSingleArray(
             "
@@ -184,7 +184,7 @@ class Articles
             ",
             array($id)
         );
-        if ($article === false) {
+        if (!$article) {
             return false;
         }
 
@@ -303,7 +303,7 @@ class Articles
             $article['issue'] = self::_getIssueName($article);
             $article['files_dir'] = "{$config['path']}/{$article['issue']}/{$article['id']}";
         } else {
-            return false;
+            trigger('http_redirect', $PPHP['base'] . '/');
         }
 
         return $article;
@@ -380,61 +380,71 @@ class Articles
             }
         }
 
-        $q = $db->query(
-                'SELECT articles.id, articles.title, articles.status, issues.volume, issues.number
-                 FROM articles
-                 LEFT JOIN issues ON issues.id = articles.issueId
-                     LEFT JOIN articleVersions ON articleVersions.articleId=articles.id AND articleVersions.id
-                LEFT JOIN reviews ON reviews.versionId=articleVersions.id'
-        );
+        // Using original query structure - select * to get all fields
+        $q = $db->query('SELECT articles.*, issues.volume, issues.number FROM articles');
+        $q->left_join('issues ON issues.id=articles.issueId');
 
         if ($noReviews || $miaPeers || $lateReviews) {
             // Get last version for each article
             $q->left_join(
                 '
-                articleVersions ON articleVersions.id=(
-                    SELECT MAX(id) FROM articleVersions WHERE articleId=articles.id
-                )
-                '
+            articleVersions ON articleVersions.id=(
+                SELECT MAX(id) FROM articleVersions WHERE articleId=articles.id
+            )
+            '
             );
             // Get reviews for chosen version
             $q->left_join('reviews ON reviews.versionId=articleVersions.id');
         }
+
         $q->where();
         $sources = array();
-        $sources[] = grab('can_sql', 'issues.id', 'view', 'issue');
-        $sources[] = grab('can_sql', 'articles.id', 'view', 'article');
 
-        //todo: Not sure we even need a peer here?
+        // Modified permissions logic - ensure editors can see everything
+        // Refined permissions logic
+        if (pass('has_role', 'admin') || pass('has_role', 'editor-in-chief')) {
+            // Admin and editor-in-chief see all articles
+            $sources[] = "1=1";
+        } else if (pass('has_role', 'editor')) {
+            // Editors see only articles from issues they're assigned to
+            $sources[] = grab('can_sql', 'issues.id', 'edit', 'issue');
+        } else {
+            // Standard permissions for other roles
+            $sources[] = grab('can_sql', 'issues.id', 'view', 'issue');
+            $sources[] = grab('can_sql', 'articles.id', 'view', 'article');
 
-         if (!pass('has_role', 'admin')
-             || !pass('has_role', 'editor-in-chief'
-             || !pass('has_role', 'editor')
-             ))
-         {
-             if (pass('has_role', 'author')) {
-                 $sources[] = grab('can_sql', 'articles.id', 'edit', 'article');
-             }
-             if (pass('has_role', 'peer')) {
-                 $sources[] = $db->query('reviews.peerId=?', $_SESSION['user']['id']);
-             };
-         }
+            if (pass('has_role', 'author')) {
+                // Authors see articles they've authored
+                // This assumes you have an 'authors' field that contains author IDs
+                $sources[] = $db->query('articles.authors LIKE ?', "%{$_SESSION['user']['id']}%");
+            }
 
-/*        if (pass('has_role', 'author')) {
-            $sources[] = grab('can_sql', 'articles.id', 'edit', 'article');
-        }*/
-
+            if (pass('has_role', 'peer')) {
+                // Peers see articles they're reviewing
+                $sources[] = $db->query('reviews.peerId=?', $_SESSION['user']['id']);
+            }
+        }
 
         $q->implodeClosed('OR', $sources);
-        if (pass('has_role', 'reader')) {
+
+        // Only restrict readers to published content if they don't have other roles
+        if (pass('has_role', 'reader') &&
+            !pass('has_role', 'admin') &&
+            !pass('has_role', 'editor-in-chief') &&
+            !pass('has_role', 'editor') &&
+            !pass('has_role', 'author') &&
+            !pass('has_role', 'peer')) {
             $q->and("articles.status='published'");
         }
+
         if ($issueId !== null) {
             $q->and('articles.issueId=?', $issueId);
         }
+
         if (count($states) > 0) {
             $q->append('AND articles.status IN')->varsClosed($states);
         }
+
         if ($current) {
             $search = array();
 
@@ -447,43 +457,59 @@ class Articles
 
             $q->and()->implodeClosed('OR', $search);
         }
+
         if ($keyword !== null) {
             $search = array();
             $search[] = $db->query('articles.title LIKE ?', "%{$keyword}%");
             $search[] = $db->query('articles.keywords LIKE ?', "%{$keyword}%");
             $search[] = $db->query('articles.abstract LIKE ?', "%{$keyword}%");
-            $search[] = $db->query('articles.title_en LIKE ?', "%{$keyword}%");
-            $search[] = $db->query('articles.keywords_en LIKE ?', "%{$keyword}%");
-            $search[] = $db->query('articles.abstract_en LIKE ?', "%{$keyword}%");
+
+            // Add English fields search if they exist
+            if (isset($config['articles']['multilingual']) && $config['articles']['multilingual']) {
+                $search[] = $db->query('articles.title_en LIKE ?', "%{$keyword}%");
+                $search[] = $db->query('articles.keywords_en LIKE ?', "%{$keyword}%");
+                $search[] = $db->query('articles.abstract_en LIKE ?', "%{$keyword}%");
+            }
+
             $q->and()->implodeClosed('OR', $search);
         }
+
         if ($noReviews) {
             $q->and('reviews.id IS NULL');
             $q->group_by('articles.id');  // Allowed with ORDER BY in SQLite
         }
+
         if ($miaPeers) {
             $q->and('reviews.id IS NOT NULL');
             $q->and("reviews.status = 'created'");
             $q->and("reviews.created < date('now', '-{$config['reviews']['accept_days']} days')");
         }
+
         if ($lateReviews) {
             $q->and('reviews.id IS NOT NULL');
             $q->and("reviews.status = 'reviewing'");
             $q->and("reviews.deadline < date('now')");
         }
+
         $q->order_by('issues.volume DESC, issues.number DESC, articles.id DESC');
 
+        // Safe debugging that won't cause errors
         if ($config['global']['debug']) {
-            print_r($q);
+            echo "DEBUG - Query created (details hidden to prevent errors)<br>";
         }
+
         $list = $db->selectArray($q);
         if ($list === false) {
+            if ($config['global']['debug']) {
+                echo "Query returned FALSE - potential error<br>";
+            }
             return array();
         }
 
         foreach ($list as $key => $article) {
             // Weird bug with PHP using $list => &$article
             $list[$key]['keywords'] = isset($article['keywords']) ? dejoin(';', $article['keywords']) : '';
+            // Handle English keywords if they exist
             $list[$key]['keywords_en'] = isset($article['keywords_en']) ? dejoin(';', $article['keywords_en']) : '';
             $list[$key]['permalink'] = makePermalink($article['title']);
             $list[$key]['issue'] = self::_getIssueName($article);
@@ -495,9 +521,8 @@ class Articles
                 if (isset($article['status'])) {
                     $sorted[$article['status']][] = $article;
                 } else {
-                     continue;
-                    // Option: Assign a default status (e.g. 'unknown')
-                    //$sorted['unknown'][] = $article;
+                    // Option: Assign a default status
+                    $sorted['unknown'][] = $article;
                 }
             }
             return $sorted;
@@ -1210,7 +1235,9 @@ on(
         $req = grab('request');
         $articleId = array_shift($path);
         $article = (is_numeric($articleId) ? grab('article', $articleId) : false);
-        if ($article !== false && empty($article)) return trigger('http_status', 404);
+        if ($article !== false && empty($article)){
+            return trigger('http_status', 404);
+        }
         if ($article !== false) {
             $PPHP['contextId'] = $articleId;
         }

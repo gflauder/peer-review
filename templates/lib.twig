@@ -330,18 +330,18 @@
     {%- endif -%}
     {%- if issue != false -%}
         {%- if pass('can', 'view', 'issue', issue.id) and not flat -%}
-            <a href="{{ req.base }}/issues/{{ issue.id }}/{{ issue.permalink }}"><span class="bi bi-book-fill"></span>{{ issue.volume ? issue.volume~'.' : '' }}{{ issue.number }} {{ issue.title }}</a>
+            <a href="{{ req.base }}/issues/{{ issue.id }}/{{ issue.permalink }}"><span class="bi bi-book-fill me-1"></span>{{ issue.volume ? issue.volume~'.' : '' }}{{ issue.number }} {{ issue.title }}</a>
         {%- else -%}
-            {% if not nohtml %}<span class="bi bi-book mr-2"></span>{% endif %}{{ issue.volume ? issue.volume~'.' : '' }}{{ issue.number }} {{ issue.title }}
+            {% if not nohtml %}<span class="bi bi-book-fill me-1"></span>{% endif %}{{ issue.volume ? issue.volume~'.' : '' }}{{ issue.number }} {{ issue.title }}
         {%- endif -%}
         {%- if withdate -%}
             &nbsp; <small>{{ issue.publication }}</small>
         {%- endif -%}
     {%- else -%}
         {%- if pass('can', 'view', 'issue', 0) and not flat -%}
-            <a href="{{ req.base }}/issues/0"><span class="bi bi-book mr-2"></span>{{ __('issue_zero') }}</a>
+            <a href="{{ req.base }}/issues/0"><span class="bi bi-book-fill me-1"></span>{{ __('issue_zero') }}</a>
         {%- else -%}
-            {%- if not nohtml %}<span class="bi bi-book mr-2"></span>{% endif %}{{ __('issue_zero') }}
+            {%- if not nohtml %}<span class="bi bi-book-fill me-1"></span>{% endif %}{{ __('issue_zero') }}
         {%- endif -%}
     {%- endif -%}
 {%- endmacro %}
