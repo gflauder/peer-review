@@ -463,7 +463,7 @@
                                         <td>
                                             {% for file in review.files %}
                                                 <a href="/=bin/articles/{{ article.id }}/{{ file.name }}"
-                                                   target="_blank"><span class="bi bi-journal"></span>{{ file.name }}</a>
+                                                   target="_blank"><span class="bi bi-journal me-1"></span>{{ file.name }}</a>
                                             {% endfor %}
                                         </td>
                                     </tr>
@@ -531,7 +531,7 @@
                 <dd>
                     {% for file in article.versions|last.files %}
                         <a href="/=bin/articles/{{ article.id }}/{{ file.name }}" target="_blank"><span
-                                    class="bi bi-journal"></span>{{ file.name }}
+                                    class="bi bi-journal me-1"></span>{{ file.name }}
                         </a> ({{ lib.format_bytes(file.bytes) }})<br>
                     {% endfor %}
                 </dd>
