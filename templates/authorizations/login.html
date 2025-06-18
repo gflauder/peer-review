@@ -8,7 +8,7 @@
         <div class="col-12 d-flex justify-content-center align-items-center">
             <div class="login-form-container">
                 <h3 class="display-4 text-center">{{ __('label_login') }}</h3>
-                <p class="text-muted mb-4 text-center">{{ __('title_welcome_1') }}</p>
+                <p class="text-muted mb-4 text-justify">{{ __('title_welcome_1') }}</p>
 
                 <form class="login-form" method="post" action="{{ req.base }}/login" id="login-form"
                       onsubmit="return checkPassword()">
@@ -27,12 +27,14 @@
                         {{ __('label_login') }}
                     </button>
                 </form>
-                <h5 class="text-center"><a href="{{ req.base }}/register">{{ __('title_register') }} &raquo;</a></h5>
-                <p class="text-center">{{ __('title_welcome_2') }}</p>
-                <p class="text-center">
-                    {{ __('title_welcome_3') }}
-                    <a href="{{ req.base }}/password_reset">{{ __('label_clickhere') }}</a>.
+                <hr>
+                <p class="text-justify">
+                    {{ __('title_welcome_2') }}
                 </p>
+                <h5 class="text-center"><a href="{{ req.base }}/register">{{ __('title_register') }}</a></h5>
+                <!--<a href="">cliquez sur ce lien</a>
+                {{ __('title_welcome_3') }}
+                </p>-->
                 {% if alert_type %}
                     <div class="card border-{{ alert_type }} mb-3 animate__animated" id="myCard">
                         <div class="card-body text-{{ alert_type }}">
@@ -114,5 +116,27 @@
     }
     .hideaway {
         display: none;
+    }
+
+    .text-justify {
+        text-align: justify;
+    }
+
+    hr {
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: 1.5em;
+        margin-bottom: 1.5em;
+        width: 50%;
+        align-content: centre;
+    }
+
+    h3 {
+        margin-bottom: 0.5em;
+    }
+
+    h5 {
+        margin-top: 0.5em;
+        margin-bottom: 0.5em;
     }
 </style>

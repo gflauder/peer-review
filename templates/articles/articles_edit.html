@@ -244,9 +244,8 @@
                             <input type="checkbox" class="form-check-input" id="policy" name="policy" value="1"
                                    {% if article.id %}checked{% endif %} required>
                             <label class="form-check-label" for="policy">{{ __('info_policy') }}</label>
-
-
-                            <a id="policy" target="_blank" href="{{ app.request.basePath }}/documents/{{  req.lang|default('fr') }}/Policy.pdf">{{ __('title_policy') }}</a>
+                            <a id="policy_link" target="_blank"
+                               href="https://www.erudit.org/fr/revues/crimino/#journal-info-editorial_policy">{{ __('title_policy') }}</a>
                         </div>
                     </div>
                 </div>
@@ -376,7 +375,7 @@
                             <thead>
                             <tr>
                                 <th>{{ __('label_version') }}</th>
-                                <th class="text-center">{{ __('label_deadline') }}</th>
+                                <th class="text-left">{{ __('label_deadline') }}</th>
                                 <th>{{ __('label_status') }}</th>
                                 <th>{{ __('label_peer') }}</th>
                                 <th>{{ __('label_files') }}</th>
@@ -464,7 +463,7 @@
                                         <td>
                                             {% for file in review.files %}
                                                 <a href="/=bin/articles/{{ article.id }}/{{ file.name }}"
-                                                   target="_blank"><span class="bi-book-fill me-1"></span>{{ file.name }}</a>
+                                                   target="_blank"><span class="bi bi-file"></span>{{ file.name }}</a>
                                             {% endfor %}
                                         </td>
                                     </tr>
@@ -532,7 +531,7 @@
                 <dd>
                     {% for file in article.versions|last.files %}
                         <a href="/=bin/articles/{{ article.id }}/{{ file.name }}" target="_blank"><span
-                                    class="bi-book-fill me-1"></span>{{ file.name }}
+                                    class="bi bi-file"></span>{{ file.name }}
                         </a> ({{ lib.format_bytes(file.bytes) }})<br>
                     {% endfor %}
                 </dd>

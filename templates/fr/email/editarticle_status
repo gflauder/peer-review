@@ -16,7 +16,7 @@
     {% import 'lib.twig' as lib %}
     <p>Bonjour,</p>
     <p>
-        Ce message est pour vous informer que le statut de l'article <a href="{{ req.protocol }}://{{ req.host }}{{ req.base }}/articles/{{ article.id }}/{{ article.permalink }}">{{ article.title |truncate(64, true) }}</a> a été modiifé. L'article est maintenant {{ lib.format_status(article.status, false, true) }}. Si des commentaires sont disponibles, ils se trouvent en pièce jointe à ce courriel.
+        Ce message est pour vous informer que le statut de l'article <a href="{{ req.protocol }}://{{ req.host }}{{ req.base }}/articles/{{ article.id }}/{{ article.permalink }}">{{ article.title |truncate(64, true) }}</a> a été modifié. L'article est maintenant {{ lib.format_status(article.status, false, true) }}. Si des commentaires sont disponibles, ils se trouvent en pièce jointe à ce courriel.
     </p>
     <p>
         Sincèrement,
