@@ -19,4 +19,6 @@ zz_remote.sh
 /var/David/
 logfile.txt
 .idea/
+*:Zone.Identifier
+
 
