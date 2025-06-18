@@ -16,3 +16,4 @@ zz_remote.sh
 /var/main.*
 /var/sessions
 /var/twig_cache
+/var/David/
