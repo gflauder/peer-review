@@ -245,7 +245,7 @@
                                    {% if article.id %}checked{% endif %} required>
                             <label class="form-check-label" for="policy">{{ __('info_policy') }}</label>
                             <a id="policy_link" target="_blank"
-                               href="{{ req.base }}/page/policy">{{ __('title_policy') }}</a>
+                               href="https://www.erudit.org/fr/revues/crimino/#journal-info-editorial_policy">{{ __('title_policy') }}</a>
                         </div>
                     </div>
                 </div>
@@ -259,7 +259,7 @@
                                    {% if article.id %}checked{% endif %} required>
                             <label class="form-check-label" for="copyright">{{ __('info_copyright') }}</label>
                             <a id="copyright_link" target="_blank"
-                               href="{{ req.base }}/page/copyright?d={{ 'now'|date('Y-m-d') }}">{{ __('title_copyright') }}</a>
+                               href="https://criminologie.ca/droits2025.pdf">{{ __('title_copyright') }}</a>
                         </div>
                     </div>
                 </div>
@@ -376,7 +376,7 @@
                             <thead>
                             <tr>
                                 <th>{{ __('label_version') }}</th>
-                                <th class="text-center">{{ __('label_deadline') }}</th>
+                                <th class="text-left">{{ __('label_deadline') }}</th>
                                 <th>{{ __('label_status') }}</th>
                                 <th>{{ __('label_peer') }}</th>
                                 <th>{{ __('label_files') }}</th>

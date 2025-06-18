@@ -1,7 +1,7 @@
 {% extends "email_template.twig" %}
 
 {% block subject %}
-    Connexion au compte
+    {{ config.global.name }} - Connexion au compte
 {% endblock %}
 
 {% block header %}
@@ -19,9 +19,6 @@
         Nous avons reçu une demande de connextion au site de la revue Criminologie pour votre adresse courriel. Cliquez sur le bouton ci-dessous pour vous connecter à votre compte sans mot de passe.
     </p>
     <p>
-        Si vous n'avez pas demandé cette connexion, vous pouvez sans danger ignorer ce message.
-    </p>
-    <p>
         Sincèrement,
     </p>
     <br>{{ config.global.name }}
@@ -32,11 +29,13 @@
 {% endblock %}
 
 {% block cta_link %}
-    {{ req.protocol }}://{{ req.host }}/fr/{{ validation_link }}
+    {{ req.protocol }}://{{ req.host }}/{{ validation_link }}
 {% endblock %}
 
 {% block additional_info %}
     <p>
-        Vous pouvez aussi copier-coller ce lien manuellement dans votre navigateur : {{ req.protocol }}://{{ req.host }}/fr/{{ validation_link }}
+        Vous pouvez aussi copier-coller ce lien manuellement dans votre fureteur:
+        {{ req.protocol }}://{{ req.host }}/{{ validation_link }}
     </p>
 {% endblock %}
+
