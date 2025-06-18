@@ -1,0 +1,39 @@
+{
+  "name": "gflauder/pyriteview",
+  "type": "project",
+  "license": "AGPL-3.0",
+  "authors": [
+    {
+    "name": "Gary Flauder",
+      "email": "gflauder@hotmail.com"
+    }
+  ],
+  "require": {
+    "php": ">=7.4",
+    "ext-fileinfo": "*",
+    "ext-json": "*",
+    "ext-mbstring": "*",
+    "ext-mcrypt": "*",
+    "ext-pcre": "*",
+    "ext-pdo_sqlite": "*",
+    "ext-readline": "*",
+    "gflauder/pyritephp": "dev-master",
+    "phpmailer/phpmailer": "^6.9.1"
+  },
+  "scripts": {
+    "install-all": [
+      "composer install --ignore-platform-reqs",
+      "cd ../pyritephp && composer install --ignore-platform-reqs"
+    ]
+  },
+
+  "repositories": [
+    {
+      "type": "path",
+      "url": "/home/gary/pyritephp",
+      "options": {
+        "symlink": true
+      }
+    }
+  ]
+}

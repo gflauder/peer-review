@@ -17,3 +17,6 @@ zz_remote.sh
 /var/sessions
 /var/twig_cache
 /var/David/
+logfile.txt
+.idea/
+
