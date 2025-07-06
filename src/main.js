@@ -87,6 +87,9 @@ $().ready(function() {
 
 // Function to dynamically determine the icon for the sidebar toggle button
   function updateSidebarButtonIcon() {
+
+    if (!sidebarToggleBtn) return;
+
     const screenWidth = window.innerWidth;
 
     // If the sidebar is collapsed, show the right arrow (`>`)
@@ -115,11 +118,15 @@ $().ready(function() {
   });
 
 // Toggle the sidebar state and update the button on button click
-  sidebarToggleBtn.addEventListener('click', function () {
-    sidebar.classList.toggle('collapsed'); // Collapse or expand the sidebar
-    sidebarToggleBtn.classList.toggle('collapsed'); // Sync the button state
-    updateSidebarButtonIcon(); // Update the button icon
-  });
+  if (sidebar && sidebarToggleBtn) {
+    // Toggle the sidebar state and update the button on button click
+    sidebarToggleBtn.addEventListener('click', function () {
+      sidebar.classList.toggle('collapsed'); // Collapse or expand the sidebar
+      sidebarToggleBtn.classList.toggle('collapsed'); // Sync the button state
+      updateSidebarButtonIcon(); // Update the button icon
+    });
+  }
+
 
 // Listen for window resize events and update the button icon dynamically
   window.addEventListener('resize', updateSidebarButtonIcon);
