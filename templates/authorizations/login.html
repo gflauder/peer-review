@@ -1,6 +1,8 @@
 {% import 'lib.twig' as lib %}
 {{ title(__('title_login')) }}
 
+<!-- Add reCAPTCHA script -->
+<script src="https://www.google.com/recaptcha/api.js?render={{ config.recaptcha.site_key }}"></script>
 
 <div class="container mt-5">
     <div class="row justify-content-center">
@@ -22,7 +24,11 @@
                         <input type="password" name="password" id="password" placeholder="{{ __('label_password_opt') }}"
                                class="form-control shadow-sm px-4" autocomplete="off">
                     </div>
-                    <button type="submit"
+
+                    <!-- Hidden field for reCAPTCHA token -->
+                    <input type="hidden" id="g-recaptcha-response" name="g-recaptcha-response">
+
+                    <button type="submit" id="login-submit-btn"
                             class="btn btn-primary btn-block text-uppercase mt-2 mb-2 shadow-sm">
                         {{ __('label_login') }}
                     </button>
@@ -60,7 +66,7 @@
 
         // Clear the password value on form submission if not revealed
         $('#login-form').on('submit', function() {
-            if ($('.hideaway').is(':hidden')) {
+            if ($('.hideaway').is(':hidden') && $('#password').is(':visible')) {
                 $('#password').val('');
             }
         });
@@ -73,16 +79,66 @@
         link.href = 'https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css';
         document.head.appendChild(link);
 
-
-            var cardElement = document.getElementById('myCard');
-            if (cardElement) {
-                cardElement.classList.add('animate__fadeInUp'); // Add fadeIn animation
-                cardElement.style.opacity = 1; // Ensure visibility if previously hidden
-            } else {
-                console.error('Card element not found!');
-            }
-
+        var cardElement = document.getElementById('myCard');
+        if (cardElement) {
+            cardElement.classList.add('animate__fadeInUp'); // Add fadeIn animation
+            cardElement.style.opacity = 1; // Ensure visibility if previously hidden
+        }
     });
+
+    // reCAPTCHA integration
+    function checkPassword() {
+        event.preventDefault();
+
+        const form = document.getElementById('login-form');
+        const submitBtn = document.getElementById('login-submit-btn');
+
+        if (!form.checkValidity()) {
+            return false;
+        }
+
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status"></span> {{ __("label_signing_in") }}';
+
+        if (typeof grecaptcha === 'undefined') {
+            alert('reCAPTCHA failed to load. Please refresh the page.');
+            resetButton();
+            return false;
+        }
+
+        grecaptcha.ready(function() {
+            const siteKey = '{{ config.recaptcha.site_key }}';
+
+            grecaptcha.execute(siteKey, {action: 'login'})
+                .then(function(token) {
+                    if (!token) {
+                        alert('reCAPTCHA failed. Please try again.');
+                        resetButton();
+                        return false;
+                    }
+
+                    const hiddenField = document.getElementById('g-recaptcha-response');
+                    if (hiddenField) {
+                        hiddenField.value = token;
+                    }
+
+                    // Remove the onsubmit handler to avoid infinite loop
+                    form.onsubmit = null;
+                    form.submit();
+                })
+                .catch(function(error) {
+                    resetButton();
+                    alert('reCAPTCHA verification failed. Please try again.');
+                });
+        });
+
+        function resetButton() {
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = '{{ __("label_login") }}';
+        }
+
+        return false;
+    }
 
 </script>
 
@@ -97,7 +153,7 @@
         width: 100%; /* Make it responsive */
         padding: 20px;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional styling for the form */
-       /* background-color: #fff; !* Optional: Background color for the form *!*/
+        /* background-color: #fff; !* Optional: Background color for the form *!*/
         border-radius: 10px; /* Rounded corners */
     }
 

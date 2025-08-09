@@ -469,6 +469,9 @@ msgstr "Envoyer"
 msgid "label_sent"
 msgstr "envoyé"
 
+msgid "label_signing_in"
+msgstr "Connexion en cours..."
+
 msgid "label_since"
 msgstr "depuis"
 
@@ -570,6 +573,9 @@ msgstr "Réinitialisation de mot de passe"
 msgid "password_unchanged"
 msgstr "Désolé, votre mot de passe n'a pas pu être modifié."
 
+msgid "recaptcha_failed"
+msgstr "La vérification de sécurité a échoué. Veuillez réessayer."
+
 msgid "redirecting"
 msgstr "Redirection..."
 
@@ -667,6 +673,9 @@ msgstr "Mis en révision"
 
 msgid "status_unknown"
 msgstr "état inconnu"
+
+msgid "system_error"
+msgstr "Une erreur système s'est produite. Veuillez réessayer plus tard."
 
 msgid "title_about"
 msgstr "À propos"
