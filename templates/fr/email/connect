@@ -16,7 +16,7 @@
     {% import 'lib.twig' as lib %}
     <p>Bonjour,</p>
     <p>
-        Nous avons reçu une demande de connextion au site de la revue Criminologie pour votre adresse courriel. Cliquez sur le bouton ci-dessous pour vous connecter à votre compte sans mot de passe.
+        Nous avons reçu une demande de connexion au site de la revue Criminologie pour votre adresse courriel. Cliquez sur le bouton ci-dessous pour vous connecter à votre compte sans mot de passe.
     </p>
     <p>
         Sincèrement,
