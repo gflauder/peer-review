@@ -474,6 +474,9 @@ msgstr "Send"
 msgid "label_sent"
 msgstr "sent"
 
+msgid "label_signing_in"
+msgstr "Signing in..."
+
 msgid "label_since"
 msgstr "since"
 
@@ -575,6 +578,11 @@ msgstr "Password reset"
 msgid "password_unchanged"
 msgstr "Sorry, your password could not be modified."
 
+msgid "recaptcha_failed"
+msgstr "Security verification failed. Please try again."
+
+
+
 msgid "redirecting"
 msgstr "Redirecting..."
 
@@ -672,6 +680,9 @@ msgstr "set for revisions"
 
 msgid "status_unknown"
 msgstr "unknown status"
+
+msgid "system_error"
+msgstr "A system error occurred. Please try again later."
 
 msgid "title_about"
 msgstr "About us"

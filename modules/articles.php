@@ -549,7 +549,7 @@ class Articles
          *
          * @return array|bool Associative with: path, name, bytes, type OR false on failure
          */
-        /*private static function _attach($articleId, $file)
+        private static function _attach($articleId, $file)
         {
             global $PPHP;
             $config = $PPHP['config']['articles'];
@@ -595,85 +595,84 @@ class Articles
                 }
             }
             return true;
-        }*/
+        }
 
-private static function _attach($articleId, $file)
-{
-    global $PPHP;
-    $config = $PPHP['config']['articles'];
-    $logFile = '/tmp/my_php_debug.log';  // ðcustom log file
 
-    error_log("Starting _attach() for article ID: $articleId\n", 3, $logFile);
+    /*private static function _attach($articleId, $file)
+    {
+        global $PPHP;
+        $config = $PPHP['config']['articles'];
+        $logFile = '/tmp/my_php_debug.log';
 
-    $filename = filter('clean_basefilename', $file['filename']);
-    $ext = filter('clean_basefilename', $file['extension']);
+        error_log("Starting _attach() for article ID: $articleId\n", 3, $logFile);
 
-    error_log("Filename: $filename, Extension: $ext, Tmp Name: {$file['tmp_name']}\n", 3, $logFile);
+        $filename = filter('clean_basefilename', $file['filename']);
+        $ext = filter('clean_basefilename', $file['extension']);
 
-    if (in_array($file['type'], $config['file_types']) &&
-        in_array($file['extension'], $config['file_extensions'])) {
+        error_log("Filename: $filename, Extension: $ext, Tmp Name: {$file['tmp_name']}\n", 3, $logFile);
 
-        $issue = self::_getIssueName($articleId);
-        $base = "{$config['path']}/{$issue}/{$articleId}/{$filename}";
+        if (in_array($file['type'], $config['file_types']) &&
+            in_array($file['extension'], $config['file_extensions'])) {
 
-        error_log("Base path: $base\n", 3, $logFile);
+            $issue = self::_getIssueName($articleId);
+            $base = "{$config['path']}/{$issue}/{$articleId}/{$filename}";
 
-        // Create issue directory if it doesn't exist
-        $issueDir = "{$config['path']}/{$issue}";
-        if (!file_exists($issueDir)) {
-            error_log("Creating directory: $issueDir\n", 3, $logFile);
-            if (!mkdir($issueDir, 0770, true)) {
-                error_log("Failed to create issue directory: $issueDir\n", 3, $logFile);
-                return false;
+            error_log("Base path: $base\n", 3, $logFile);
+
+            // Create issue directory if it doesn't exist
+            $issueDir = "{$config['path']}/{$issue}";
+            if (!file_exists($issueDir)) {
+                error_log("Creating directory: $issueDir\n", 3, $logFile);
+                if (!mkdir($issueDir, 0770, true)) {
+                    error_log("Failed to create issue directory: $issueDir\n", 3, $logFile);
+                    return false;
+                }
             }
-        }
 
-        $path = "{$config['path']}/{$issue}/{$articleId}";
-        if (!file_exists($path)) {
-            error_log("Creating article directory: $path\n", 3, $logFile);
-            if (!mkdir($path, 0770, true)) {
-                error_log("Failed to create article directory: $path\n", 3, $logFile);
-                return false;
+            $path = "{$config['path']}/{$issue}/{$articleId}";
+            if (!file_exists($path)) {
+                error_log("Creating article directory: $path\n", 3, $logFile);
+                if (!mkdir($path, 0770, true)) {
+                    error_log("Failed to create article directory: $path\n", 3, $logFile);
+                    return false;
+                }
             }
-        }
 
-        $try = "{$base}.{$ext}";
-        $i = 2;
-        while (file_exists($try) && $i < 100) {
-            $try = "{$base}_{$i}.{$ext}";
-            $i++;
-        }
+            $try = "{$base}.{$ext}";
+            $i = 2;
+            while (file_exists($try) && $i < 100) {
+                $try = "{$base}_{$i}.{$ext}";
+                $i++;
+            }
 
-        error_log("Final target path: $try\n", 3, $logFile);
+            error_log("Final target path: $try\n", 3, $logFile);
 
-        if (is_writable($path)) {
-            error_log("Target path is writable.\n", 3, $logFile);
+            if (is_writable($path)) {
+                error_log("Target path is writable.\n", 3, $logFile);
 
-            if (move_uploaded_file($file['tmp_name'], $try)) {
-                error_log("File move succeeded.\n", 3, $logFile);
-                $pi = pathinfo($try);
-                return array(
-                    'path' => $path,
-                    'name' => $pi['basename'],
-                    'bytes' => $file['size'],
-                    'type' => $file['type']
-                );
+                if (move_uploaded_file($file['tmp_name'], $try)) {
+                    error_log("File move succeeded.\n", 3, $logFile);
+                    $pi = pathinfo($try);
+                    return array(
+                        'path' => $path,
+                        'name' => $pi['basename'],
+                        'bytes' => $file['size'],
+                        'type' => $file['type']
+                    );
+                } else {
+                    error_log("Failed to move uploaded file from {$file['tmp_name']} to $try\n", 3, $logFile);
+                    return false;
+                }
             } else {
-                error_log("Failed to move uploaded file from {$file['tmp_name']} to $try\n", 3, $logFile);
+                error_log("Directory not writable: $path\n", 3, $logFile);
                 return false;
             }
         } else {
-            error_log("Directory not writable: $path\n", 3, $logFile);
-            return false;
+            error_log("File type or extension not allowed.\n", 3, $logFile);
         }
-    } else {
-        error_log("File type or extension not allowed.\n", 3, $logFile);
-    }
 
-    return true;
-}
-
-
+        return true;
+    }*/
 
         /**
          * Save/create an article
