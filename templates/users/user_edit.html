@@ -38,7 +38,7 @@
             <div class="form-group">
                 <input data-colsize="9" data-label="{{ __('label_profession') }}" class="mb-3 col-9"
                        type="text" id="profession" value="{{ user.profession }}" minlength="3" maxlength="100"
-                       required{% if not modal and not user.active %} disabled{% endif %}>
+                       {% if not modal and not user.active %} disabled{% endif %}>
                 <input data-colsize="9" data-label="{{ __('label_employer') }}" class="mb-3 col-9"
                        type="text" id="employer" value="{{ user.employer }}"
                        minlength="3" maxlength="100"{% if not modal and not user.active %} disabled{% endif %}>

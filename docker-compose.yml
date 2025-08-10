@@ -24,13 +24,12 @@ services:
         - APP_MODE=${APP_MODE:-development}
     image: php:7.4-fpm
     container_name: php-app
+    user: "1000:1000"
     volumes:
       - /home/gary/pyriteview:/var/www/html
       - /home/gary/pyritephp:/var/www/html/vendor/gflauder/pyritephp
-      - /home/gary/pyriteview/vendor:/var/www/html/vendor
-      - /home/gary/pyriteview/var:/var/www/html/var
-      - /home/gary/pyriteview/node_modules:/var/www/html/node_modules
       - ./custom-php.ini:/usr/local/etc/php/conf.d/custom-php.ini
+
     environment:
       - APP_MODE=${APP_MODE:-development}
       - PHP_SENDMAIL_PATH="/usr/sbin/sendmail -S mailpit:1025 -fsender@example.com"
