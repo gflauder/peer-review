@@ -1282,3 +1282,20 @@ h6 {
         color: #012970;
     }
 
+/* ADD: Visual feedback for user validation */
+.selectize-control .selectize-input .item.incomplete-user {
+    background-color: #f8d7da;
+    border-color: #dc3545;
+    color: #721c24;
+}
+
+.selectize-control .selectize-input .item.complete-user {
+    background-color: #d4edda;
+    border-color: #28a745;
+    color: #155724;
+}
+
+.selectize-control.is-invalid .selectize-input {
+    border-color: #dc3545;
+    box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25);
+}

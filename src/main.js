@@ -17,7 +17,40 @@ Number.isInteger = Number.isInteger || function(value) {
 
 $().ready(function() {
  // console.log('jQuery and Bootstrap are loaded');
-  var $articleEditor = $('form#articles_edit');
+  // ADD: Enhanced form validation for articles_edit
+  $('form#articles_edit').on('submit', function(e) {
+    const validation = validateReviewersBeforeSubmit();
+
+    if (!validation.valid) {
+      e.preventDefault();
+
+      let errorMessage = 'Please complete the following user information:\n\n';
+      validation.incompleteFields.forEach(field => {
+        errorMessage += `• ${field.field}: ${field.email} - ${field.issue}\n`;
+      });
+
+      alert(errorMessage);
+
+      // Focus first invalid field
+      const $firstInvalid = $('.is-invalid').first();
+      if ($firstInvalid.length) {
+        $firstInvalid[0].scrollIntoView({ behavior: 'smooth' });
+      }
+
+      return false;
+    }
+  });
+
+// ADD: Review form validation
+  $(document).on('submit', 'form[id*="review"]', function(e) {
+    const validation = validateReviewersBeforeSubmit();
+
+    if (!validation.valid) {
+      e.preventDefault();
+      alert('Please complete all peer reviewer information before adding reviewers.');
+      return false;
+    }
+  });
 
   function updateCopyright() {
     var $link = $('a#copyright_link');
@@ -198,4 +231,44 @@ $().ready(function() {
   var dropdownList = dropdownElementList.map(function(dropdownToggleEl) {
     return new bootstrap.Dropdown(dropdownToggleEl);
   });
+
+  // ADD: Validation function for reviewers before form submit
+  function validateReviewersBeforeSubmit() {
+    let hasIncompleteReviewers = false;
+    const incompleteFields = [];
+
+    $('.select-users, [name$="[]"]').each(function() {
+      const $select = $(this);
+
+      // Handle selectize instances
+      if ($select[0].selectize) {
+        const selectizeInstance = $select[0].selectize;
+        const validation = validateAllSelectizeUsers(selectizeInstance);
+
+        if (!validation.valid) {
+          hasIncompleteReviewers = true;
+          const fieldLabel = $select.data('label') || 'User field';
+
+          validation.incompleteUsers.forEach(user => {
+            incompleteFields.push({
+              field: fieldLabel,
+              email: user.email || 'Unknown',
+              issue: user.name ? 'Complete' : 'Name required'
+            });
+          });
+
+          $select.addClass('is-invalid');
+        } else {
+          $select.removeClass('is-invalid');
+        }
+      }
+    });
+
+    return {
+      valid: !hasIncompleteReviewers,
+      incompleteFields: incompleteFields
+    };
+  }
+
+
 });

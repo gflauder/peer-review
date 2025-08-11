@@ -203,9 +203,52 @@ $().ready(function () {
             }
         }
         if (item['value'] === undefined || !Number.isInteger(Number(item['value']))) {
+            // Don't assign email as value until user is complete
             item.value = item.email;
+            item.isTemporary = !item.name; // Mark as temporary if no name
         }
+
+
+        // ADD validation status to item
+        item.isComplete = !!(item.email && item.email.trim() && item.name && item.name.trim());
+
         return item;
+    }
+
+    // ADD: New validation function
+    function validateCompleteUser(item) {
+        if (!item.email || item.email.trim() === '') {
+            return { valid: false, message: 'Email is required' };
+        }
+
+        if (!item.name || item.name.trim() === '') {
+            return { valid: false, message: 'Name is required' };
+        }
+
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(item.email)) {
+            return { valid: false, message: 'Valid email format required' };
+        }
+
+        return { valid: true };
+    }
+
+// ADD: Function to validate all users in selectize
+    function validateAllSelectizeUsers(selectizeInstance) {
+        const items = selectizeInstance.getValue();
+        const incompleteUsers = [];
+
+        items.forEach(itemValue => {
+            const item = selectizeInstance.options[itemValue];
+            if (item && !item.isComplete) {
+                incompleteUsers.push(item);
+            }
+        });
+
+        return {
+            valid: incompleteUsers.length === 0,
+            incompleteUsers: incompleteUsers
+        };
     }
 
     selectizeRender['item'] = function (item, escape) {
@@ -299,6 +342,15 @@ $().ready(function () {
                 var sel = this;
                 var form = $('#user-modal form');
 
+                // Check if this option already has complete data
+                if (data.name && data.email) {
+                    return;
+                }
+
+                // Remove the incomplete option temporarily
+                sel.removeOption(value);
+                sel.removeItem(value);
+
                 setTimeout(function () {
                     form.find('input').val(null);
                     form.find('select').prop('selectedIndex', 0);
@@ -311,37 +363,101 @@ $().ready(function () {
                         backdrop: 'static',
                         keyboard: false
                     });
+
+                    var userSaved = false;
+
                     myModal.show();
 
                     setTimeout(function () {
                         form.find('input:visible, select:visible').first().focus();
                     }, 350);
 
-                    $('#user-modal .modal-footer button').on('click', function () {
-                        var outform = $(sel.$wrapper).closest('form');
-                        var outbase = $('#user-modal').attr('data-append-base');
-                        var outkey = $('#user-modal').attr('data-append-key');
-                        var outdata = {};
-
-                        if (form.parsley().validate()) {
-                            $(this).off('click');
-                            form.serializeArray().forEach(function (item) {
-                                outdata[item.name] = item.value;
-                            });
-                            outkey = outdata[outkey];
-
-                            data['name'] = outdata['name'];
-
-                            Object.keys(outdata).forEach(function (key) {
-                                outform.append(
-                                    $('<input />').attr('type', 'hidden').attr('name', outbase + '[' + outkey + '][' + key + ']').attr('value', outdata[key])
-                                );
-                            });
-
-                            $('#user-modal').modal('hide');
-                            sel.updateOption(value, sel.options[value]);
-                            sel.close();
+                    // Handle modal close/cancel - remove user completely
+                    $('#user-modal').on('hidden.bs.modal', function() {
+                        if (!userSaved) {
+                            sel.removeOption(value);
+                            sel.removeItem(value);
+                            console.log('User creation cancelled for:', value);
                         }
+                        $(this).off('hidden.bs.modal');
+                        // Clean up all event handlers
+                        $('#user-modal button').off('click.usermodal');
+                    });
+
+                    // Handle ALL buttons in modal footer with delegation
+                    $('#user-modal').off('click.usermodal').on('click.usermodal', 'button', function(e) {
+                        var $button = $(this);
+                        console.log('Button clicked:', $button.text(), 'Classes:', $button.attr('class'));
+
+                        // If it's a close/cancel button (not the primary save button)
+                        if ($button.hasClass('btn-secondary') ||
+                            $button.hasClass('btn-cancel') ||
+                            $button.attr('data-bs-dismiss') === 'modal' ||
+                            $button.text().toLowerCase().includes('cancel') ||
+                            $button.text().toLowerCase().includes('close')) {
+
+                            console.log('Cancel button clicked');
+                            userSaved = false;
+                            myModal.hide();
+                            return;
+                        }
+
+                        // If it's the save/submit button
+                        if ($button.hasClass('btn-primary') ||
+                            $button.attr('type') === 'submit' ||
+                            $button.text().toLowerCase().includes('save') ||
+                            $button.text().toLowerCase().includes('add')) {
+
+                            console.log('Save button clicked, validating...');
+
+                            if (form.parsley().validate()) {
+                                console.log('Validation passed');
+                                var outform = $(sel.$wrapper).closest('form');
+                                var outbase = $('#user-modal').attr('data-append-base');
+                                var outkey = $('#user-modal').attr('data-append-key');
+                                var outdata = {};
+
+                                userSaved = true;
+
+                                form.serializeArray().forEach(function (item) {
+                                    outdata[item.name] = item.value;
+                                });
+                                outkey = outdata[outkey];
+
+                                var completeUserData = {
+                                    text: data.text,
+                                    value: value,
+                                    email: data.email,
+                                    name: outdata['name'],
+                                    isComplete: true,
+                                    isTemporary: false
+                                };
+
+                                Object.keys(outdata).forEach(function (key) {
+                                    outform.append(
+                                        $('<input />').attr('type', 'hidden').attr('name', outbase + '[' + outkey + '][' + key + ']').attr('value', outdata[key])
+                                    );
+                                });
+
+                                sel.addOption(completeUserData);
+                                sel.addItem(value);
+
+                                myModal.hide();
+                                sel.close();
+                                console.log('User created successfully:', outdata.name, '(' + value + ')');
+                            } else {
+                                console.log('Validation failed');
+                                // Show validation errors
+                                form.parsley().validate();
+                            }
+                        }
+                    });
+
+                    // Handle close button in header (X button)
+                    $('#user-modal .btn-close, #user-modal [data-bs-dismiss="modal"]').off('click.usermodal').on('click.usermodal', function() {
+                        console.log('Close (X) button clicked');
+                        userSaved = false;
+                        myModal.hide();
                     });
                 });
             }
@@ -360,6 +476,32 @@ $().ready(function () {
         errorsContainer: function () {},
         errorsWrapper: '<span class="input-error"></span>',
         errorTemplate: '<span></span>'
+    });
+
+    // ADD: Form validation before submission
+    $('form').on('submit', function(e) {
+        var hasIncompleteUsers = false;
+        var incompleteList = [];
+
+        $(this).find('select.users-create').each(function() {
+            if (this.selectize) {
+                var selectizeInstance = this.selectize;
+                var validation = validateAllSelectizeUsers(selectizeInstance);
+
+                if (!validation.valid) {
+                    hasIncompleteUsers = true;
+                    validation.incompleteUsers.forEach(function(user) {
+                        incompleteList.push(user.email || 'Unknown email');
+                    });
+                }
+            }
+        });
+
+        if (hasIncompleteUsers) {
+            e.preventDefault();
+            alert('Please complete information for these users:\n• ' + incompleteList.join('\n• '));
+            return false;
+        }
     });
 
     new timeago().render($('.timeago'), lang);
