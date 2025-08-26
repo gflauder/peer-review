@@ -16,9 +16,13 @@ Number.isInteger = Number.isInteger || function(value) {
 };
 
 $().ready(function() {
- // console.log('jQuery and Bootstrap are loaded');
+  const $articleEditor = $('form#articles_edit');
+
+
+
+  // console.log('jQuery and Bootstrap are loaded');
   // ADD: Enhanced form validation for articles_edit
-  $('form#articles_edit').on('submit', function(e) {
+  $articleEditor.on('submit', function(e) {
     const validation = validateReviewersBeforeSubmit();
 
     if (!validation.valid) {
@@ -53,7 +57,8 @@ $().ready(function() {
   });
 
   function updateCopyright() {
-    var $link = $('a#copyright_link');
+    const $link = $('a#copyright_link');
+
 
     if (!$link.attr('baseHREF')) {
       $link.attr('baseHREF', $link.attr('href'));

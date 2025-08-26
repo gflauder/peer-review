@@ -319,25 +319,33 @@ $().ready(function () {
                 var match = input.match(regexNameEMail);
                 var opt = false;
 
+                // Normalize email function
+                function normalizeEmail(email) {
+                    return email.toLowerCase();
+                }
+
                 if (match !== null) {
+                    var normalizedEmail = normalizeEmail(match[2]);
                     opt = {
                         text: input,
-                        value: match[2],
-                        email: match[2],
+                        value: normalizedEmail,
+                        email: normalizedEmail,
                         name: match[1]
                     };
                 }
                 if (regexEMail.test(input)) {
+                    var normalizedEmail = normalizeEmail(input);
                     opt = {
                         text: input,
-                        value: input,
-                        email: input,
+                        value: normalizedEmail,
+                        email: normalizedEmail,
                         name: null
                     };
                 }
 
                 return opt;
             },
+
             onOptionAdd: function (value, data) {
                 var sel = this;
                 var form = $('#user-modal form');
@@ -356,8 +364,12 @@ $().ready(function () {
                     form.find('select').prop('selectedIndex', 0);
                     form.parsley().reset();
 
-                    $('#user-modal .modal-title .text').text(value);
-                    $('#user-modal input[name=email]').val(value);
+                    // Always show the email in the modal title
+                    $('#user-modal .modal-title .text').text(data.email);
+
+                    // Set the email value in the form
+                    $('#user-modal input[name=email]').val(data.email);
+
 
                     var myModal = new bootstrap.Modal(document.getElementById('user-modal'), {
                         backdrop: 'static',

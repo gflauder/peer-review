@@ -1031,6 +1031,46 @@ return $article;
             unset($cols['log']);
         }
 
+        // Make sure peers is an array
+        if (!isset($cols['peers']) || !is_array($cols['peers'])) {
+            $cols['peers'] = array();
+        }
+
+        // Process userdata if it exists
+        if (isset($cols['userdata']) && is_array($cols['userdata'])) {
+            foreach ($cols['userdata'] as $email => $userData) {
+                // Normalize email to lowercase
+                $normalizedEmail = strtolower($email);
+
+                // Check if a user with this email already exists (case-insensitive)
+                $existingUser = $db->selectSingleArray(
+                    "SELECT id FROM users WHERE LOWER(email) = LOWER(?) LIMIT 1",
+                    array($normalizedEmail)
+                );
+
+                if ($existingUser) {
+                    // If user exists, only add their ID to the peers array if not already there
+                    if (!in_array($existingUser['id'], $cols['peers'])) {
+                        $cols['peers'][] = $existingUser['id'];
+                    }
+                    // Remove from userdata to prevent creation attempt
+                    unset($cols['userdata'][$email]);
+                } else {
+                    // If user doesn't exist, add the email to peers if not already there
+                    if (!in_array($normalizedEmail, $cols['peers'])) {
+                        $cols['peers'][] = $normalizedEmail;
+                    }
+
+                    // Update the email in userdata to use the normalized version
+                    if ($normalizedEmail !== $email) {
+                        $cols['userdata'][$normalizedEmail] = $userData;
+                        $cols['userdata'][$normalizedEmail]['email'] = $normalizedEmail;
+                        unset($cols['userdata'][$email]);
+                    }
+                }
+            }
+        }
+
         if (isset($cols['peers']) && isset($cols['versionId'])) {
             // We're creating new reviews, one per peer
             // Return false if any of the inserts fails
@@ -1038,6 +1078,8 @@ return $article;
                 $cols['peers'],
                 $cols['userdata'] ?? array()
             );
+
+
 
 
 
@@ -1095,6 +1137,7 @@ return $article;
                     )
                 );
                 $log = null;
+
                 trigger(
                     'send_invite',
                     'invitation_peer' . ($alreadyPeer ? '_again' : ''),
