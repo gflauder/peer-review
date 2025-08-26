@@ -20,5 +20,6 @@ zz_remote.sh
 logfile.txt
 .idea/
 *:Zone.Identifier
+/dist/js
 
 
