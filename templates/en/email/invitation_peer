@@ -1,12 +1,14 @@
 {% extends "email_template.twig" %}
 
 {% block subject %}
-    {% import 'lib.twig' as lib %}
     {% autoescape false %}
         Invitation to review: {{ article.title|replace({'&#039;': "'", '&quot;': '"', '&amp;': '&'})|trim|truncate(64, true) }}
     {% endautoescape %}
 
 {% endblock %}
+
+
+
 
 {% block header %}
     {{ __('title_program') }}

@@ -319,33 +319,29 @@ $().ready(function () {
                 var match = input.match(regexNameEMail);
                 var opt = false;
 
-                // Normalize email function
-                function normalizeEmail(email) {
-                    return email.toLowerCase();
-                }
-
                 if (match !== null) {
-                    var normalizedEmail = normalizeEmail(match[2]);
+                    // Normalize email by converting to lowercase
+                    var normalizedEmail = match[2].toLowerCase();
                     opt = {
                         text: input,
-                        value: normalizedEmail,
-                        email: normalizedEmail,
+                        value: normalizedEmail, // Use normalized email as value
+                        email: normalizedEmail, // Store normalized email
                         name: match[1]
                     };
                 }
                 if (regexEMail.test(input)) {
-                    var normalizedEmail = normalizeEmail(input);
+                    // Normalize email by converting to lowercase
+                    var normalizedEmail = input.toLowerCase();
                     opt = {
                         text: input,
-                        value: normalizedEmail,
-                        email: normalizedEmail,
+                        value: normalizedEmail, // Use normalized email as value
+                        email: normalizedEmail, // Store normalized email
                         name: null
                     };
                 }
 
                 return opt;
             },
-
             onOptionAdd: function (value, data) {
                 var sel = this;
                 var form = $('#user-modal form');
@@ -364,12 +360,8 @@ $().ready(function () {
                     form.find('select').prop('selectedIndex', 0);
                     form.parsley().reset();
 
-                    // Always show the email in the modal title
-                    $('#user-modal .modal-title .text').text(data.email);
-
-                    // Set the email value in the form
-                    $('#user-modal input[name=email]').val(data.email);
-
+                    $('#user-modal .modal-title .text').text(value);
+                    $('#user-modal input[name=email]').val(value);
 
                     var myModal = new bootstrap.Modal(document.getElementById('user-modal'), {
                         backdrop: 'static',
