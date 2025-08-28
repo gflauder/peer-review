@@ -9,6 +9,26 @@ Number.isInteger = Number.isInteger || function (value) {
     return typeof value === 'number' && isFinite(value) && Math.floor(value) === value;
 };
 
+// Make validateAllSelectizeUsers available globally
+window.validateAllSelectizeUsers = function(selectizeInstance) {
+    const items = selectizeInstance.getValue();
+    const incompleteUsers = [];
+
+    items.forEach(itemValue => {
+        const item = selectizeInstance.options[itemValue];
+        if (item && !item.isComplete) {
+            incompleteUsers.push(item);
+        }
+    });
+
+    return {
+        valid: incompleteUsers.length === 0,
+        incompleteUsers: incompleteUsers
+    };
+};
+
+
+
 $().ready(function () {
     var lang = $('html').attr('lang') || 'en';
     var excludedInputs = 'input[type=button], input[type=submit], input[type=reset], input[type=hidden], .rich-edit';
@@ -168,6 +188,9 @@ $().ready(function () {
         }
     };
 
+
+
+
     $('select.advanced').selectize({
         plugins: ['remove_button', 'drag_drop'],
         highlight: false
@@ -235,21 +258,10 @@ $().ready(function () {
 
 // ADD: Function to validate all users in selectize
     function validateAllSelectizeUsers(selectizeInstance) {
-        const items = selectizeInstance.getValue();
-        const incompleteUsers = [];
-
-        items.forEach(itemValue => {
-            const item = selectizeInstance.options[itemValue];
-            if (item && !item.isComplete) {
-                incompleteUsers.push(item);
-            }
-        });
-
-        return {
-            valid: incompleteUsers.length === 0,
-            incompleteUsers: incompleteUsers
-        };
+        // Use the global function we defined outside
+        return window.validateAllSelectizeUsers(selectizeInstance);
     }
+
 
     selectizeRender['item'] = function (item, escape) {
         item = itemToUser(item);

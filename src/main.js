@@ -45,16 +45,85 @@ $().ready(function() {
     }
   });
 
-// ADD: Review form validation
-  $(document).on('submit', 'form[id*="review"]', function(e) {
-    const validation = validateReviewersBeforeSubmit();
+// ADD: Review form validation - completely revised
+  // Handle review status change buttons
+  $(document).on('click', 'button[name="status"]', function(e) {
+    e.preventDefault();
 
-    if (!validation.valid) {
-      e.preventDefault();
-      alert('Please complete all peer reviewer information before adding reviewers.');
+    const $button = $(this);
+    const $form = $button.closest('form');
+    const statusValue = $button.val();
+    const formData = new FormData($form[0]);
+
+    // Add the status to the form data
+    formData.append('status', statusValue);
+
+    // Store the current URL to redirect back to after AJAX
+    const currentUrl = window.location.href;
+
+    $.ajax({
+      url: $form.attr('action'),
+      type: 'POST',
+      data: formData,
+      processData: false,
+      contentType: false,
+      success: function(response) {
+        // Instead of letting the browser handle the response (which might redirect),
+        // manually reload the current page or update specific elements
+        window.location.href = currentUrl;
+      },
+      error: function(xhr, status, error) {
+        console.error("Error updating review status:", error);
+        alert("There was an error updating the review status. Please try again.");
+      }
+    });
+
+    return false;
+  });
+
+  // For regular form submissions (non-status changes), let the browser handle it normally
+  $(document).on('submit', 'form[id*="review"]', function(e) {
+    // If the form was submitted by a status button, we've already handled it above
+    if (e.isDefaultPrevented()) {
       return false;
     }
-  });
+
+    console.log("Form being submitted:", this.id);
+
+    // Check if this form has a status input or button
+    const hasStatusElement = $(this).find('input[name="status"], button[name="status"]').length > 0;
+
+    // Check if form has peer selection - only on forms that add new peer reviewers
+    const hasPeerSelection = $(this).find('select[name="peers[]"]').length > 0 &&
+        $(this).find('select[name="peers[]"]').val() !== null;
+
+    console.log("Has status element:", hasStatusElement);
+    console.log("Has peer selection:", hasPeerSelection);
+
+    // If this is a status change form (has status element) and doesn't have peer selection
+    // OR if it has an ID field (editing existing review), skip validation
+    if ((hasStatusElement && !hasPeerSelection) || $(this).find('input[name="id"]').length > 0) {
+      console.log("Skipping validation - status change or existing review edit");
+      return true;
+    }
+
+    // Only validate if we're adding new peer reviewers
+    if (hasPeerSelection) {
+      const validation = validateReviewersBeforeSubmit();
+
+      if (!validation.valid) {
+        e.preventDefault();
+        alert('Please complete all peer reviewer information before adding reviewers.');
+        return false;
+      }
+    }
+
+    return true;
+
+});
+
+
+
 
   function updateCopyright() {
     const $link = $('a#copyright_link');
@@ -237,15 +306,22 @@ $().ready(function() {
     return new bootstrap.Dropdown(dropdownToggleEl);
   });
 
-  // ADD: Validation function for reviewers before form submit
+// ADD: Validation function for reviewers before form submit
   function validateReviewersBeforeSubmit() {
+    // Check if this is a review form with peers
+    const $peerFields = $('select[name="peers[]"]');
+    if ($peerFields.length === 0 || $peerFields.val() === null) {
+      // No peer fields or no peers selected - validation passes
+      return { valid: true, incompleteFields: [] };
+    }
+
     let hasIncompleteReviewers = false;
     const incompleteFields = [];
 
-    $('.select-users, [name$="[]"]').each(function() {
+    $('.select-users, [name="peers[]"]').each(function() {
       const $select = $(this);
 
-      // Handle selectize instances
+      // Only validate if it's a selectize instance
       if ($select[0].selectize) {
         const selectizeInstance = $select[0].selectize;
         const validation = validateAllSelectizeUsers(selectizeInstance);

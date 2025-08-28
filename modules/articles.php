@@ -1037,7 +1037,7 @@ return $article;
         }
 
         // Process userdata if it exists
-        if (isset($cols['userdata']) && is_array($cols['userdata'])) {
+        if (!empty($cols['userdata']) && is_array($cols['userdata'])) {
             foreach ($cols['userdata'] as $email => $userData) {
                 // Normalize email to lowercase
                 $normalizedEmail = strtolower($email);
@@ -1071,19 +1071,15 @@ return $article;
             }
         }
 
-        if (isset($cols['peers']) && isset($cols['versionId'])) {
+        if (!empty($cols['peers']) && isset($cols['versionId'])) {
             // We're creating new reviews, one per peer
             // Return false if any of the inserts fails
             $validation = self::validateUserCompleteness(
                 $cols['peers'],
                 $cols['userdata'] ?? array()
             );
-
-
-
-
-
             $success = true;
+
             $db->begin();
             if (!$validation['valid']) {
                 $db->rollback();
