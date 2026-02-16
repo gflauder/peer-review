@@ -1355,16 +1355,16 @@ return $article;
 
                 $validUsers[] = $userId;
             } else {
-                // Validate existing user
+                // Existing user - just verify they exist (don't block on incomplete data)
                 $user = $db->selectSingleArray(
-                    "SELECT id, email, name FROM users WHERE id = ?",
+                    "SELECT id FROM users WHERE id = ?",
                     array($userId)
                 );
 
-                if ($user && !empty($user['email']) && !empty($user['name'])) {
+                if ($user) {
                     $validUsers[] = $userId;
                 } else {
-                    $errors[] = "User not found or incomplete: " . $userId;
+                    $errors[] = "User not found: " . $userId;
                 }
             }
         }
