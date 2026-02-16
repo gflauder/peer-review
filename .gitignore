@@ -23,3 +23,4 @@ logfile.txt
 /dist/js
 
 
+/dist/css/*.map
