@@ -6,7 +6,7 @@
  * Usage: php cmd/cleanup_spam_users.php
  */
 
-$dbPath = __DIR__ . '/../var/db.sqlite';
+$dbPath = __DIR__ . '/../var/main.db';
 
 if (!file_exists($dbPath)) {
     echo "Database not found at: $dbPath\n";
